@@ -1,0 +1,75 @@
+# Functional Requirements
+
+What a non-registered user can see : 
+  - nothing : all api calls must be done by registed users only
+
+## Notes
+  1. All features can be accessed only after registeration
+  2. Emp : the one who requests
+  3. MOD : man of the day, the one who delivers
+
+## Features
+
+Main Features (MVP) for users can :
+  - Post a request.
+  - Choose the MOD (man of the day)
+  - Release a request (pays : payment method later on)
+  - Delete a request
+
+## Objects in details
+
+**Request** is a user object fetch to be fulfilled by other users :
+
+  requests are shown to users close to that location OR by viewing latest requests.
+  once a request is posted it can't be edited, only deletion if nobody is choosen.
+  when a request is accepted and the MOD is choosen, if the MOD couldn't fulfill the request  
+  releasing : request is released when the task is completed or disputed (disputation is done by team), in case of canceling the money is returned with fees taken.
+
+**Review** is an important concept here as you go with the highly rated only : 
+
+  review can't be done unless the delivery process is completed or MOD failed to fulfill the Emp's request.
+  reviews can't be deleted or edited.
+  reviews are only related to one process.
+
+**Chatting** the way communication is done : 
+  
+  you can't start a chat with a person outside the request participants.
+  users can block/mute each others
+  users can/can't send/recieve pictures
+
+## Functions
+
+Each User has (MOD or Emp or both):
+  - Name 
+  - Age 
+  - Email
+  - Phone number (verification is needed)
+  - SSN (human or automatic verification is needed) : used to gurentee the process of delievry idk :: maybe it's not needed!
+  - isTrusted : used for other payment methods
+  - Reviews list
+  - Chat list
+
+Each request has :
+  - User : the one who post it.
+  - Title
+  - Body (msg limit)
+  - From Location
+  - To Location
+  - Price range n:m (can be higher)
+  - Time range n:m
+  - State (accepted/..)
+  - MOD (null at the first)
+
+Each review has : 
+  - reviewerID : the one who wrote it.
+  - toWhom 
+  - requestTitle
+  - body
+  - rate (1..10)
+
+# Chatting 
+
+Chat is to be implemented by sockets
+
+# Payment
+# API Intergrations
