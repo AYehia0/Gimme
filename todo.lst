@@ -10,5 +10,6 @@ Pre-installation:
 - [X] Setup the node workflow
 - [X] Install the dependencies
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
+  - DEV : nodemon
 - [] Init the server
 - [] List the API routes
