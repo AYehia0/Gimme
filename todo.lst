@@ -1,0 +1,13 @@
+## Before starting
+
+Pre-installation:
+  - mongodb
+  - mongodb-compass
+  - postman
+
+## Todo List to keep track of things
+
+- [] Setup the node workflow
+- [] Install the dependencies
+- [] List the API routes
+
