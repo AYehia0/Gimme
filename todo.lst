@@ -11,5 +11,8 @@ Pre-installation:
 - [X] Install the dependencies
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
-- [] Init the server
+- [X] Init the server
 - [] List the API routes
+  - The database design
+    - User model
+    - Authentication
