@@ -60,9 +60,40 @@ userSchema.pre('save', function(next) {
   }
 
   next()
-
 })
 
+// login token
+userSchema.statics.login = async (email, password) => {
+
+  // finding the user
+  const user = await User.findOne({email: email})
+
+  if (!user)
+    throw new Error("User not found!!!")
+
+  // password check
+  const isValid = bcrybt.compareSync(password, user.password)
+
+  if (!isValid)
+    throw new Error("Incorrect Password!!!")
+
+  return user
+}
+
+// generating the token used for auth
+userSchema.methods.genToken = async function () {
+
+  // getting the current user
+  const user = this
+
+  const token = jwt.sign({_id: user._id}, process.env.JWT_TOKEN)
+
+  user.token = token
+
+  await user.save()
+
+  return token
+}
 
 // creating the model 
 const User = mongoose.model('User', userSchema)
