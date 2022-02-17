@@ -7,8 +7,12 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
-const userRoutes = require('./routes/user.js')
 const bodyParser = require('body-parser')
+
+// routers
+const userRoutes = require('./routes/user')
+const reviewRoutes = require('./routes/review')
+const requestRoutes = require('./routes/request')
 
 const app = express()
 
@@ -23,5 +27,7 @@ app.use(cors())
 
 // using the routes
 app.use('/api/user', userRoutes)
+app.use('/api/review', reviewRoutes)
+app.use('/api/request', requestRoutes)
 
 module.exports = app
