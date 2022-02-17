@@ -81,9 +81,58 @@ const getUserProfile = async (req, res) => {
   }
 }
 
+// remove the token
+const logoutUser = async () => {
+  try {
+    
+    const user = req.user 
 
+    if (!user)
+      throw new Error("Not logged in")
+
+    user.token = ""
+
+    await user.save()
+
+    res.status(200).send({
+      status: true,
+      message: "Success: Logged out",
+      data: "" 
+    })
+  } catch (e) {
+     res.send({
+      status: false,
+      message: e.message,
+      data: ""
+    })
+  }
+}
+
+// what a user can edit : 
+// name, 
+const editUser = async () => {
+  try {
+    // edit here
+
+    await user.save()
+
+    res.status(200).send({
+      status: true,
+      message: "Success: Logged out",
+      data: "" 
+    })
+  } catch (e) {
+     res.send({
+      status: false,
+      message: e.message,
+      data: ""
+    })
+  }
+}
 module.exports = {
   registerUser,
   loginUser,
-  getUserProfile
+  getUserProfile,
+  logoutUser,
+  editUser,
 }
