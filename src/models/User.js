@@ -12,6 +12,15 @@ const userSchema = new Schema({
     maxlength: 50,
     required: true
   },
+  age : {
+    type : Number,
+    min : 20,
+    max : 100
+  },
+  gender : {
+    type : String, 
+    enum : ["male", "female"]
+  },
   email : {
     type: String,
     trim: true,
@@ -41,6 +50,17 @@ const userSchema = new Schema({
       }))
         throw new Error("Weak Password!!!")
     }
+  },
+  // a user can be a normal user or delivery user
+  // or both : special
+  role : {
+    type : String,
+    enum : ["nUser", "dUser", "sUser"],
+    default : "nUser"
+  },
+  isTrusted : {
+    type : Boolean,
+    default : false
   },
   // TODO: change to tokens as a list so that user can login from different locations :D
   token: {
