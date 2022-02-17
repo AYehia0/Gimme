@@ -12,7 +12,14 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
-- [] List the API routes
+- [X] List the API routes
   - The database design
-    - User model
-    - Authentication
+    - [X] User model
+      - [] Edit a user profile : EZ !!!
+    - [X] Authentication
+    - [X] Review
+      - [] Add review : One like One + comment and rate
+    - [] Request 
+      - [] Create a Comment model to sep the Request from having dups in the same request
+      - [] Link the comment owners to the participants in the Requst
+      - [] Close a request by allowing only the creator or the Request to choose one (and only one) from the participants 
