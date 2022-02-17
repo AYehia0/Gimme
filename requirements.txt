@@ -41,10 +41,12 @@ Main Features (MVP) for users can :
 
 Each User has (MOD or Emp or both):
   - Name 
+  - Pic
   - Age 
   - Email
   - Phone number (verification is needed)
   - SSN (human or automatic verification is needed) : used to gurentee the process of delievry idk :: maybe it's not needed!
+  - Cridit card : no need to store the credit card info by any mean, as we'll use stripe 
   - isTrusted : used for other payment methods
   - Reviews list
   - Chat list
@@ -69,7 +71,10 @@ Each review has :
 
 # Chatting 
 
-Chat is to be implemented by sockets
+Chat is to be implemented by socketsIO
 
 # Payment
+StripeJS is a really cool method to avoid headache regards the storage of credit cards and payments
+src :: https://stripe.com/docs/payments/elements
+
 # API Intergrations
