@@ -116,7 +116,22 @@
 					"name": "Create",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"Electronic parts needed\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 90\n    },\n    \"timeRange\" : {\n        \"val\" : 2\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:8080/api/request/open",
 							"protocol": "http",
@@ -225,6 +240,166 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comment/comment/620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comment",
+								"comment",
+								"620e6aad9c7c24049b4f84e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comment/comment/620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comment",
+								"comment",
+								"620e6aad9c7c24049b4f84e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comment/comment/620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comment",
+								"comment",
+								"620e6aad9c7c24049b4f84e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 2\n    },\n    \"price\" : 50,\n    \"text\" : \"Hello, I will bring you thing, I have a car, Edited!!!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comment/comment/620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comment",
+								"comment",
+								"620e6aad9c7c24049b4f84e0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Review",
+			"item": []
 		}
 	]
 }
