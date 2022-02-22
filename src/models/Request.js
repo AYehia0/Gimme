@@ -93,10 +93,19 @@ const requestSchema = new Schema({
         default : "on"
     },
     // all the comments on the request
-    // TODO : create a model for a comment
-    participants: {
-
-    }
+    // TODO : create a model for a comment [DONE]
+    participants: [{
+        userId : {
+            type : Schema.Types.ObjectId,
+            ref : "User",
+            required : true
+        },
+        commentId : {
+            type : Schema.Types.ObjectId,
+            ref : "Comment",
+            required : true
+        }
+    }]
 })
 
 // giving the index to the schema
