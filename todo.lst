@@ -16,10 +16,11 @@ Pre-installation:
   - The database design
     - [X] User model
       - [] Edit a user profile : EZ !!!
+      - [] Add limit to the number of comments a user can make : evil move.
     - [X] Authentication
     - [X] Review
       - [] Add review : One like One + comment and rate
     - [] Request 
-      - [] Create a Comment model to sep the Request from having dups in the same request
-      - [] Link the comment owners to the participants in the Requst
+      - [X] Create a Comment model to sep the Request from having dups in the same request
+      - [X] Link the comment owners to the participants in the Requst
       - [] Close a request by allowing only the creator or the Request to choose one (and only one) from the participants 
