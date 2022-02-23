@@ -13,11 +13,11 @@ router.post('/open', auth.userAuth, requestCont.openRequest)
 router.post('/edit/:id', auth.userAuth, requestCont.editRequest)
 
 // delete a request
-router.get('/delete/:id', auth.userAuth, requestCont.deleteRequest)
+router.delete('/delete/:id', auth.userAuth, requestCont.deleteRequest)
 
 // close a request
 // a request is closed when a MOD is choosen
-router.get('/mod', auth.userAuth, requestCont.closeRequest)
+router.get('/close', auth.userAuth, requestCont.closeRequest)
 
 
 // exporting
