@@ -149,6 +149,55 @@
 					"response": []
 				},
 				{
+					"name": "Close",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDU1OTMyNTl9.fs2VD-2o9gqqGYRXKSKN3nosTVTm-_uPGQMjeKEjXoU",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/request/close?modId=6215bfcc9f304e65e8e337e5&reqId=620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"request",
+								"close"
+							],
+							"query": [
+								{
+									"key": "modId",
+									"value": "6215bfcc9f304e65e8e337e5"
+								},
+								{
+									"key": "reqId",
+									"value": "620e6aad9c7c24049b4f84e0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Edit",
 					"request": {
 						"method": "POST",
