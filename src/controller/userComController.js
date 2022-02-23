@@ -30,6 +30,10 @@ const giveComment = async (req, res) => {
         if (userCommentedInd !== -1) 
             throw new Error("User has already commented !!!")
 
+        // check if the user commenting isn't the one who created the request lol
+        if (reqValid.userId.equals(user._id))
+            throw new Error("LOL, does the train hit you before ?")
+
         // adding the comment
         // check if the user is allowed to do so : by default ALLOWED
 
