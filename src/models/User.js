@@ -76,7 +76,7 @@ userSchema.pre('save', function(next) {
   const currentUser = this
 
   if (currentUser.isModified('password')){
-    currentUser.password = bcrybt.hashSync(currentUser.password, process.env.SALT)
+    currentUser.password = bcrybt.hashSync(currentUser.password, parseInt(process.env.SALT))
   }
 
   next()
