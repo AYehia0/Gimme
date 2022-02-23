@@ -23,4 +23,5 @@ Pre-installation:
     - [] Request 
       - [X] Create a Comment model to sep the Request from having dups in the same request
       - [X] Link the comment owners to the participants in the Requst
-      - [] Close a request by allowing only the creator or the Request to choose one (and only one) from the participants 
+      - [X] Close a request by allowing only the creator or the Request to choose one (and only one) from the participants 
+      - [] Instead of checking for Requests author : create a middleware for it
