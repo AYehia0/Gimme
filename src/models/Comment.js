@@ -33,6 +33,10 @@ const commentSchema = new Schema({
             type : Number,
             required : true
         }
+    },
+    mod : {
+        type : Boolean,
+        default : false
     }
 })
 
