@@ -4,9 +4,10 @@ const auth = require('../middlewares/auth.js')
 // the controller
 const reviewCont = require('../controller/userRevController.js')
 
-// write a review
-router.post('/give', auth.userAuth, reviewCont.giveReview)
+// write a review to a specific request maybe ? idk ?
+router.post('/customer-review/:id', auth.userAuth, reviewCont.customerGiveReview)
+router.post('/user-review/:id', auth.userAuth, reviewCont.userGiveReview)
+router.get('/reviews', auth.userAuth, reviewCont.getUserReviews)
 
 // exporting
 module.exports = router
-
