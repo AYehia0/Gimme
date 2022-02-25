@@ -17,7 +17,7 @@ const reviewSchema = new Schema({
         type : String,
         required : true,
         trim : true,
-        maxlength : 250
+        maxlength : 200
     },
     body : {
         type : String,
