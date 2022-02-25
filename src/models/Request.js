@@ -89,7 +89,7 @@ const requestSchema = new Schema({
     },
     state : {
         type : String,
-        enum : ["accepted", "deleted", "fulfilled", "on"],
+        enum : ["closed", "deleted", "fulfilled", "on"],
         default : "on"
     },
     // all the comments on the request
