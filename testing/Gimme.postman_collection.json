@@ -448,7 +448,127 @@
 		},
 		{
 			"name": "Review",
-			"item": []
+			"item": [
+				{
+					"name": "CustomerReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDU4MDU5Mjd9.UVlYBod4GRunBT4tBeqQJldcbfVPLnPqooCjjCEUEwY",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\" : \"Good man, he deliverd the package on time :D\",\n    \"rate\" : 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/review/customer-review/620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"review",
+								"customer-review",
+								"620e6aad9c7c24049b4f84e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjE1YmZjYzlmMzA0ZTY1ZThlMzM3ZTUiLCJpYXQiOjE2NDU4MDU3MTh9._KGAdH5Yv2FwZ320XeLLbsD7lu6Dvh4MHjR1EhMefCo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/review/user-review/620e6aad9c7c24049b4f84e0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"review",
+								"user-review",
+								"620e6aad9c7c24049b4f84e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReviews",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDU4MDU5Mjd9.UVlYBod4GRunBT4tBeqQJldcbfVPLnPqooCjjCEUEwY",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/review/reviews?job=customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"review",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "job",
+									"value": "customer"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
