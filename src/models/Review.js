@@ -34,6 +34,12 @@ const reviewSchema = new Schema({
         required : true,
         min : 1,
         max : 5
+    },
+    // the flow flag : determines what the job of the user who gave the review
+    flow : {
+        type : String,
+        enum : ["user", "customer"],
+        required : true
     }
 })
 
