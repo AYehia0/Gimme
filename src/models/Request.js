@@ -92,6 +92,10 @@ const requestSchema = new Schema({
         enum : ["closed", "deleted", "fulfilled", "on"],
         default : "on"
     },
+    reviewed : {
+        type : Boolean,
+        default : false
+    },
     // all the comments on the request
     // TODO : create a model for a comment [DONE]
     participants: [{
