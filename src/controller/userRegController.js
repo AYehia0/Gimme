@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
     res.status(200).send({
       status : true,
       message : "Success : User registered !!!",
-      data : userInfo
+      data : "" 
     })
     
   } catch (e) {
