@@ -39,6 +39,9 @@ const loginUser = async (req, res) => {
     // get the username and the password
     const {email, password} = req.body
 
+    if (!email || !password)
+      throw new Error("Invalid Syntax : Email and Password are required!")
+
     // user in db ?
     const user = await User.login(email, password, 'user')
 
@@ -62,7 +65,7 @@ const loginUser = async (req, res) => {
 // can be used to show /me or others like /someone
 // depends on what can a user see from others
 // but login is required
-const getUserProfile = async (req, res) => {
+const getMyProfile = async (req, res) => {
   try {
     
     const user = req.user 
@@ -81,6 +84,33 @@ const getUserProfile = async (req, res) => {
   }
 }
 
+// it can also be used as /me
+const getUserProfile = async (req, res) => {
+  try {
+
+    // get the user id 
+    const userId = req.params.id
+
+    // probably it's a good idea not to throw an error 
+    // and instead retrun the logged in user
+    if (! userId)
+      throw new Error("Invalid syntax : UserId is required")
+    
+    const user = await User.findById(userId).select('name -_id isTrusted createTime')
+    
+    res.status(200).send({
+      status: true,
+      message: "",
+      data: user
+    })
+  } catch (e) {
+     res.send({
+      status: false,
+      message: "Not authorized",
+      data: e.message
+    })
+  }
+}
 // remove the token
 const logoutUser = async () => {
   try {
@@ -132,6 +162,7 @@ const editUser = async () => {
 module.exports = {
   registerUser,
   loginUser,
+  getMyProfile,
   getUserProfile,
   logoutUser,
   editUser,

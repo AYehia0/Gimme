@@ -11,7 +11,10 @@ router.post('/register', userCont.registerUser)
 router.post('/login', userCont.loginUser)
 
 // show your profile
-router.get('/me', auth.userAuth , userCont.getUserProfile)
+router.get('/me', auth.userAuth , userCont.getMyProfile)
+
+// show other user profiles
+router.get('/profile/:id', auth.userAuth , userCont.getUserProfile)
 
 // login a user
 router.get('/logout', userCont.logoutUser)
