@@ -115,6 +115,14 @@ userSchema.methods.genToken = async function () {
   return token
 }
 
+// [SECURITY] : removing some properties for security
+userSchema.set('toJSON', {
+    transform: function(doc, ret, opt) {
+        delete ret['password']
+        return ret
+    }
+})
+
 // creating the model 
 const User = mongoose.model('User', userSchema)
 
