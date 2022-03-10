@@ -11,6 +11,7 @@ const openRequest = async (req, res) => {
         // request body to be added
         const reqBody = req.body
 
+        // TODO : probably need to change this idk
         const empReq = Request({
             userId : user._id,
             ...reqBody 
@@ -26,7 +27,13 @@ const openRequest = async (req, res) => {
         })
 
     } catch (e) {
-        const message = e.message
+        let message = e.message
+        if (message.includes("Can't extract geo keys"))
+            message = "Invalid Syntax : Invalid location format"
+
+        if (message.includes("Request validation failed"))
+            message = "Invalid Syntax : Check the docs"
+        
         res.send({
             status: false,
             message: message,
