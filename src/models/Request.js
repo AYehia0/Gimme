@@ -55,6 +55,7 @@ const requestSchema = new Schema({
     priceRange : {
         min : {
             type : Number,
+            required : true,
             min : 0,
             validate: {
                 validator: function(val){
@@ -66,6 +67,7 @@ const requestSchema = new Schema({
         },
         max : {
             type : Number,
+            required : true,
             min : 0,
             validate: {
                 validator: function(val){
