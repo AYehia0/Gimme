@@ -18,6 +18,8 @@ Pre-installation:
       - [] Edit a user profile : EZ !!!
       - [] Add limit to the number of comments a user can make : evil move.
       - [] Extending the user as features will be a lot.
+        - [X] Setup multer to upload imgs
+        - [X] Add a picture to the user
       - [] Add the role to a list to make sure user can do both in the db.
    - [X] Authentication
     - [X] Review
@@ -29,5 +31,8 @@ Pre-installation:
       - [] Instead of checking for Requests author : create a middleware for it
   - [] Features 
     - [] Chatting
+      - [] Design models for it
     - [] Google Maps API
     - [] Notification System
+  - [] Rename the controllers
+  - [] Change the status code of all the responses
