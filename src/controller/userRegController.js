@@ -112,13 +112,10 @@ const getUserProfile = async (req, res) => {
   }
 }
 // remove the token
-const logoutUser = async () => {
+const logoutUser = async (req, res) => {
   try {
     
     const user = req.user 
-
-    if (!user)
-      throw new Error("Not logged in")
 
     user.token = ""
 
@@ -126,7 +123,7 @@ const logoutUser = async () => {
 
     res.status(200).send({
       status: true,
-      message: "Success: Logged out",
+      message: "Logged out successfuly",
       data: "" 
     })
   } catch (e) {
@@ -140,7 +137,7 @@ const logoutUser = async () => {
 
 // what a user can edit : 
 // name, 
-const editUser = async () => {
+const editUser = async (req, res) => {
   try {
     // edit here
 
@@ -159,6 +156,37 @@ const editUser = async () => {
     })
   }
 }
+
+// upload a profile img
+const changeProfilePicture = async (req, res) => {
+  let statusCode = 400
+  try {
+    const user = req.user
+    const profileImgPath = req.file?.path
+
+    if (!profileImgPath)
+      throw new Error("Image is required")
+
+    // save to the database
+    user.img = profileImgPath
+
+    // saving
+    await user.save()
+
+    res.status(200).send({
+      status: true,
+      message: "Profile picture has been updated succesfully",
+      data: "" 
+    })
+  } catch (e) {
+    let message = e.message
+     res.status(statusCode).send({
+      status: false,
+      message: message,
+      data: ""
+    })
+  }
+}
 module.exports = {
   registerUser,
   loginUser,
@@ -166,4 +194,5 @@ module.exports = {
   getUserProfile,
   logoutUser,
   editUser,
+  changeProfilePicture,
 }
