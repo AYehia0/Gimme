@@ -62,6 +62,12 @@ const userSchema = new Schema({
     type : Boolean,
     default : false
   },
+  img : {
+    type : String,
+
+    // TODO : default img for users maybe ?
+    default : "somethingIDK"
+  },
   // TODO: change to tokens as a list so that user can login from different locations :D
   token: {
     type: String
