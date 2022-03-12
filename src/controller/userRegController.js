@@ -1,4 +1,6 @@
 // the main functions that handle the actuall backend
+const fs = require('fs')
+const path = require('path')
 const User = require('../models/User')
 
 const registerUser = async (req, res) => {
@@ -162,13 +164,14 @@ const changeProfilePicture = async (req, res) => {
   let statusCode = 400
   try {
     const user = req.user
-    const profileImgPath = req.file?.path
 
-    if (!profileImgPath)
+    const imgName = req.file.filename
+
+    if (!imgName)
       throw new Error("Image is required")
 
     // save to the database
-    user.img = profileImgPath
+    user.img = `photos/${user._id}/${imgName}`
 
     // saving
     await user.save()
