@@ -1,6 +1,4 @@
 // the main functions that handle the actuall backend
-const fs = require('fs')
-const path = require('path')
 const User = require('../models/User')
 
 const registerUser = async (req, res) => {
