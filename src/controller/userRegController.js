@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
     })
     
   } catch (e) {
-    let message = e.message.includes('E11000') ? "Email Already Exists" : e.message
+    let message = e.message.includes('E11000') ? "Email/Phone Already Exists" : e.message
     res.send({
       status: false,
       message: message,
