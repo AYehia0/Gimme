@@ -41,8 +41,6 @@ const addMsgToChat = async (req, res) => {
 
 const getChatMessages = async (req, res) => {
     try {
-
-        // the user to send
         const roomId = req.params.id
 
         const opt =  {
@@ -50,9 +48,7 @@ const getChatMessages = async (req, res) => {
             limit: parseInt(req.query.limit) || parseInt(process.env.CHAT_SIZE),
         } 
 
-        // make sure that the user is : maker or MOD
-        // ...
-        const chatConv = await Message.getRoomMessages(roomId, opt)
+        const latestMessages = await Message.getRoomMessages(roomId, opt)
 
         // emit to the socket
         //global.io.in(roomId).emit('new-msg', { message: msg })
@@ -60,7 +56,7 @@ const getChatMessages = async (req, res) => {
         res.send({
             status: true,
             message: "",
-            data: chatConv 
+            data: latestMessages 
         })
 
     } catch (e) {
