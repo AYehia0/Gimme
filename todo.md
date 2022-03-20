@@ -38,11 +38,13 @@ Pre-installation:
   - [] Features 
     - [] Chatting
       - [X] Design models for it
+      - [] Revert the msg controller [commit](https://github.com/AYehia0/Gimme/commit/9fb02bd313fdbc1436f51ce147a07f3057eaba77) and keep the ```addMsgToChat``` function, no need to create a route for that.
+      - [] Use jwt to authenticate sockets : [here](https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt)
       - [] Block a user
     - [] Google Maps API
     - [] Notification System
-  - [] Rename the controllers
-  - [] Change the status code of all the responses
+  - [X] Rename the controllers
+  - [X] Change the status code of all the responses
 
 
 ## Nice to have
