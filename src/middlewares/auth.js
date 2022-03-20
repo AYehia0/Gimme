@@ -42,6 +42,46 @@ const userAuth = async (req, res, next) => {
   }
 }
 
+// authenticate the socket.io
+// the token should be sent from the frontend
+const socketAuth = async (socket, next) => {
+  try {
+
+    // getting the token
+    // the token exists under the handshake.query.token
+    const token = socket.handshake.query.token
+
+    if (!token)
+      throw new Error("Token isn't set properly in the socket")
+
+    // validation
+    const isValidToken = jwt.verify(token, process.env.JWT_TOKEN)
+
+    const userId = isValidToken._id
+
+    const user = await User.findOne({_id: userId, token: token})
+
+    if (!user)
+      throw new Error("User not found or Token has been expired")
+
+    // setting user in the socket
+    socket.user = user
+
+    // forwarding
+    next()
+
+  } catch (e) {
+    const msg = e.message.includes('invalid signature') ? "Invalid Token LOL" : e.message
+    res.send({
+      status: false,
+      message: msg,
+      data: ""
+    })
+    
+  }
+}
+
 module.exports = {
-  userAuth
+  userAuth,
+  socketAuth
 }
