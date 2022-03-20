@@ -194,6 +194,55 @@ Get the profile of the logged in user. ```AUTH```
     --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDY3NDY1ODd9.mjCMSwUH4JegshURio2aJQxbomCVljWgh4L1hZHvHJo' \
     --data-raw ''
   ```
+## Other User Profile
+
+Get other profiles. ```AUTH```
+
+* **URL**
+
+  ```/user/profile/:userId```
+
+* **Method:**
+
+    `GET`
+  
+*  **URL Params**
+
+    ```userId=[ObjectID]```
+
+* **Data Params**
+
+    **Required:**
+
+    None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+
+    **Content:**     
+
+    ```json
+    {
+      "status": true,
+      "message": "",
+      "data": {
+          "name": "notadmin",
+          "isTrusted": false,
+          "createTime": "2022-02-23T05:02:04.051Z"
+      }
+    }
+* **Error Response:**
+
+    None
+
+* **Sample Call:**
+
+  ```bash
+    curl --location --request GET 'http://localhost:8080/api/user/profile/6215bfcc9f304e65e8e337e5' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDcxODc2MDB9.OPWEuObvYUc4fnZ8eYYwAwmlCRM6Oqv1h-ZcADyOfqQ' \
+    --data-raw ''
+  ```
 ## Edit Profile
 
 Edit a user profile ```AUTH```
