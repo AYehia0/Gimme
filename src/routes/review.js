@@ -2,7 +2,7 @@ const router = require('express').Router()
 const auth = require('../middlewares/auth.js')
 
 // the controller
-const reviewCont = require('../controller/userRevController.js')
+const reviewCont = require('../controller/user.review')
 
 // write a review to a specific request maybe ? idk ?
 router.post('/customer-review/:id', auth.userAuth, reviewCont.customerGiveReview)

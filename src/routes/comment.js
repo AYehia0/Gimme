@@ -2,7 +2,7 @@ const router = require('express').Router()
 const auth = require('../middlewares/auth.js')
 
 // the controller
-const commentCont = require('../controller/userComController')
+const commentCont = require('../controller/user.comment')
 
 // write a review
 router.post('/comment/:id', auth.userAuth, commentCont.giveComment)

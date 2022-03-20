@@ -3,7 +3,7 @@ const auth = require('../middlewares/auth.js')
 const uploader = require('../middlewares/uploader')
 
 // the controller
-const userCont = require('../controller/userRegController.js')
+const userCont = require('../controller/user.all')
 
 // register a user
 router.post('/register', userCont.registerUser)

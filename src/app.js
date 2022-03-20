@@ -1,5 +1,5 @@
 // the db
-require('./models/db')
+require('./config/db')
 require('dotenv').config()
 
 // IMPORTS
@@ -15,6 +15,8 @@ const userRoutes = require('./routes/user')
 const reviewRoutes = require('./routes/review')
 const requestRoutes = require('./routes/request')
 const commentRoutes = require('./routes/comment')
+const roomRoutes = require('./routes/room')
+const messageRoutes = require('./routes/message')
 
 const app = express()
 
@@ -36,5 +38,7 @@ app.use('/api/user', userRoutes)
 app.use('/api/review', reviewRoutes)
 app.use('/api/request', requestRoutes)
 app.use('/api/comment', commentRoutes)
+app.use('/api/room', roomRoutes)
+app.use('/api/msg', messageRoutes)
 
 module.exports = app
