@@ -2,7 +2,7 @@ const router = require('express').Router()
 const auth = require('../middlewares/auth.js')
 
 // the controller
-const requestCont = require('../controller/requestController')
+const requestCont = require('../controller/user.request')
 
 // handle requests : create a request, choose a MOD, update a request
 
