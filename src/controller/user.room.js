@@ -47,7 +47,6 @@ const startChat = async (req, res) => {
         })
     }
 }
-
 module.exports =  {
     startChat,
 }
