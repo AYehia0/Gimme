@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrybt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const Room = require('../models/Room')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
@@ -70,8 +71,13 @@ const userSchema = new Schema({
   },
   // TODO: change to tokens as a list so that user can login from different locations :D
   token: {
-    type: String
+    type : String
   },
+  chats : [{
+      type : Schema.Types.ObjectId,
+      ref : "Room",
+      required : true
+  }]
 
 }, { timestamps : {createdAt : "createTime"} })
 
@@ -128,6 +134,26 @@ userSchema.set('toJSON', {
         return ret
     }
 })
+
+userSchema.statics.getChats = async function (userId) {
+
+  // getting the current user
+  try {
+    let chats = []
+
+    const user = await this.findOne({_id : userId})
+    chats = await Room.aggregate([
+        {$match: {_id: {$in : user.chats}}},
+        {$sort: {createdAt : -1}},
+    ])
+
+    return chats
+
+  }catch(e) {
+    console.log(e)
+  }
+}
+
 
 // creating the model 
 const User = mongoose.model('User', userSchema)
