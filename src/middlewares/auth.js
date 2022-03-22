@@ -48,8 +48,8 @@ const socketAuth = async (socket, next) => {
   try {
 
     // getting the token
-    // the token exists under the handshake.query.token
-    const token = socket.handshake.query.token
+    // the token should be passed to the headers as token : XXXX
+    const token = socket.handshake.headers.token
 
     if (!token)
       throw new Error("Token isn't set properly in the socket")
@@ -59,7 +59,7 @@ const socketAuth = async (socket, next) => {
 
     const userId = isValidToken._id
 
-    const user = await User.findOne({_id: userId, token: token})
+    const user = await User.findOne({_id: userId, token: token}).select("-password -phone")
 
     if (!user)
       throw new Error("User not found or Token has been expired")
@@ -71,13 +71,7 @@ const socketAuth = async (socket, next) => {
     next()
 
   } catch (e) {
-    const msg = e.message.includes('invalid signature') ? "Invalid Token LOL" : e.message
-    res.send({
-      status: false,
-      message: msg,
-      data: ""
-    })
-    
+    next(new Error(e.message))
   }
 }
 
