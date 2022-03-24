@@ -94,6 +94,8 @@ class MainSocket {
 
         // joing the chat 
         client.on("sub", (roomId) => {
+            // if the room not exist it will created and this socket will join it.
+            // if exist the socket just will join it.
             client.join(roomId)
         })
 
@@ -104,6 +106,9 @@ class MainSocket {
 
         // listening for messages
         client.on("new-msg", async ({roomId, msg }) => {
+
+            // saving to the database
+            await Message.addMessageToChat(roomId, msg, client.user._id)
             client.to(roomId).emit('msg', msg)
         })
     }
