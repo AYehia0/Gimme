@@ -71,6 +71,7 @@ const editRequest = async (req, res) => {
             throw new Error("Can't edit a closed/fulfilled request")
         }
 
+        // TODO : updating the request fails if the geoJSON 
         await Request.findByIdAndUpdate(reqId, req.body)
 
         // edit it 
