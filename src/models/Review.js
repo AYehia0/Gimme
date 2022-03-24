@@ -43,6 +43,20 @@ const reviewSchema = new Schema({
     }
 })
 
+// get review details
+reviewSchema.statics.getReviewDetails = async function(reviewIds) {
+    try {
+
+        const reviews = await this.aggregate([
+            {$match: {_id: {$in : reviewIds}}},
+        ])
+
+        return reviews
+        
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
 const Review = mongoose.model('Review', reviewSchema)
 
 module.exports = Review
