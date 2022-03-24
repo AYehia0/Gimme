@@ -4,7 +4,7 @@
   "description": "Gimme is a project aims to help people who can't afford renting a delivery company to ship their simple needs over the country, it's basically ```from the people to the people``` service.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/**/*test.js",
     "dev": "nodemon src/server.js"
   },
   "repository": {
@@ -32,6 +32,9 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "mocha": "^9.2.2",
+    "nodemon": "^2.0.15",
+    "should": "^13.2.3",
+    "supertest": "^6.2.2"
   }
 }
