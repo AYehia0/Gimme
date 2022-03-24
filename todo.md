@@ -42,6 +42,12 @@ Pre-installation:
       - [ ] Use jwt to authenticate sockets : [here](https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt)
       - [ ] Block a user
     - [ ] Google Maps API
+      - [X] Obtain the google api key : 
+        - PS : The frontend will store the api key, also the location things will be handled in the frontend, the backend will be only used to store the location
+        - Another solution is to hide the api key in the backend but it's not going to work here as the frontend SDK uses depends upon it.
+      - [X] Update the location of the request : new route ```PS : you can use the /request/edit``` 
+      - [ ] Track user's location : add to the user 
+      - [ ] Fix updating the request fails due to the geoJSON type not given, wtf !!
     - [ ] Notification System
   - [X] Rename the controllers
   - [X] Change the status code of all the responses
