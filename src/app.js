@@ -17,6 +17,7 @@ const requestRoutes = require('./routes/request')
 const commentRoutes = require('./routes/comment')
 const roomRoutes = require('./routes/room')
 const messageRoutes = require('./routes/message')
+const locationRoutes = require('./routes/location')
 
 const app = express()
 
@@ -40,5 +41,6 @@ app.use('/api/request', requestRoutes)
 app.use('/api/comment', commentRoutes)
 app.use('/api/room', roomRoutes)
 app.use('/api/msg', messageRoutes)
+app.use('/api/location', locationRoutes)
 
 module.exports = app
