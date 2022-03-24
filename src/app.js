@@ -19,6 +19,9 @@ const roomRoutes = require('./routes/room')
 const messageRoutes = require('./routes/message')
 const locationRoutes = require('./routes/location')
 
+// consts
+const mainURL = process.env.MAIN_API
+
 const app = express()
 
 // i think they solved this shit 
@@ -35,12 +38,12 @@ const uploadPath = path.join(__dirname, `../${process.env.UPLOAD_LOC}`)
 app.use("/photos", express.static(uploadPath))
 
 // using the routes
-app.use('/api/user', userRoutes)
-app.use('/api/review', reviewRoutes)
-app.use('/api/request', requestRoutes)
-app.use('/api/comment', commentRoutes)
-app.use('/api/room', roomRoutes)
-app.use('/api/msg', messageRoutes)
-app.use('/api/location', locationRoutes)
+app.use(`${mainURL}/${process.env.USER_API}`, userRoutes)
+app.use(`${mainURL}/${process.env.REVIEW_API}`, reviewRoutes)
+app.use(`${mainURL}/${process.env.REQUEST_API}`, requestRoutes)
+app.use(`${mainURL}/${process.env.COMMENT_API}`, commentRoutes)
+app.use(`${mainURL}/${process.env.ROOM_API}`, roomRoutes)
+app.use(`${mainURL}/${process.env.MESSAGE_API}`, messageRoutes)
+app.use(`${mainURL}/${process.env.LOCATION_API}`, locationRoutes)
 
 module.exports = app
