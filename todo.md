@@ -12,8 +12,15 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
+- [ ] API routes Documentations
+  - [X] User endpoints
+  - [X] Register endpoints
+  - [X] Comment endpoints
+  - [ ] Review endpoints : Shrink the ```customer/user review``` to only one route.
+  - [ ] Room/Message endpoints : Room routes aren't needed anymore !
 - [X] List the API routes
   - The database design
+    - [ ] change mongoose required to : ```required: [true, "XXXX is required"]```
     - [X] User model
       - [X] Edit a user profile : EZ !!!
         - [ ] Check if the email is verified by sending an email to that email asking for a code or something 
