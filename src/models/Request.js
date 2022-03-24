@@ -118,6 +118,35 @@ const requestSchema = new Schema({
 requestSchema.index({ fromLocation: "2dsphere" })
 requestSchema.index({ toLocation: "2dsphere" })
 
+// update both the to/from location or just one
+requestSchema.statics.updateRequestLocations = async function(reqId, {toLocation, fromLocation}) {
+
+    try {
+
+        if (!toLocation && !fromLocation)
+            throw new Error("Can't update Location : empty body")
+
+        const req = await this.findOne({id : reqId})
+
+        // check if you can safely update the request
+        if (req.state != "on")
+            // TODO : throw the status code with the Error
+            throw new Error("Can't edit a closed/fulfilled request")
+
+        if (toLocation?.length == 2)
+            req.toLocation.coordinates = toLocation.coordinates
+
+        if (fromLocation?.length == 2)
+            req.toLocation.coordinates = fromLocation.coordinates
+
+        // saving
+        await req.save()
+       
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
 const Request = mongoose.model('Request', requestSchema)
 
 module.exports = Request
