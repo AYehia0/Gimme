@@ -4,7 +4,7 @@ const auth = require('../middlewares/auth.js')
 // the controller
 const commentCont = require('../controller/user.comment')
 
-// write a review
+// write a comment
 router.post('/comment/:id', auth.userAuth, commentCont.giveComment)
 
 // edit a comment

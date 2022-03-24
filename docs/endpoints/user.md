@@ -8,7 +8,7 @@ Create a new user account.
 
 * **URL**
 
-  ```/user/register```
+  ```/register```
 
 * **Method:**
 
@@ -68,7 +68,7 @@ Password should meet the validator's [isStrongPassword()](https://www.npmjs.com/
 
 * **URL**
 
-  ```/user/login```
+  ```/login```
 
 * **Method:**
 
@@ -144,7 +144,7 @@ Get the profile of the logged in user. ```AUTH```
 
 * **URL**
 
-  ```/user/me```
+  ```/me```
 
 * **Method:**
 
@@ -200,7 +200,7 @@ Get other profiles. ```AUTH```
 
 * **URL**
 
-  ```/user/profile/:userId```
+  ```/profile/:userId```
 
 * **Method:**
 
@@ -249,7 +249,7 @@ Edit a user profile ```AUTH```
 
 * **URL**
 
-  ```/user/edit```
+  ```/edit```
 
 * **Method:**
 

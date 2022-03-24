@@ -6,7 +6,7 @@ Open a Request ```AUTH```
 
 * **URL**
 
-  ```/request/open```
+  ```/open```
 
 * **Method:**
 
@@ -97,7 +97,7 @@ Close a Request, by choosing the MOD ```AUTH```
 
 * **URL**
 
-  ```/request/close```
+  ```/close```
 
 * **Method:**
 
@@ -170,7 +170,7 @@ Edit a Request, same constraints as create but you can't edit if the state of th
 
 * **URL**
 
-  ```/request/edit/:id```
+  ```/edit/:id```
 
 * **Method:**
 
@@ -253,7 +253,7 @@ Delete a Request, same constraints as create but you can't delete if the state o
 
 * **URL**
 
-  ```/request/delete/:id```
+  ```/delete/:id```
 
 * **Method:**
 
