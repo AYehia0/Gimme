@@ -202,7 +202,7 @@ const getComments = async (req, res) => {
         const checkId = await Request.findById(id)
 
         if (!checkId)
-            throw new Error("Invalid ID : Make sure it's a RequestID and the comment exists !!!")
+            throw new Error("Invalid ID : Make sure it's a valid RequestID")
         
         // the comments exists in the participants list
         const commentIDs = checkId.participants.map(part => {
