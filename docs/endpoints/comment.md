@@ -142,8 +142,7 @@ Add a comment to a request.
   ```
 ## Delete a comment
 
-Delete a comment from a request (if  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDgyMjA1MzR9.1KuM7Un_83UOCmVgMwUKT9rDdyu7do58fVlSadxGSy8' \
-  --data-raw '' commented ofc !)
+Delete a comment from a request (if commented ofc !)
 
 * **URL**
 
