@@ -97,17 +97,26 @@ userSchema.pre('save', function(next) {
 // login token
 userSchema.statics.login = async (email, password) => {
 
+  let error 
   // finding the user
   const user = await User.findOne({email: email})
 
-  if (!user)
-    throw new Error("User not found!!!")
+  if (!user){
+
+    error = new Error("User not found, are you registered ?")
+    error.code = 404
+
+    throw error
+  }
 
   // password check
   const isValid = bcrybt.compareSync(password, user.password)
 
-  if (!isValid)
-    throw new Error("Incorrect Password!!!")
+  if (!isValid){
+    error = new Error("Incorrect Password/Email")
+    error.code = 403
+    throw error
+  }
 
   return user
 }

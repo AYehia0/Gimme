@@ -3,6 +3,9 @@ const User = require('../models/User')
 
 const registerUser = async (req, res) => {
 
+  let message
+  let statusCode = 200
+
   try {
     // getting the registeration info from the body of the request
     const userInfo = req.body
@@ -13,15 +16,18 @@ const registerUser = async (req, res) => {
     await newUser.save()
 
     // informing the user
-    res.status(200).send({
+    res.status(statusCode).send({
       status : true,
       message : "Success : User registered !!!",
       data : "" 
     })
     
   } catch (e) {
-    let message = e.message.includes('E11000') ? "Email/Phone Already Exists" : e.message
-    res.send({
+    if (e.message.includes("E11000")) {
+      message = "Email/Phone Already Exists"
+      statusCode = 409
+    }
+    res.status(statusCode).send({
       status: false,
       message: message,
       data: ""
@@ -34,13 +40,17 @@ const registerUser = async (req, res) => {
 // return the token to the user
 // TODO: login by phone number instead of email
 const loginUser = async (req, res) => {
+  let message
+  let statusCode = 200
   try {
     
     // get the username and the password
     const {email, password} = req.body
 
-    if (!email || !password)
+    if (!email || !password){
+      statusCode = 400
       throw new Error("Invalid Syntax : Email and Password are required!")
+    }
 
     // user in db ?
     const user = await User.login(email, password, 'user')
@@ -48,16 +58,21 @@ const loginUser = async (req, res) => {
     // get the token
     const token = await user.genToken()
 
-    res.status(200).send({
+    res.status(statusCode).send({
       status: true,
-      message: "Login: success",
+      message: "Success : User has been logged in !!!",
       data: token
     })
   } catch (e) {
-     res.send({
+    message = e.message
+
+    if (message === "User not found, are you registered ?" || message === "Incorrect Password/Email"){
+      statusCode = e.code
+    }
+    res.status(statusCode).send({
       status: false,
-      message: "Can't login!!!",
-      data: e.message
+      message: message,
+      data: ""
     })
   }
 }
