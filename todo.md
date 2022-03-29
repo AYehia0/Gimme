@@ -62,7 +62,7 @@ Pre-installation:
 
 ## Nice to have
 
-Make multiple queries in one shot
+1. Make multiple queries in one shot
 ```javascript
  //aggregate the message to get a nice informative res in one shot
  const msgAggregte = await Model.aggregate([
@@ -77,4 +77,10 @@ Make multiple queries in one shot
      }},
  ])
 
+```
+2. Split the workflow 
+
+    It's a good practice to use ```NODE_ENV=test``` depending on the env you're running the code in.
+```javascript 
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 ```
