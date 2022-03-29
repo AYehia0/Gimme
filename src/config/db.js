@@ -2,13 +2,32 @@
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
-const dbNAME = process.env.DB_NAME || "test"
-const dbURL = `mongodb://127.0.0.1:27017/${dbNAME}`
+const connect = async (dbNAME)  => {
 
-mongoose.connect(dbURL, {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true,
-    autoIndex: true,
-}).catch(e => {
-    console.log(e.message)
-})
+    //const dbNAME = process.env.DB_NAME || "test"
+    const dbURL = `mongodb://127.0.0.1:27017/`
+
+    mongoose.connect(dbURL, {
+        useNewUrlParser: true, 
+        useUnifiedTopology: true,
+        autoIndex: true,
+        dbName : dbNAME
+    }).catch(e => {
+        console.log(e.message)
+    })
+}
+
+const drop = async ()  => {
+    const collections = mongoose.connection.collections;
+
+    for (const key in collections) {
+        await collections[key].deleteMany();
+    }
+}
+
+
+
+module.exports = {
+    connect,
+    drop
+}

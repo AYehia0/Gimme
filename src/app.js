@@ -1,5 +1,8 @@
 // the db
-require('./config/db')
+const db = require('./config/db')
+
+// connection to the db
+db.connect(process.env.NODE_ENV)
 require('dotenv').config()
 
 // IMPORTS
