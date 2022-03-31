@@ -7,14 +7,15 @@ const connect = async (dbNAME)  => {
     //const dbNAME = process.env.DB_NAME || "test"
     const dbURL = `mongodb://127.0.0.1:27017/`
 
-    mongoose.connect(dbURL, {
-        useNewUrlParser: true, 
-        useUnifiedTopology: true,
-        autoIndex: true,
-        dbName : dbNAME
-    }).catch(e => {
-        console.log(e.message)
-    })
+    if (dbNAME !== "test")
+        mongoose.connect(dbURL, {
+            useNewUrlParser: true, 
+            useUnifiedTopology: true,
+            autoIndex: true,
+            dbName : dbNAME
+        }).catch(e => {
+            console.log(e.message)
+        })
 }
 
 const drop = async ()  => {

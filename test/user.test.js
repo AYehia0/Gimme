@@ -1,51 +1,22 @@
+const app = require("../src/app")
 const supertest = require("supertest")
-const API_DATA = require("./dummy")
-const mongoose = require("mongoose")
-const app = require('../src/app')
-const db = require('../src/config/db')
+const {API_DATA, CODES} = require("../src/config/test")
+const request = supertest(app)
 
-// force a quit
-const mainUrl = "api/user" 
-
-// creating a request with the running
-const PORT = process.env.PORT
-const request = supertest.agent(`http://localhost:${PORT}/`)
-
+// the url related to the user
 require('dotenv').config()
+const mainUrl = `${process.env.MAIN_API}/${process.env.USER_API}`
 
-const statusCodes = {
-    notFound : 404,
-    ok : 200,
-    bad : 400,
-    conflict: 409,
-    forbidden : 403
-}
 
-beforeAll(async () => {
-
-    // starting the server
-    app.listen(PORT)
-
-    // connecting to the database
-    db.connect(process.env.NODE_ENV)
-})
-afterAll(async () => {
-    //
-    await db.drop()
-    mongoose.connection.close()
-})
-
-// User route 
-// status code : true
 describe("User Service Unit Tests : ", () => {
     // configs returned from the res used to continue testing
-    normalUserToken = ""
+    let normalUserToken = ""
     
     // before testing create a temp db
     it("Register : should register a user to the database", async () => {
         const res = await request.post(`${mainUrl}/register`)
         .send(API_DATA.REGISTER.USER_NORMAL)
-        .expect(statusCodes.ok)
+        .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
         expect(res.body.message).toBe("Success : User registered !!!")
@@ -53,7 +24,7 @@ describe("User Service Unit Tests : ", () => {
     it("Register : should return user already exists", async () => {
         const res = await request.post(`${mainUrl}/register`)
         .send(API_DATA.REGISTER.USER_NORMAL)
-        .expect(statusCodes.conflict)
+        .expect(CODES.CONFLICT)
 
         expect(res.body.status).toBe(false)
         expect(res.body.message).toBe("Email/Phone Already Exists")
@@ -61,7 +32,7 @@ describe("User Service Unit Tests : ", () => {
     it("Login : should login a user", async () => {
         const res = await request.post(`${mainUrl}/login`)
         .send(API_DATA.LOGIN.USER_NORMAL)
-        .expect(statusCodes.ok)
+        .expect(CODES.OK)
 
         // capturing the token
         normalUserToken = res.body.data
@@ -73,35 +44,32 @@ describe("User Service Unit Tests : ", () => {
     it("Login : should return user not found", async () => {
         const res = await request.post(`${mainUrl}/login`)
         .send(API_DATA.LOGIN.USER_NORMAL_404)
-        .expect(statusCodes.notFound)
+        .expect(CODES.NOT_FOUND)
 
         expect(res.body.status).toBe(false)
     })
     it("Login : should return wrong password/email", async () => {
         const res = await request.post(`${mainUrl}/login`)
         .send(API_DATA.LOGIN.USER_NORMAL_WRONG_PASS)
-        .expect(statusCodes.forbidden)
+        .expect(CODES.FORBIDDEN)
 
         expect(res.body.status).toBe(false)
         expect(res.body.message).toBe("Incorrect Password/Email")
     })
     it("Profile : should return user's profile", async () => {
         const res = await request.get(`${mainUrl}/me`)
-        .set("Authorization", `Bearer ${token}`)
-        .expect(statusCodes.ok)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
         expect(res.body.data._id).toBeTruthy()
     })
     it("Profile : should return user's profile", async () => {
         const res = await request.get(`${mainUrl}/me`)
-        .set("Authorization", `Bearer ${token}`)
-        .expect(statusCodes.ok)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
         expect(res.body.data._id).toBeTruthy()
     })
-
-
-
 })

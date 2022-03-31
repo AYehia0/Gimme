@@ -7,6 +7,10 @@
     "test": "NODE_ENV=test jest --forceExit  --maxWorkers=1 \"test/.*\\.test\\.js\"",
     "dev": "NODE_ENV=dev nodemon src/server.js"
   },
+  "jest" : {
+    "verbose" : true,
+    "setupFilesAfterEnv": ["<rootDir>/src/config/global-test.js"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AYehia0/Gimme.git"
