@@ -1,4 +1,4 @@
 node_modules
 uploads
-test/github_notify.js
+src/utils/github_notify.js
 test/test_configs
