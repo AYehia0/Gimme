@@ -31,9 +31,10 @@ Pre-installation:
         - [X] In real life, the static files are stored in other server
       - [ ] Add the role to a list to make sure user can do both in the db.
    - [X] Authentication
-    - [X] Review
+    - [ ] Add refresh token : used to limit the session time, without asking the user to login again.
+   - [X] Review
       - [X] Add review : One like One + comment and rate
-    - [ ] Request 
+   - [ ] Request 
       - [X] Create a Comment model to sep the Request from having dups in the same request
       - [X] Link the comment owners to the participants in the Requst
       - [X] Close a request by allowing only the creator or the Request to choose one (and only one) from the participants 
@@ -45,9 +46,10 @@ Pre-installation:
   - [ ] Features 
     - [ ] Chatting
       - [X] Design models for it
-      - [ ] Revert the msg controller [commit](https://github.com/AYehia0/Gimme/commit/9fb02bd313fdbc1436f51ce147a07f3057eaba77) and keep the ```addMsgToChat``` function, no need to create a route for that.
-      - [ ] Use jwt to authenticate sockets : [here](https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt)
+      - [X] Revert the msg controller [commit](https://github.com/AYehia0/Gimme/commit/9fb02bd313fdbc1436f51ce147a07f3057eaba77) and keep the ```addMsgToChat``` function, no need to create a route for that.
+      - [X] Use jwt to authenticate sockets : [here](https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt)
       - [ ] Block a user
+      - [ ] Docs
     - [ ] Google Maps API
       - [X] Obtain the google api key : 
         - PS : The frontend will store the api key, also the location things will be handled in the frontend, the backend will be only used to store the location
@@ -56,6 +58,8 @@ Pre-installation:
       - [ ] Track user's location : add to the user 
       - [ ] Fix updating the request fails due to the geoJSON type not given, wtf !!
     - [ ] Notification System
+      - [X] [Firebase](https://firebase.google.com/docs/cloud-messaging/manage-tokens) best practices for FCM token management
+    - [ ] Payment using stripeJS
   - [X] Rename the controllers
   - [X] Change the status code of all the responses
 
