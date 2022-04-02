@@ -16,7 +16,7 @@ const giveComment = async (req, res) => {
         if (! reqValid)
             throw new Error("Request not found !!!")
 
-        // check if the mod isn't choosen yet : you can't comment then
+        // check if tiveCommenthe mod isn't choosen yet : you can't comment then
         // ????
         if (reqValid.mod)
             throw new Error("MOD is already choosen !!!")

@@ -38,7 +38,7 @@ const openRequest = async (req, res) => {
         res.status(statusCode).send({
             status: false,
             message: message,
-            data: ""
+            data: empReq
         })
     }
 }

@@ -40,24 +40,45 @@ const API_DATA = {
         }
     },
     REQUEST : {
-        "title" : "Electronic parts needed",
-        "body" : "I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance",
-        "fromLocation" : {
-                "type" : "Point",
-                "coordinates" : [23.402, 22.204]
+        NORMAL : {
+            "title" : "Electronic parts needed",
+            "body" : "I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance",
+            "fromLocation" : {
+                    "type" : "Point",
+                    "coordinates" : [23.402, 22.204]
+            },
+            "toLocation" : {
+                    "type" : "Point",
+                    "coordinates" : [-23.402, 28.204]
+            },
+            "priceRange" : {
+                "min" : 20,
+                "max" : 90
+            },
+            "timeRange" : {
+                "val" : 2
+            }
         },
-        "toLocation" : {
-                "type" : "Point",
-                "coordinates" : [-23.402, 28.204]
-        },
-        "priceRange" : {
-            "min" : 20,
-            "max" : 90
-        },
-        "timeRange" : {
-            "val" : 2
+        EDITED : {
+            "title" : "Electronic parts needed",
+            "body" : "I need Something real quick",
+            "fromLocation" : {
+                    "type" : "Point",
+                    "coordinates" : [23.402, 22.204]
+            },
+            "toLocation" : {
+                    "type" : "Point",
+                    "coordinates" : [-23.402, 28.204]
+            },
+            "priceRange" : {
+                "min" : 20,
+                "max" : 80
+            },
+            "timeRange" : {
+                "val" : 5
+            }
         }
-    },
+   },
     COMMENT : {
         "time" : {
             "unit" : "d",

@@ -213,8 +213,8 @@ Edit a Request, same constraints as create but you can't edit if the state of th
     ```json
     {
       "status": true,
-      "message": "Request has been created !!!",
-      "data": ""
+      "message": "Success : request has been edited !!!",
+      "data": ...
     }
 * **Error Response:**
 
