@@ -321,7 +321,7 @@
 				{
 					"name": "Edit",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
@@ -670,7 +670,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"toLocation\" : []\n}",
+							"raw": "{\n    \"toLocation\" : {\n        \"coordinates\" : []\n    },\n    \"fromLocation\" : {\n        \"coordinates\" : []\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
