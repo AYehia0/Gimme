@@ -1,5 +1,5 @@
 // adding the token to the db
-const updateUserToken = (req, res) => {
+const updateUserToken = async (req, res) => {
     let statusCode = 400
     try {
         const notificationToken = req.body.token
@@ -18,7 +18,7 @@ const updateUserToken = (req, res) => {
 
         res.status(200).send({
             status: true,
-            message: "Token has been updating",
+            message: "Token has been updating !!!",
             data: ""
         })
         
