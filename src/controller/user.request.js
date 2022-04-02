@@ -113,7 +113,8 @@ const deleteRequest = async (req, res) => {
             throw new Error("Can't perform this action !!!")
         }
 
-        if (requestToDel.state != "closed"){
+        // ToDo : fix me : if the request is deleted, what happens to the review ? .. requestToDel.state != "on" 
+        if (requestToDel.state === "fulfilled"){
             statusCode = 403
             throw new Error("Can't delete : must be closed")
         }
@@ -130,7 +131,7 @@ const deleteRequest = async (req, res) => {
 
         res.send({
             status: true,
-            message: "Success : request has been deleted !!!",
+            message: "Request has been deleted !!!",
             data: ""
         })
     } catch (e) {
