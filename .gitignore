@@ -2,3 +2,4 @@ node_modules
 uploads
 src/utils/github_notify.js
 test/test_configs
+src/config/fcm.json

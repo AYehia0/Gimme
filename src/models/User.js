@@ -73,6 +73,9 @@ const userSchema = new Schema({
   token: {
     type : String
   },
+  notification : {
+    type : String
+  },
   chats : [{
       type : Schema.Types.ObjectId,
       ref : "Room",
