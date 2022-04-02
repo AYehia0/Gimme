@@ -10,7 +10,7 @@ const requestCont = require('../controller/user.request')
 router.post('/open', auth.userAuth, requestCont.openRequest)
 
 // edit a request
-router.post('/edit/:id', auth.userAuth, requestCont.editRequest)
+router.put('/edit/:id', auth.userAuth, requestCont.editRequest)
 
 // delete a request
 router.delete('/delete/:id', auth.userAuth, requestCont.deleteRequest)
