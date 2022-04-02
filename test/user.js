@@ -1,6 +1,6 @@
 const app = require("../src/app")
 const supertest = require("supertest")
-const {API_DATA, CODES} = require("../src/config/test")
+const {API_DATA, CODES, getTokenTest} = require("../src/config/test")
 const request = supertest(app)
 
 // the url related to the user
@@ -8,10 +8,10 @@ require('dotenv').config()
 const mainUrl = `${process.env.MAIN_API}/${process.env.USER_API}`
 
 
-describe("User Service Unit Tests : ", () => {
+const userTests = () => {
     // configs returned from the res used to continue testing
     let normalUserToken = ""
-    
+
     // before testing create a temp db
     it("Register : should register a user to the database", async () => {
         const res = await request.post(`${mainUrl}/register`)
@@ -35,6 +35,7 @@ describe("User Service Unit Tests : ", () => {
         .expect(CODES.OK)
 
         // capturing the token
+        // save it for all the requests
         normalUserToken = res.body.data
 
         expect(res.body.status).toBe(true)
@@ -64,12 +65,5 @@ describe("User Service Unit Tests : ", () => {
         expect(res.body.status).toBe(true)
         expect(res.body.data._id).toBeTruthy()
     })
-    it("Profile : should return user's profile", async () => {
-        const res = await request.get(`${mainUrl}/me`)
-        .set("Authorization", `Bearer ${normalUserToken}`)
-        .expect(CODES.OK)
-
-        expect(res.body.status).toBe(true)
-        expect(res.body.data._id).toBeTruthy()
-    })
-})
+}
+module.exports = userTests

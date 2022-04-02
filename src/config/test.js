@@ -1,3 +1,6 @@
+const mongoose = require('mongoose')
+const User = require("../models/User")
+
 const CODES = {
     NOT_FOUND : 404,
     OK : 200,
@@ -60,24 +63,38 @@ const API_DATA = {
             }
         },
         EDITED : {
-            "title" : "Electronic parts needed",
-            "body" : "I need Something real quick",
-            "fromLocation" : {
-                    "type" : "Point",
-                    "coordinates" : [23.402, 22.204]
+            NORMAL : {
+                "title" : "Electronic parts needed",
+                "body" : "I need Something real quick",
+                "fromLocation" : {
+                        "type" : "Point",
+                        "coordinates" : [23.402, 22.204]
+                },
+                "toLocation" : {
+                        "type" : "Point",
+                        "coordinates" : [-23.402, 28.204]
+                },
+                "priceRange" : {
+                    "min" : 20,
+                    "max" : 80
+                },
+                "timeRange" : {
+                    "val" : 5
+                }
             },
-            "toLocation" : {
-                    "type" : "Point",
-                    "coordinates" : [-23.402, 28.204]
-            },
-            "priceRange" : {
-                "min" : 20,
-                "max" : 80
-            },
-            "timeRange" : {
-                "val" : 5
+            WRONG : {
+                "title" : "Electronic parts needed",
+                "body" : "I need Something real quick",
+                "fromLocation" : {
+                        "type" : "Point",
+                        "coordinates" : [23.402, 22.204, "something"]
+                },
+                "toLocation" : {
+                        "type" : "Point",
+                        "coordinates" : [-23.402, 28.204]
+                }
             }
-        }
+       }
    },
     COMMENT : {
         "time" : {
@@ -100,8 +117,20 @@ const API_DATA = {
 
 }
 
+// get user's token by email
+const getTokenTest = async (email) => {
+    try {
+        const user = await User.findOne({email: email})
+
+        return user.token
+        
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
 
 module.exports = {
     API_DATA,
-    CODES
+    CODES,
+    getTokenTest
 }
