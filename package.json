@@ -7,9 +7,11 @@
     "test": "NODE_ENV=test jest --forceExit  --maxWorkers=1 \"test/.*\\.test\\.js\"",
     "dev": "NODE_ENV=dev nodemon src/server.js"
   },
-  "jest" : {
-    "verbose" : true,
-    "setupFilesAfterEnv": ["<rootDir>/src/config/global-test.js"]
+  "jest": {
+    "verbose": true,
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/config/global-test.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
+    "firebase-admin": "^10.0.2",
     "helmet": "^5.0.2",
     "jest": "^27.5.1",
     "jsonwebtoken": "^8.5.1",
@@ -39,7 +42,6 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^2.2.1",
-    "mocha": "^9.2.2",
     "nodemon": "^2.0.15",
     "should": "^13.2.3",
     "supertest": "^6.2.2"
