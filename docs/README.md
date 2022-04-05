@@ -11,6 +11,13 @@
     - [HTTP requests](#http-requests)
     - [HTTP responses](#http-responses)
     - [HTTP Response Codes](#http-response-codes)
+- [Socket Server](#socket-server)
+    - [Authentication](#authentication)
+    - [Events](#events)
+- [Notification](#notification)
+    - [Keys](#keys)
+    - [Sending](#sending)
+
 
 # Getting Started
 ## Overview
@@ -80,3 +87,40 @@ Each response will be returned with one of the following HTTP status codes:
 * `404` `Not found` An attempt was made to access a resource that does not exist in the API
 * `405` `Method not allowed` The resource being accessed doesn't support the method specified (GET, POST, etc.).
 * `500` `Server Error` An error on the server occurred
+# Socket Server
+The socket server (for chat), runs on the same express server which holds the backend routes, probably it's a good idea to separate, just for the sake of simplicity.
+```javascript
+const app = require("./app.js")
+// ...
+const server = app.listen(PORT, () => {
+    console.log(`Server is running on : http://localhost:${PORT}`)
+})
+
+global.io = require('socket.io')(server)
+```
+## Authentication
+The authentication is done using socket.io [middlewares](https://socket.io/docs/v4/middlewares/#sending-credentials).
+
+To authenticate users, JWT token should passed in the headers, since sockets uses HTTP.
+
+Head to the middlewares for more info.
+## [Events](https://socket.io/docs/v4/emitting-events/)
+All [events](../src/utils/socket.js) are handled by the backend, but the frontend should emit to these specific routes:
+- ```disconnect``` handles disconnection. 
+- ```new-chat``` handles chat initation. 
+- ```sub``` joins user to their chat-room. 
+- ```leave``` leaves a user.
+- ```new-msg``` sends a message and saves to db.
+# Notification
+Sending a notification is handled by google's [FCM](https://firebase.google.com/docs/cloud-messaging) (Firebase Cloud Messaging).
+
+Since the notification is viewed at the frontend, you should use google's SDK for your [platform](https://firebase.google.com/docs/cloud-messaging/android/client).
+
+## Keys
+Before using FCM:
+- Obtain the key from your google console.
+- Add the key to ```src/config/fcm.json```
+## Sending
+To receive a notification from the backend, users should be subscribed to the notification service (after they are logged in) by sending their token to the backend ([here](./endpoints/notification.md))
+
+User's token is saved with the user's payload under ```notification_token```
