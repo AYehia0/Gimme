@@ -227,8 +227,8 @@ const searchRequests = async (req, res) => {
     try {
 
         // get the locations
-        const to = req.params.to
-        const from = req.params.from
+        const to = req.query.to
+        const from = req.query.from
 
         const requests = await Request.getRequestLocations(to, from)
 
@@ -239,6 +239,10 @@ const searchRequests = async (req, res) => {
         })
     } catch (e) {
         let message = e.message
+        if (message.includes("Cast to ObjectId failed")){
+            statusCode = 400
+            message = "Invalid ID"
+        }
         res.status(statusCode).send({
             status: false,
             message: message,
@@ -253,13 +257,14 @@ const getRequests = async (req, res) => {
     let statusCode = 200
     try {
 
-        let requests
-        const requestId = req.params.id
+        let requests = []
+        const requestId = req.query.id
         const userId = req.user._id
 
         // check if the user is authenticated
-        if (requestId.equals(userId))
+        if (userId.equals(requestId))
             requests = await Request.find({userId})
+
         // get all the request
         else
             requests = await Request.findById(requestId)
@@ -267,10 +272,15 @@ const getRequests = async (req, res) => {
         res.status(statusCode).send({
             status: true,
             msessage: "",
-            data: requests
+            data: requests || []
         })
     } catch (e) {
         let message = e.message
+
+        if (message.includes("Cast to ObjectId failed")){
+            statusCode = 400
+            message = "Invalid ID"
+        }
         res.status(statusCode).send({
             status: false,
             message: message,

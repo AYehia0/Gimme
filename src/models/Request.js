@@ -249,7 +249,11 @@ requestSchema.statics.updateRequestLocations = async function(reqId, {toLocation
 // update both the to/from location or just one
 requestSchema.statics.getRequestLocations = async function(toAddress, fromAddress) {
     try {
-        // 
+
+        // check if it's undefined -> replace with empty string 
+        toAddress = toAddress || ""
+        fromAddress = fromAddress || ""
+
         const requests = await Request.find({
             toAddress : { "$regex": toAddress, "$options": "i" },
             fromAddress : { "$regex": fromAddress, "$options": "i" },
