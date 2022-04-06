@@ -43,6 +43,12 @@ const requestSchema = new Schema({
         },
         coordinates : [Number],
     },
+    toAddress : {
+        type: String,
+    },
+    fromAddress : {
+        type: String,
+    },
     priceRange : {
         min : {
             type : Number,
@@ -238,6 +244,24 @@ requestSchema.statics.updateRequestLocations = async function(reqId, {toLocation
         throw new Error(e.message)
     }
 }
+
+// get all requests by locations
+// update both the to/from location or just one
+requestSchema.statics.getRequestLocations = async function(toAddress, fromAddress) {
+    try {
+        // 
+        const requests = await Request.find({
+            toAddress : { "$regex": toAddress, "$options": "i" },
+            fromAddress : { "$regex": fromAddress, "$options": "i" },
+        })
+
+        return requests
+        
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
 
 const Request = mongoose.model('Request', requestSchema)
 

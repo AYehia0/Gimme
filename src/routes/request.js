@@ -4,7 +4,12 @@ const auth = require('../middlewares/auth.js')
 // the controller
 const requestCont = require('../controller/user.request')
 
-// handle requests : create a request, choose a MOD, update a request
+// search requests
+router.get('/search-requests', auth.userAuth, requestCont.searchRequests)
+
+// get all the requests users posted OR get a certain request by id
+// only the auth user can call this
+router.get('/requests', auth.userAuth, requestCont.getRequests)
 
 // open a request
 router.post('/open', auth.userAuth, requestCont.openRequest)

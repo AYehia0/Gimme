@@ -218,11 +218,73 @@ const closeRequest = async (req, res) => {
             data: ""
         })
     }
+
 }
+
+// get request by location (to/from)
+const searchRequests = async (req, res) => {
+    let statusCode = 400
+    try {
+
+        // get the locations
+        const to = req.params.to
+        const from = req.params.from
+
+        const requests = await Request.getRequestLocations(to, from)
+
+        res.status(statusCode).send({
+            status: true,
+            message: "",
+            data: requests
+        })
+    } catch (e) {
+        let message = e.message
+        res.status(statusCode).send({
+            status: false,
+            message: message,
+            data: ""
+        })
+    }
+}
+
+// /requests?id=
+// my all requests or certain request
+const getRequests = async (req, res) => {
+    let statusCode = 200
+    try {
+
+        let requests
+        const requestId = req.params.id
+        const userId = req.user._id
+
+        // check if the user is authenticated
+        if (requestId.equals(userId))
+            requests = await Request.find({userId})
+        // get all the request
+        else
+            requests = await Request.findById(requestId)
+
+        res.status(statusCode).send({
+            status: true,
+            msessage: "",
+            data: requests
+        })
+    } catch (e) {
+        let message = e.message
+        res.status(statusCode).send({
+            status: false,
+            message: message,
+            data: ""
+        })
+    }
+}
+
 
 module.exports = {
    openRequest,
    closeRequest,
    editRequest,
-   deleteRequest 
+   deleteRequest,
+   searchRequests,
+   getRequests
 }
