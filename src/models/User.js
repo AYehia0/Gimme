@@ -73,6 +73,9 @@ const userSchema = new Schema({
   token: {
     type : String
   },
+  customer_token : {
+    type : String,
+  },
   notification_token : {
     type : String,
     default : ""

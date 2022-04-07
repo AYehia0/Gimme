@@ -22,6 +22,7 @@ const roomRoutes = require('./routes/room')
 const messageRoutes = require('./routes/message')
 const locationRoutes = require('./routes/location')
 const notificationRoutes = require('./routes/notification')
+const paymentRoutes = require('./routes/payment')
 
 // consts
 const mainURL = process.env.MAIN_API
@@ -50,5 +51,6 @@ app.use(`${mainURL}/${process.env.ROOM_API}`, roomRoutes)
 app.use(`${mainURL}/${process.env.MESSAGE_API}`, messageRoutes)
 app.use(`${mainURL}/${process.env.LOCATION_API}`, locationRoutes)
 app.use(`${mainURL}/${process.env.NOTIFICATION_API}`, notificationRoutes)
+app.use(`${mainURL}/${process.env.PAYMENT_API}`, paymentRoutes)
 
 module.exports = app
