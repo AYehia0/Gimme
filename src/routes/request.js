@@ -1,5 +1,6 @@
 const router = require('express').Router()
-const auth = require('../middlewares/auth.js')
+const auth = require('../middlewares/auth')
+const authComment = require('../middlewares/comment')
 
 // the controller
 const requestCont = require('../controller/user.request')
@@ -25,8 +26,7 @@ router.delete('/delete/:id', auth.userAuth, requestCont.deleteRequest)
 
 // close a request
 // a request is closed when a MOD is choosen
-router.get('/close', auth.userAuth, requestCont.closeRequest)
-
+router.get('/close', auth.userAuth, authComment.isCommented,  requestCont.closeRequest)
 
 // exporting
 module.exports = router
