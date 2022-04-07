@@ -156,9 +156,10 @@ const closeRequest = async (req, res) => {
         const reqId = req.query.reqId
 
         // the id of the choosen one
-        const userChoosen = req.query.modId
+        const choosenUserId = req.query.modId
 
         // check if the request is valid : auth + didn't expire
+        // fix : reduce this db call by removing this, since this check is in the middleware : comment.js
         const checkRequest = await Request.findById(reqId)
 
         if (!checkRequest.userId.equals(user._id)){
@@ -166,38 +167,26 @@ const closeRequest = async (req, res) => {
             throw new Error("Can't perform this action !!!")
         }
 
-        if (!checkRequest){
-            statusCode = 404
-            throw new Error("Request doesn't exist, are you sure it exists ?")
-        }
-        
         if (checkRequest.state !== "on"){
             statusCode = 409
             throw new Error("It's already closed, fulfilled or deleted !!!")
         }
-        
-        // user exists : LOL
-        const choosenMod = await User.findById(userChoosen) 
-        if (! choosenMod)
-            throw new Error("User not found")
-        
-        // check if the mod is one of the comments
-        const userChoosenInd = checkRequest.participants.findIndex((comment) => {
-            return comment.userId.equals(userChoosen)
+        // check if the credit card is valid and contains the amount of money
+        // ...
+
+        // getting the commentId
+        const comment = checkRequest.participants.find(comment => {
+            return comment.userId.equals(choosenUserId)
         })
-        if (userChoosenInd == -1)
-            throw new Error("User not found in comments")
 
         // make it MOD
-        checkRequest.mod = userChoosen
+        checkRequest.mod = choosenUserId 
 
         // change the state of the request to fulfilled
         checkRequest.state = "fulfilled" 
 
         // change the comment of the user as MOD : true
-        await Comment.findByIdAndUpdate(checkRequest.participants[userChoosenInd].commentId, {
-            mod : true
-        })
+        await Comment.findByIdAndUpdate(comment.commentId, {mod : true})
 
         await checkRequest.save()
 
@@ -227,6 +216,8 @@ const closeRequest = async (req, res) => {
         })
     }
 }
+
+// ToDo : release the payment
 
 // get request by location (to/from)
 const searchRequests = async (req, res) => {

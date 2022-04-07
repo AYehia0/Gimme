@@ -3,27 +3,33 @@
 const Request = require('../models/Request')
 
 const isCommented = async (req, res, next) => {
+  let statusCode = 500
   try {
 
     // check the requestID
+    const modId = req.query.modId
+
+    // the params may not be needed
     const reqId = req.query.reqId || req.params.id
     const request = await Request.findById(reqId)
 
-    if (! request)
+    if (! request){
+      statusCode = 404
       throw new Error("Request not found")
+    }
     
     const userCommentedInd = request.participants.findIndex((comment) => {
-        return comment.userId.equals(userId)
+        return comment.userId.equals(modId)
     })
 
     if (userCommentedInd == -1) 
-        throw new Error("Comment doesn't exist")
+        throw new Error("User not found in comments")
       
     next()
 
   } catch (e) {
     let msg = e.message
-    res.send({
+    res.status(statusCode).send({
       status: false,
       message: msg,
       data: ""
