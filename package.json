@@ -38,6 +38,7 @@
     "multer": "^1.4.4",
     "node-fetch": "^2.6.7",
     "socket.io": "^4.4.1",
+    "stripe": "^8.215.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
