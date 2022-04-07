@@ -485,3 +485,61 @@ Get requests by Request-ID or get user requests (by userID) ```AUTH```
   --data-raw ''
   ```
 
+## Get Subscribed Request
+Get requests user accepted to deliver (user is the MOD) ```AUTH```
+
+* **URL**
+
+  ```/subscribed```
+
+* **Method:**
+
+    `GET`
+  
+*  **URL Params**
+
+    None
+
+* **Data Params**
+
+  None
+
+**Success Response:**
+
+  * **Code:** 200 <br />
+
+    **Content:**     
+
+    ```json
+    {
+      "status": true,
+      "msessage": "",
+      "data": [
+          {
+              "_id": "624d8d01468546f58e2cac79",
+              "title": "Electronic parts needed",
+              "toAddress": "Cairo Naser City Zahraa ST 4030",
+              "fromAddress": "Shiben Al Kom betebs",
+              "state": "fulfilled",
+              "reviewed": false,
+              "mod": "6249ba0d7572a1812a68f6f3",
+              "comment": {
+                  "price": 30,
+                  "time": {
+                      "unit": "d",
+                      "val": 4
+                  }
+              }
+          }
+      ]
+    }
+* **Error Response:**
+    None
+
+* **Sample Call:**
+
+  ```bash
+  curl --location --request GET 'http://localhost:8080/api/request/subscribed' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQ1MmU4NGJiYjEzZWE4YzNhNDFmYzkiLCJpYXQiOjE2NDkyNDg1Mzl9.rJNrqM64HORD4zPyuWetcg9LV9xuwLlzj0yP67vTHIM' \
+  --data-raw ''
+  ```
