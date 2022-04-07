@@ -266,6 +266,50 @@ requestSchema.statics.getRequestLocations = async function(toAddress, fromAddres
     }
 }
 
+// get the requests i have to do
+requestSchema.statics.getMyRequests = async function(userId) {
+    try {
+
+        // find the user in the comments
+        const reqs = await this.aggregate([
+            {
+                $match : {
+                    mod: userId,
+                    state: { $in : ["fulfilled", "closed"] }
+                }
+            },
+            {
+                $lookup : {
+                    from: "comments",
+                    localField: "mod", 
+                    foreignField: "userId",
+                    as : "comment"
+                }
+            },
+            {
+                $project: {
+                    mod: true, 
+                    title: true,
+                    toAddress: true,
+                    fromAddress: true,
+                    reviewed: true,
+                    state: true,
+                    "comment.price": true,
+                    "comment.time": true
+                }
+            },
+            {
+                $unwind: "$comment"
+            }
+        ])
+
+        return reqs
+        
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
 
 const Request = mongoose.model('Request', requestSchema)
 
