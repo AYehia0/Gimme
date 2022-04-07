@@ -59,7 +59,18 @@ Pre-installation:
       - [ ] Fix updating the request fails due to the geoJSON type not given, wtf !!
     - [ ] Notification System
       - [X] [Firebase](https://firebase.google.com/docs/cloud-messaging/manage-tokens) best practices for FCM token management
+      - [X] Send notification when user accepts the request
+        - [ ] Test it.
+      - [ ] Send notification when user is close to the location
     - [ ] Payment using stripeJS
+      - [ ] Authenticate StripeJS
+      - [ ] Validate user's credit card before opening/creating a request, without charging.
+      - [ ] Save user's credit card to stripe.
+      - [ ] Before choosing a mod, make sure that card contains the money !!
+      - [ ] Hold the payment amount.
+      - [ ] Release the money when MOD scans the QR code.
+      - [ ] Add money to user's account
+      - [ ] User can take his money after it reaches X EGP
   - [X] Rename the controllers
   - [X] Change the status code of all the responses
 
