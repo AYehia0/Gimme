@@ -1,6 +1,7 @@
 const Request = require('../models/Request')
 const Comment = require('../models/Comment')
 const User = require('../models/User')
+const notify = require('../utils/notification')
 
 // create a new request
 const openRequest = async (req, res) => {
@@ -176,8 +177,8 @@ const closeRequest = async (req, res) => {
         }
         
         // user exists : LOL
-        const modInDB = await User.findById(userChoosen) 
-        if (! modInDB)
+        const choosenMod = await User.findById(userChoosen) 
+        if (! choosenMod)
             throw new Error("User not found")
         
         // check if the mod is one of the comments
@@ -200,13 +201,20 @@ const closeRequest = async (req, res) => {
 
         await checkRequest.save()
 
+        // TODO : send to the other part to verify
+        // ToDo : send notification to the other part
+        // didn't test, probably gonna fail
+        const notification_msg = {
+            "msg" : "Congratuation you're the choosen one :D"
+        }
+        if (choosenMod.notification_token)
+            notify.pushNotificationToOne(choosenMod.notification_token, notification_msg)
+
         res.send({
             status: true,
             message: "MOD has been choosen",
             data: checkRequest
         })
-    
-        // TODO : send to the other part to verify
         
     } catch (e) {
         let message = e.message
@@ -218,7 +226,6 @@ const closeRequest = async (req, res) => {
             data: ""
         })
     }
-
 }
 
 // get request by location (to/from)
@@ -289,12 +296,43 @@ const getRequests = async (req, res) => {
     }
 }
 
+// get my jobs
+const getSubscibedRequests = async (req, res) => {
+    let statusCode = 200
+    try {
+
+        const userId = req.user._id
+
+        const requests = await Request.getMyRequests(userId)
+
+        res.status(statusCode).send({
+            status: true,
+            msessage: "",
+            data: requests || []
+        })
+    } catch (e) {
+        let message = e.message
+
+        if (message.includes("Cast to ObjectId failed")){
+            statusCode = 400
+            message = "Invalid ID"
+        }
+        res.status(statusCode).send({
+            status: false,
+            message: message,
+            data: ""
+        })
+    }
+}
+
+
 
 module.exports = {
-   openRequest,
-   closeRequest,
-   editRequest,
-   deleteRequest,
-   searchRequests,
-   getRequests
+    openRequest,
+    closeRequest,
+    editRequest,
+    deleteRequest,
+    searchRequests,
+    getRequests,
+    getSubscibedRequests
 }
