@@ -498,6 +498,45 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Subscribed Requests",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQ5YmEwZDc1NzJhMTgxMmE2OGY2ZjMiLCJpYXQiOjE2NDkzMDIzMjV9.-V3sBALrqCU0ok-HHCGtgmpwdgjFGpzW2TpzJM6eb3E",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/request/subscribed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"request",
+								"subscribed"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

@@ -324,7 +324,7 @@ Get requests by locations. ```AUTH```
 
 * **URL**
 
-  ```/search-requests```
+  ```/search```
 
 * **Method:**
 
