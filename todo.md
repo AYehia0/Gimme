@@ -63,14 +63,13 @@ Pre-installation:
         - [ ] Test it.
       - [ ] Send notification when user is close to the location
     - [ ] Payment using stripeJS
-      - [ ] Authenticate StripeJS
-      - [ ] Validate user's credit card before opening/creating a request, without charging.
-      - [ ] Save user's credit card to stripe.
-      - [ ] Before choosing a mod, make sure that card contains the money !!
-      - [ ] Hold the payment amount.
+      - [X] Authenticate StripeJS
+      - [ ] Before choosing a mod, make sure that card contains (TRY) the money by holding the money
+        - Process might fail if : authentication is failed, or card doesn't contain the exact amount
       - [ ] Release the money when MOD scans the QR code.
       - [ ] Add money to user's account
       - [ ] User can take his money after it reaches X EGP
+
   - [X] Rename the controllers
   - [X] Change the status code of all the responses
 
