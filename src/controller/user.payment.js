@@ -71,7 +71,7 @@ const createStripeSession = async (req, res) => {
         })
     } catch (e) {
         let message = e.message
-        res.status(400).send({
+        res.status(statusCode).send({
             status: false,
             message: message,
             data: ""
