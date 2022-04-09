@@ -17,6 +17,11 @@
 - [Notification](#notification)
     - [Keys](#keys)
     - [Sending](#sending)
+- [Payment](#payment)
+    - [Getting Started With Stripe](#getting-started-with-stripe)
+        - [Stripe Configurations](#stripe-configurations)
+    - [Stripe Testing](#stripe-testing)
+    - [How It Works ](#how-it-works)
 
 
 # Getting Started
@@ -124,3 +129,27 @@ Before using FCM:
 To receive a notification from the backend, users should be subscribed to the notification service (after they are logged in) by sending their token to the backend ([here](./endpoints/notification.md))
 
 User's token is saved with the user's payload under ```notification_token```
+# Payment 
+All payments are handled by [stripe](https://stripe.com/), as it's easy to use, powerful and most importantly secure.
+
+## Getting Started With Stripe
+Before using stripe, you have to obtain both **publishable** and **secret** keys as specified [here](https://stripe.com/docs/keys#obtain-api-keys), and the endpoint's secret (**webhook secret**) key can be found by running `stripe listen`
+
+### Stripe Configurations
+Create ```src/config/stripe_key.json``` as follows :
+```json
+{
+    "api_public"  : "",
+    "api_secret"  : "",
+    "webhook_sec" : ""
+}
+```
+
+## Stripe Testing
+To make everything works you have to test you're webhooks, following the [docs](https://stripe.com/docs/webhooks/test) is the way to go, but before that you have to install [Stripe CLI](https://stripe.com/docs/stripe-cli).
+
+## How It Works 
+- Stripe creates a payment session and assigns a user as a ```customer```, when the user choose the MOD : 
+    - Note: ```/request/close``` isn't needed anymore
+- An expireable URL is created and is passed to the frontend, this is done after the user calls ```/payment/create-stripe-session```
+-  When the user authenticate the card, stripe sends a secure notification through our endpoint at ```/payment/webhook``` which closes the request.
