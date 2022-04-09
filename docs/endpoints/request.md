@@ -404,7 +404,7 @@ Get requests by locations. ```AUTH```
 * **Sample Call:**
 
   ```bash
-  curl --location --request GET 'http://localhost:8080/api/request/search-requests?to=naser city' \
+  curl --location --request GET 'http://localhost:8080/api/request/search?to=naser city' \
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQ1MmU4NGJiYjEzZWE4YzNhNDFmYzkiLCJpYXQiOjE2NDkyNDg1Mzl9.rJNrqM64HORD4zPyuWetcg9LV9xuwLlzj0yP67vTHIM' \
   --data-raw ''
   ```

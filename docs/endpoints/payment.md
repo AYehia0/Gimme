@@ -16,7 +16,7 @@ Get the publishable key from the backend, which is used in the [frontend](https:
   
 *  **URL Params**
 
-  None
+    None
 
 * **Data Params**
 
