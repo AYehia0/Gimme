@@ -265,7 +265,7 @@ const getRequests = async (req, res) => {
 
         // get all the request
         else
-            requests = await Request.findById(requestId)
+            requests = [await Request.findById(requestId)]
 
         res.status(statusCode).send({
             status: true,
