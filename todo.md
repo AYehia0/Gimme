@@ -39,10 +39,11 @@ Pre-installation:
       - [X] Link the comment owners to the participants in the Requst
       - [X] Close a request by allowing only the creator or the Request to choose one (and only one) from the participants 
       - [X] Create a middleware for checking the existance of user in the comments 
-        - [ ] Test the middleware
-        - [ ] Apply the middleware
-      - [ ] Instead of checking for Requests author : create a middleware for it
-      - [ ] Use the mongoose aggregate method to perform multiple db queries as one
+        - [X] Test the middleware
+        - [X] Apply the middleware
+      - [X] Instead of checking for Requests author : create a middleware for it
+      - [X] Use the mongoose aggregate method to perform multiple db queries as one
+      - [ ] Create pagination for request rearching route : ```/request/search```
   - [ ] Features 
     - [ ] Chatting
       - [X] Design models for it
@@ -64,7 +65,7 @@ Pre-installation:
       - [ ] Send notification when user is close to the location
     - [ ] Payment using stripeJS
       - [X] Authenticate StripeJS
-      - [ ] Before choosing a mod, make sure that card contains (TRY) the money by holding the money
+      - [X] Before choosing a mod, make sure that card contains (TRY) the money by holding the money
         - Process might fail if : authentication is failed, or card doesn't contain the exact amount
       - [ ] Release the money when MOD scans the QR code.
       - [ ] Add money to user's account
