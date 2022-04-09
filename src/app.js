@@ -29,6 +29,19 @@ const mainURL = process.env.MAIN_API
 
 const app = express()
 
+// getting the rawBody for stripe signature
+// stripe security : to avoid 3rd party usage
+app.use(
+  bodyParser.json({
+    verify: (req, res, buf) => {
+      const url = req.originalUrl;
+      if (url.startsWith(`${mainURL}/${process.env.PAYMENT_API}/webhook`)) {
+        req.rawBody = buf.toString()
+      }
+    }
+  })
+)
+
 // i think they solved this shit 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
