@@ -34,6 +34,7 @@ const commentSchema = new Schema({
             required : true
         }
     },
+    // not needed anymore
     mod : {
         type : Boolean,
         default : false
