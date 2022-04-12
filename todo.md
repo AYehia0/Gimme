@@ -12,12 +12,17 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
+- [ ] Fixes :
+  - [ ] Fix all the un-nesseray try-catches
 - [ ] API routes Documentations
   - [X] User endpoints
   - [X] Register endpoints
   - [X] Comment endpoints
   - [ ] Review endpoints : Shrink the ```customer/user review``` to only one route.
   - [ ] Room/Message endpoints : Room routes aren't needed anymore !
+- [ ] Security
+  - [ ] Add request logger
+  - [ ] Prevent spamming, hehe
 - [X] List the API routes
   - The database design
     - [ ] change mongoose required to : ```required: [true, "XXXX is required"]```
@@ -44,6 +49,7 @@ Pre-installation:
       - [X] Instead of checking for Requests author : create a middleware for it
       - [X] Use the mongoose aggregate method to perform multiple db queries as one
       - [ ] Create pagination for request rearching route : ```/request/search```
+        - [ ] Return only opened requests
   - [ ] Features 
     - [ ] Chatting
       - [X] Design models for it
@@ -59,17 +65,23 @@ Pre-installation:
       - [ ] Track user's location : add to the user 
       - [ ] Fix updating the request fails due to the geoJSON type not given, wtf !!
     - [ ] Notification System
+      - [ ] When you send a notification, you should also store the notification for that user in the database. Whenever the user opens the app, you should request for the notification table for each user, and mark the one that he/she sees as seen.
       - [X] [Firebase](https://firebase.google.com/docs/cloud-messaging/manage-tokens) best practices for FCM token management
-      - [X] Send notification when user accepts the request
+      - [X] Send notification when:
+        - [ ] user accepts the request
+        - [ ] user comments on your request
+        - [ ] user sends you a message
+        - [ ] user releases the money
         - [ ] Test it.
-      - [ ] Send notification when user is close to the location
     - [ ] Payment using stripeJS
       - [X] Authenticate StripeJS
       - [X] Before choosing a mod, make sure that card contains (TRY) the money by holding the money
         - Process might fail if : authentication is failed, or card doesn't contain the exact amount
-      - [ ] Release the money when MOD scans the QR code.
+      - [ ] Release the money when MOD scans the QR code, what if the mod forgot his phone or it's dead by the time he delivered : so the user can let it gooooo (nice)
+        - [ ] The MOD creates an expirable (why expirable ? idk lol, maybe for security) QR code, only the request owner can scan and decode, once he does it's over : payment is captured, then money is added to the MOD's account.
       - [ ] Add money to user's account
       - [ ] User can take his money after it reaches X EGP
+
 
   - [X] Rename the controllers
   - [X] Change the status code of all the responses
@@ -98,4 +110,22 @@ Pre-installation:
     It's a good practice to use ```NODE_ENV=test``` depending on the env you're running the code in.
 ```javascript 
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
+```
+
+3. Adding Immutable Properties In Mongoose.
+
+```javascript
+const schema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : true,
+        trim : true
+    },
+    email : {
+        type : String,
+        required : true,
+        trim : true,
+        immutable: true // ADD THIS PROPERTY HERE
+    },
+}
 ```
