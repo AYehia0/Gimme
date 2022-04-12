@@ -52,7 +52,6 @@ commentSchema.statics.getVerifyToken = async function(userId, request) {
         return comment.userId.equals(userId)
     })
 
-    console.log(request)
     const comment = await this.findOne(commentInRequst.commentId)
 
     return comment?.verify_secret

@@ -15,6 +15,7 @@ router.post("/create-stripe-session", auth.userAuth,  paymentCont.createStripeSe
 
 // release the money
 // easy mode : request maker does it without scanning any QR code.
+// hard mode : request maker scans the MOD's QR code.
 router.post("/release-payment", auth.userAuth,  paymentCont.releasePayment)
 
 // express.raw({type: 'application/json'})
