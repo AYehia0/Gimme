@@ -18,6 +18,8 @@ router.delete('/comment/:id', auth.userAuth, commentCont.deleteComment)
 // by doing this : i make sure to sep the comments from the request itself, means you will need extra request to load all the comments
 router.get('/comment/:id', auth.userAuth, commentCont.getComments)
 
+// get the payment verification secret 
+router.get('/secret', auth.userAuth, commentCont.getVerfificationSecret)
 
 // exporting
 module.exports = router

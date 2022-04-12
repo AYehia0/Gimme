@@ -228,9 +228,39 @@ const getComments = async (req, res) => {
     }
 }
 
+// return verification token only by MOD
+// search the request to find if the request's choosen man is the user._id
+const getVerfificationSecret = async (req, res) => {
+    try {
+
+        const user = req.user
+        const reqId = req.query.reqId
+
+        const verifyToken = await Request.getVerifyToken(user._id, reqId)
+
+        // return the token
+        res.send({
+            status: true,
+            message: "",
+            data: verifyToken || "" // for testing only
+        })
+   
+    } catch (e) {
+        console.log(e)
+        const message = e.message
+        res.status(e.code).send({
+            status: false,
+            message: message,
+            data: ""
+        })
+    }
+}
+
+
 module.exports =  {
     giveComment,
     editComment,
     getComments,
-    deleteComment
+    deleteComment,
+    getVerfificationSecret
 }
