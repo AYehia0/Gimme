@@ -296,35 +296,6 @@ requestSchema.statics.getMyRequests = async function(userId) {
     }
 }
 
-// Get the verfication secret from the comment
-// Only the mod can get it
-requestSchema.statics.getVerifyToken = async function(userId, reqId) {
-    let err = new Error()
-
-    // get the request
-    const request = await Request.findById(reqId)
-
-    if (! request.mod){
-        err.code = 400
-        err.message = "Request doesn't have any MOD"
-        throw err
-    }
-
-    if (! request.mod.equals(userId)){
-        err.code = 401
-        err.message = "Can't access this secret LoL"
-        throw err
-    }
-
-    const commentInRequst = request.participants.find(comment => {
-        return comment.userId.equals(userId)
-    })
-
-    const comment = await Comment.findById(commentInRequst.commentId)
-
-    return comment?.verify_secret
-
-}
 const Request = mongoose.model('Request', requestSchema)
 
 module.exports = Request

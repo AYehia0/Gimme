@@ -44,6 +44,21 @@ const commentSchema = new Schema({
     }
 })
 
+// Get the verfication secret from the comment
+// Only the mod can get it
+commentSchema.statics.getVerifyToken = async function(userId, request) {
+
+    const commentInRequst = request.participants.find(comment => {
+        return comment.userId.equals(userId)
+    })
+
+    console.log(request)
+    const comment = await this.findOne(commentInRequst.commentId)
+
+    return comment?.verify_secret
+}
+
+
 const Comment = mongoose.model('Comment', commentSchema)
 
 module.exports = Comment 
