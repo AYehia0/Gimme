@@ -131,7 +131,12 @@ const requestSchema = new Schema({
             ref : "Comment",
             required : true
         }
-    }]
+    }],
+    // used to hold the payment_intent from strip
+    // which is used to capture the payment by strip
+    paymentIntent : {
+        type: String
+    }
 })
 
 // schema pre-hooks
