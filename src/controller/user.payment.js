@@ -1,5 +1,6 @@
 const Request = require("../models/Request")
 const Comment = require("../models/Comment")
+const Wallet  = require("../models/Wallet")
 const payment = require("../utils/stripe")
 const creds = require("../config/stripe_key.json")
 
@@ -60,8 +61,7 @@ const createStripeSession = async (req, res) => {
         const modPrice = comment.price
 
         // saving the request and the mod both together as ref, so that I can reference them later on
-        const requestModRef = reqId + ";" + comment.userId
-
+        const requestModRef = `${reqId};${comment.userId};${commentId}`
         const session = await payment.createSession(user, modPrice, requestModRef)
 
         res.send({
@@ -85,31 +85,33 @@ const createStripeSession = async (req, res) => {
 const customWebhook = async (req, res) => {
     try {
 
-        let event = payment.createEvent(req.rawBody, req.headers['stripe-signature'],)
+        let event = payment.createEvent(req.rawBody, req.headers['stripe-signature'])
 
         switch (event.type) {
 
             case 'checkout.session.completed' : 
                 // get the requestID and the commentID
 
-                try {
-                    const [reqId, modId] = event.data.object.client_reference_id.split(";")
+                console.log(event.data.object)
+                const paymentIntent = event.data.object.payment_intent
+                const [reqId, modId, commentId] = event.data.object.client_reference_id.split(";")
 
-                    // update the mod
-                    await Request.findByIdAndUpdate(reqId, {
-                        mod: modId,
-                        state: "fulfilled"
-                    })
-                    
-                } catch (e) {
-                    console.log(e.message)
-                }
+                // update the mod
+                await Request.findByIdAndUpdate(reqId, {
+                    mod: modId,
+                    state: "fulfilled",
+                    paymentIntent: paymentIntent
+                })
+                // create a verification token and add it to the comment
+                await Comment.findByIdAndUpdate(commentId, {
+                    verify_secret : require('crypto').randomBytes(32).toString("hex")
+                })
                 // send a notification
                 // ...
-                break;
+                break
 
             default:
-                console.log(`Unhandled event type ${event.type}`);
+                console.log(`Unhandled event type ${event.type}`)
         }
 
         res.send({
@@ -126,11 +128,70 @@ const customWebhook = async (req, res) => {
             data: ""
         })
     }
+}
 
+// release the money to the MOD
+// only the request maker can call this
+// can only be called once, can't be undo
+const releasePayment = async (req, res) => {
+    let statusCode = 400
+    try {
+
+        const user = req.user
+        const reqId = req.body.reqId
+
+        const request = await Request.findById(reqId)
+        if (! request.userId.equals(user._id)){
+            statusCode = 401
+            throw new Error("Can't do this")
+        }
+
+        // request isn't closed
+        if (request.state === "closed"){
+            statusCode = 400
+            throw new Error("Request already closed")
+        }
+
+        // release the amount - fees
+        const paymentSuccess = await payment.capturePayment(request.paymentIntent)
+
+        // check if the user has wallet or not
+        let userWallet = await Wallet.findOne({userId : request.mod})
+
+        // create a wallet with the inital balance = first operation
+        if (! userWallet){
+            userWallet = new Wallet({
+                userId: request.mod,
+                balance: paymentSuccess.amount
+            })
+        }else {
+            userWallet.balance = paymentSuccess.amount
+        }
+
+        await userWallet.save()
+
+        // ToDo : notify the MOD
+        // ...
+
+        res.send({
+            status: true,
+            message: "Success : payment has been released !!!",
+            data: userWallet
+        })
+    
+    } catch (e) {
+        let message = e.message
+        res.status(statusCode).send({
+            status: false,
+            message: message,
+            data: ""
+        })
+    }
 }
 
 module.exports =  {
     getPublishKey,
     createStripeSession,
     customWebhook,
+    releasePayment
 }
