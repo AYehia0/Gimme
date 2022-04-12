@@ -82,7 +82,18 @@ const createEvent = (body, sig) => {
 
     return event
 }
+
+const capturePayment = async (paymentIntentId) => {
+    try {
+        const paymentIntent = await stripe.paymentIntents.capture(paymentIntentId)
+
+        return paymentIntent
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
 module.exports = {
     createSession,
-    createEvent
+    createEvent,
+    capturePayment
 }
