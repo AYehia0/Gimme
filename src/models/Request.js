@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Review = require('./Review')
+const Comment = require('./Comment')
 
 const Schema = mongoose.Schema
 
@@ -100,26 +101,6 @@ const requestSchema = new Schema({
             ref : "Review",
             required : true
     }],
-    // another solution but then why the f** have made review model ?
-    // reviewers : [{
-    //     reviewerId : {
-    //         type : Schema.Types.ObjectId,
-    //         ref : "User",
-    //         required : true
-    //     },
-    //     review : {
-    //         type : Schema.Types.ObjectId,
-    //         ref : "Review",
-    //         required : true
-    //     },
-    //     type : {
-    //         type : String,
-    //         enum : ["user", "mod"],
-    //         required : true
-    //     }
-    // }],
-    // all the comments on the request
-    // TODO : create a model for a comment [DONE]
     participants: [{
         userId : {
             type : Schema.Types.ObjectId,
@@ -271,7 +252,7 @@ requestSchema.statics.getRequestLocations = async function(toAddress, fromAddres
     }
 }
 
-// get the requests i have to do
+// get the requests i have to do as a MOD
 requestSchema.statics.getMyRequests = async function(userId) {
     try {
 
@@ -315,7 +296,35 @@ requestSchema.statics.getMyRequests = async function(userId) {
     }
 }
 
+// Get the verfication secret from the comment
+// Only the mod can get it
+requestSchema.statics.getVerifyToken = async function(userId, reqId) {
+    let err = new Error()
 
+    // get the request
+    const request = await Request.findById(reqId)
+
+    if (! request.mod){
+        err.code = 400
+        err.message = "Request doesn't have any MOD"
+        throw err
+    }
+
+    if (! request.mod.equals(userId)){
+        err.code = 401
+        err.message = "Can't access this secret LoL"
+        throw err
+    }
+
+    const commentInRequst = request.participants.find(comment => {
+        return comment.userId.equals(userId)
+    })
+
+    const comment = await Comment.findById(commentInRequst.commentId)
+
+    return comment?.verify_secret
+
+}
 const Request = mongoose.model('Request', requestSchema)
 
 module.exports = Request
