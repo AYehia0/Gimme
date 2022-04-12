@@ -14,6 +14,7 @@ Pre-installation:
 - [X] Init the server
 - [ ] Fixes :
   - [ ] Fix all the un-nesseray try-catches
+  - [ ] Remove un-used _id and rename it using UUID
 - [ ] API routes Documentations
   - [X] User endpoints
   - [X] Register endpoints
