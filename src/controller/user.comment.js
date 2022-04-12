@@ -235,8 +235,21 @@ const getVerfificationSecret = async (req, res) => {
 
         const user = req.user
         const reqId = req.query.reqId
+        const request = await Request.findById(reqId)
 
-        const verifyToken = await Request.getVerifyToken(user._id, reqId)
+        if (! request.mod){
+            err.code = 400
+            err.message = "Request doesn't have any MOD"
+            throw err
+        }
+
+        if (! request.mod.equals(user._id)){
+            err.code = 401
+            err.message = "Can't access this secret LoL"
+            throw err
+        }
+
+        const verifyToken = await Comment.getVerifyToken(user._id, request)
 
         // return the token
         res.send({

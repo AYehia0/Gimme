@@ -130,6 +130,33 @@ const customWebhook = async (req, res) => {
     }
 }
 
+// helper function to capture the payment and add amount to user's wallet
+const capturePaymentHelper = async (request) => {
+
+    // release the amount - fees
+    const paymentSuccess = await payment.capturePayment(request.paymentIntent)
+
+    // check if the user has wallet or not
+    let userWallet = await Wallet.findOne({userId : request.mod})
+
+    // create a wallet with the inital balance = first operation
+    if (! userWallet){
+        userWallet = new Wallet({
+            userId: request.mod,
+            balance: paymentSuccess.amount
+        })
+    }else {
+        userWallet.balance = paymentSuccess.amount
+    }
+
+    // close the request
+    request.state = "closed"
+
+    await request.save()
+
+    await userWallet.save()
+
+}
 // release the money to the MOD
 // only the request maker can call this
 // can only be called once, can't be undo
@@ -139,46 +166,51 @@ const releasePayment = async (req, res) => {
 
         const user = req.user
         const reqId = req.body.reqId
+        const secretCode = req.body.verify_secret
 
         const request = await Request.findById(reqId)
+
         if (! request.userId.equals(user._id)){
             statusCode = 401
             throw new Error("Can't do this")
         }
-
         // request isn't closed
         if (request.state === "closed"){
             statusCode = 400
             throw new Error("Request already closed")
         }
 
-        // release the amount - fees
-        const paymentSuccess = await payment.capturePayment(request.paymentIntent)
+        // the request maker nicely releases the money without scanning
+        if (! secretCode){
 
-        // check if the user has wallet or not
-        let userWallet = await Wallet.findOne({userId : request.mod})
-
-        // create a wallet with the inital balance = first operation
-        if (! userWallet){
-            userWallet = new Wallet({
-                userId: request.mod,
-                balance: paymentSuccess.amount
+            await capturePaymentHelper(request)
+            // ToDo : notify the MOD
+            // ...
+            res.send({
+                status: true,
+                message: "Success : payment has been released !!!",
+                data: "" 
             })
+        
         }else {
-            userWallet.balance = paymentSuccess.amount
+            // verify the secret
+            const correctSecretCode = await Comment.getVerifyToken(request.mod, request)
+
+            if (secretCode !== correctSecretCode) {
+                statusCode = 401
+                throw new Error("Unauthorized to perform this")
+            }
+
+            await capturePaymentHelper(request)
+            // ToDo : notify the MOD
+            // ...
+            res.send({
+                status: true,
+                message: "Success : payment has been released !!!",
+                data: ""
+            })
         }
-
-        await userWallet.save()
-
-        // ToDo : notify the MOD
-        // ...
-
-        res.send({
-            status: true,
-            message: "Success : payment has been released !!!",
-            data: userWallet
-        })
-    
+   
     } catch (e) {
         let message = e.message
         res.status(statusCode).send({
