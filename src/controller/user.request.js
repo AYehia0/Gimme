@@ -230,7 +230,7 @@ const searchRequests = async (req, res) => {
 
         const requests = await Request.getRequestLocations(to, from)
 
-        res.status(statusCode).send({
+        res.send({
             status: true,
             message: "",
             data: requests
@@ -259,13 +259,10 @@ const getRequests = async (req, res) => {
         const requestId = req.query.id
         const userId = req.user._id
 
-        // check if the user is authenticated
-        if (userId.equals(requestId))
-            requests = await Request.find({userId})
-
-        // get all the request
-        else
+        if (requestId)
             requests = [await Request.findById(requestId)]
+        else
+            requests = await Request.find({userId})
 
         res.status(statusCode).send({
             status: true,
