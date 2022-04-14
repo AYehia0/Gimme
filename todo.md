@@ -13,8 +13,10 @@ Pre-installation:
   - DEV : nodemon
 - [X] Init the server
 - [ ] Fixes :
+  - [ ] Clean the request controller : remove close request and make sure everything works
   - [ ] Fix all the un-nesseray try-catches
   - [ ] Remove un-used _id and rename it using UUID
+  - [ ] bcrypt.genSalt(14, ...) **Setting to 14 from 10 caused call to be 10x slower**  
 - [ ] API routes Documentations
   - [X] User endpoints
   - [X] Register endpoints
@@ -78,9 +80,9 @@ Pre-installation:
       - [X] Authenticate StripeJS
       - [X] Before choosing a mod, make sure that card contains (TRY) the money by holding the money
         - Process might fail if : authentication is failed, or card doesn't contain the exact amount
-      - [ ] Release the money when MOD scans the QR code, what if the mod forgot his phone or it's dead by the time he delivered : so the user can let it gooooo (nice)
-        - [ ] The MOD creates an expirable (why expirable ? idk lol, maybe for security) QR code, only the request owner can scan and decode, once he does it's over : payment is captured, then money is added to the MOD's account.
-      - [ ] Add money to user's account
+      - [X] Release the money when MOD scans the QR code, what if the mod forgot his phone or it's dead by the time he delivered : so the user can let it gooooo (nice)
+        - [X] The MOD creates an expirable (why expirable ? idk lol, maybe for security) QR code, only the request owner can scan and decode, once he does it's over : payment is captured, then money is added to the MOD's account.
+      - [X] Add money to user's account
       - [ ] User can take his money after it reaches X EGP
 
 
