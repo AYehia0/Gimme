@@ -145,80 +145,6 @@ const deleteRequest = async (req, res) => {
     }
 }
 
-// close a request
-// by choosing the MOD
-const closeRequest = async (req, res) => {
-    let statusCode = 400
-    try {
-        const user = req.user
-
-        // the request id 
-        const reqId = req.query.reqId
-
-        // the id of the choosen one
-        const choosenUserId = req.query.modId
-
-        // check if the request is valid : auth + didn't expire
-        // fix : reduce this db call by removing this, since this check is in the middleware : comment.js
-        const checkRequest = await Request.findById(reqId)
-
-        if (!checkRequest.userId.equals(user._id)){
-            statusCode = 403
-            throw new Error("Can't perform this action !!!")
-        }
-
-        if (checkRequest.state !== "on"){
-            statusCode = 409
-            throw new Error("It's already closed, fulfilled or deleted !!!")
-        }
-        // check if the credit card is valid and contains the amount of money
-        // ...
-
-        // getting the commentId
-        const comment = checkRequest.participants.find(comment => {
-            return comment.userId.equals(choosenUserId)
-        })
-
-        // make it MOD
-        checkRequest.mod = choosenUserId 
-
-        // change the state of the request to fulfilled
-        checkRequest.state = "fulfilled" 
-
-        // change the comment of the user as MOD : true
-        await Comment.findByIdAndUpdate(comment.commentId, {mod : true})
-
-        await checkRequest.save()
-
-        // TODO : send to the other part to verify
-        // ToDo : send notification to the other part
-        // didn't test, probably gonna fail
-        const notification_msg = {
-            "msg" : "Congratuation you're the choosen one :D"
-        }
-        if (choosenMod.notification_token)
-            notify.pushNotificationToOne(choosenMod.notification_token, notification_msg)
-
-        res.send({
-            status: true,
-            message: "MOD has been choosen",
-            data: checkRequest
-        })
-        
-    } catch (e) {
-        let message = e.message
-        if (message.includes('Cast to ObjectId failed'))
-            message = "Corrupted ID : Check the ID for both the request and the MOD"
-        res.status(statusCode).send({
-            status: false,
-            message: message,
-            data: ""
-        })
-    }
-}
-
-// ToDo : release the payment
-
 // get request by location (to/from)
 const searchRequests = async (req, res) => {
     let statusCode = 400
@@ -317,7 +243,6 @@ const getSubscibedRequests = async (req, res) => {
 
 module.exports = {
     openRequest,
-    closeRequest,
     editRequest,
     deleteRequest,
     searchRequests,

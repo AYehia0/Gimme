@@ -24,9 +24,5 @@ router.put('/edit/:id', auth.userAuth, requestCont.editRequest)
 // delete a request
 router.delete('/delete/:id', auth.userAuth, requestCont.deleteRequest)
 
-// close a request
-// a request is closed when a MOD is choosen
-router.get('/close', auth.userAuth, authComment.isCommented,  requestCont.closeRequest)
-
 // exporting
 module.exports = router

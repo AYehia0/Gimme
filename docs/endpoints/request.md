@@ -94,76 +94,8 @@ Open a Request ```AUTH```
 
 ## Close Request
 Close a Request, by choosing the MOD ```AUTH```
-
-* **URL**
-
-  ```/close```
-
-* **Method:**
-
-    `GET`
-  
-*  **URL Params**
-
-    ```modId=[ObjectID]```
-
-    ```reqId=[ObjectID]```
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-
-    **Content:**     
-
-    ```json
-    {
-      "status": true,
-      "message": "Request has been closed !!!",
-      "data": ""
-    }
-* **Error Response:**
-
-  * **Code:** 403 Forbidden<br />
-
-    **Content:**     
-
-    ```json
-    {
-      "status": false,
-      "message": "Can't perform this action !!!",
-      "data": ""
-    }
-  * **Code:** 404 Not Found<br />
-
-    **Content:**     
-
-    ```json
-    {
-      "status": false,
-      "message": "Request doesn't exist, are you sure it exists ?",
-      "data": ""
-    }
-  * **Code:** 409 Conflict<br />
-
-    **Content:**     
-
-    ```json
-    {
-      "status": false,
-      "message": "It's already closed, fulfilled or deleted !!!",
-      "data": ""
-    }
-* **Sample Call:**
-
-  ```bash
-  curl --location --request GET 'http://localhost:8080/api/request/close?modId=6215bfcc9f304e65e8e337e5&reqId=620e6aad9c7c24049b4f84e0' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDY3NDY1ODd9.mjCMSwUH4JegshURio2aJQxbomCVljWgh4L1hZHvHJo' \
-  --data-raw ''
-  ```
+<br>
+Now closing a request is done when the user's money is held by strip, with the help of webhooks, check [Payment : Create Session](/docs/endpoints/payment.md)
 
 ## Edit Request
 Edit a Request, same constraints as create but you can't edit if the state of the request is closed or fulfilled ```AUTH```

@@ -3,6 +3,8 @@ const Comment = require("../models/Comment")
 const Wallet  = require("../models/Wallet")
 const payment = require("../utils/stripe")
 const creds = require("../config/stripe_key.json")
+const notify = require('../utils/notification')
+const User = require("../models/User")
 
 
 // this endpoint controller to handle session creation
@@ -28,6 +30,7 @@ const getPublishKey = async (req, res) => {
 
 // create sesssion
 // you can pass the payment_intent_data as manual to ensure "hold"
+// this is equivilant to close_request
 const createStripeSession = async (req, res) => {
     let statusCode
     try {
@@ -66,7 +69,7 @@ const createStripeSession = async (req, res) => {
 
         res.send({
             status: true,
-            message: "Session has been created !!!",
+            message: "Session has been created : Please hold the money to choose the MOD",
             data: session
         })
     } catch (e) {
@@ -90,9 +93,10 @@ const customWebhook = async (req, res) => {
         switch (event.type) {
 
             case 'checkout.session.completed' : 
-                // get the requestID and the commentID
 
                 const paymentIntent = event.data.object.payment_intent
+
+                // get the requestID and the commentID
                 const [reqId, modId, commentId] = event.data.object.client_reference_id.split(";")
 
                 // update the mod
@@ -101,16 +105,24 @@ const customWebhook = async (req, res) => {
                     state: "fulfilled",
                     paymentIntent: paymentIntent
                 })
+
                 // create a verification token and add it to the comment
                 await Comment.findByIdAndUpdate(commentId, {
                     verify_secret : require('crypto').randomBytes(32).toString("hex")
                 })
+
                 // send a notification
-                // ...
+                const choosenMod = await User.findById(modId)
+                const notification_msg = {
+                    "msg" : "Congratuation you're the choosen one :D"
+                }
+                if (choosenMod.notification_token)
+                    notify.pushNotificationToOne(choosenMod.notification_token, notification_msg)
+
                 break
 
             default:
-                console.log(`Unhandled event type ${event.type}`)
+                console.log(`Unhandled event type : ${event.type}`)
         }
 
         res.send({
