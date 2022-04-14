@@ -261,7 +261,7 @@ requestSchema.statics.getMyRequests = async function(userId) {
             {
                 $match : {
                     mod: userId,
-                    state: { $in : ["fulfilled", "closed"] }
+                    state: { $in : ["fulfilled"] }
                 }
             },
             {
