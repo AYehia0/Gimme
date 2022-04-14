@@ -92,7 +92,6 @@ const customWebhook = async (req, res) => {
             case 'checkout.session.completed' : 
                 // get the requestID and the commentID
 
-                console.log(event.data.object)
                 const paymentIntent = event.data.object.payment_intent
                 const [reqId, modId, commentId] = event.data.object.client_reference_id.split(";")
 

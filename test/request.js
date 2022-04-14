@@ -65,20 +65,61 @@ const requestTests = () => {
         expect(res.body.status).toBe(false)
         expect(res.body.message).toBe("Corrupted ID or Request not found")
     })
-    // ...
-    // ToDo : more tests go here
+
+    // searching requests in the db by locations (to/from)
+    it("Request : should search requests", async () => {
+        const res = await request.get(`${mainUrl}/search?to=tanta&from=cairo`)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .expect(CODES.OK)
+
+        expect(res.body.status).toBe(true)
+        expect(Array.isArray(res.body.data)).toBe(true)
+        expect(res.body.data).toHaveLength(1)
+    })
+
+    // Get request by ID
+    it("Request : should get a request by ID", async () => {
+        const res = await request.get(`${mainUrl}/requests?id=${requestId}`)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .expect(CODES.OK)
+
+        expect(res.body.status).toBe(true)
+        expect(Array.isArray(res.body.data)).toBe(true)
+        expect(res.body.data).toHaveLength(1)
+    })
+
+    //Get all the requests a user made
+    it("Request : should get all the requests a user posted", async () => {
+        const res = await request.get(`${mainUrl}/requests`)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .expect(CODES.OK)
+
+        expect(res.body.status).toBe(true)
+        expect(Array.isArray(res.body.data)).toBe(true)
+        expect(res.body.data).toHaveLength(1)
+    })
+
+    // get my requests i am doing aka work
+    it("Request : should get fulfilled requests I am working on", async () => {
+        const res = await request.get(`${mainUrl}/subscribed`)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .expect(CODES.OK)
+
+        expect(res.body.status).toBe(true)
+        expect(Array.isArray(res.body.data)).toBe(true)
+
+        // it will give empty list since there is no MOD
+        expect(res.body.data).toHaveLength(0)
+    })
+
     it("Request : should delete a request", async () => {
         const res = await request.delete(`${mainUrl}/delete/${requestId}`)
         .set("Authorization", `Bearer ${normalUserToken}`)
-        //.expect(CODES.OK)
-
-        console.log(res.body)
+        .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
         expect(res.body.message).toBe("Request has been deleted !!!")
     })
-
-
 
 }
 module.exports = requestTests 

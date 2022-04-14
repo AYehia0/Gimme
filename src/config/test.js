@@ -54,8 +54,12 @@ const API_DATA = {
                     "type" : "Point",
                     "coordinates" : [-23.402, 28.204]
             },
+            "toAddress" : "Tanta Al-Hussiny Magry ST-42",
+            "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
             "priceRange" : {
-                "min" : 20,
+                "min" : 20,    "toAddress" : "Tanta Al-Hussiny Magry ST-42",
+                "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
+             
                 "max" : 90
             },
             "timeRange" : {
@@ -74,6 +78,8 @@ const API_DATA = {
                         "type" : "Point",
                         "coordinates" : [-23.402, 28.204]
                 },
+                "toAddress" : "Tanta Al-Hussiny Magry ST-42",
+                "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
                 "priceRange" : {
                     "min" : 20,
                     "max" : 80
@@ -89,7 +95,9 @@ const API_DATA = {
                         "type" : "Point",
                         "coordinates" : [23.402, 22.204, "something"]
                 },
-                "toLocation" : {
+                "toAddress" : "Tanta Al-Hussiny Magry ST-42",
+                "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
+                 "toLocation" : {
                         "type" : "Point",
                         "coordinates" : [-23.402, 28.204]
                 }
