@@ -1,6 +1,6 @@
-const multer = require('multer')
-const fs = require('fs')
-const path = require('path')
+import multer from 'multer'
+import fs from 'fs'
+import path from 'path'
 
 const uploadLocation = `../../${process.env.UPLOAD_LOC}`
 const generalFileSize = process.env.FILE_SIZE
@@ -35,4 +35,4 @@ const uploadToDisk = multer({
     // TODO : specify what type to limit its size
 })
 
-module.exports = uploadToDisk
+export default uploadToDisk

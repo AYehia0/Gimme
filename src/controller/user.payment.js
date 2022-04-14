@@ -1,10 +1,11 @@
-const Request = require("../models/Request")
-const Comment = require("../models/Comment")
-const Wallet  = require("../models/Wallet")
-const payment = require("../utils/stripe")
-const creds = require("../config/stripe_key.json")
-const notify = require('../utils/notification')
-const User = require("../models/User")
+import Request from "../models/Request"
+import Comment from "../models/Comment"
+import Wallet from "../models/Wallet"
+import payment from '../utils/stripe'
+import User from "../models/User"
+
+import notify from '../utils/notification'
+import creds from '../config/stripe_key.json'
 
 
 // this endpoint controller to handle session creation
@@ -232,7 +233,7 @@ const releasePayment = async (req, res) => {
     }
 }
 
-module.exports =  {
+export default {
     getPublishKey,
     createStripeSession,
     customWebhook,

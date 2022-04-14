@@ -1,7 +1,6 @@
-const User = require("../models/User")
-const admin = require("firebase-admin")
-
-const serviceAccount = require("../config/fcm.json")
+import User from '../models/User'
+import admin from 'firebase-admin'
+import serviceAccount from '../config/fcm.json'
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -39,7 +38,7 @@ const pushNotificationToMulti = async (data) => {
     })
 }
 
-module.exports = {
+export default {
     pushNotificationToOne,
     pushNotificationToMulti,
 }

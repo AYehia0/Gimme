@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const User = require("../models/User")
+import Request from '../models/Request'
+import User from '../models/User'
 
 const CODES = {
     NOT_FOUND : 404,
@@ -20,7 +20,7 @@ const API_DATA = {
         USER_MOD : {
             "name" : "someoneElse",
             "email" : "someoneElse@email.com",
-            "phone" : "01023438928",
+            "phone" : "01023438929",
             "password" : "HelloSomeoneElse123_"
         }
     },
@@ -105,12 +105,22 @@ const API_DATA = {
        }
    },
     COMMENT : {
-        "time" : {
-            "unit" : "d",
-            "val" : 4
-        },
-        "price" : 30,
-        "text" : "Hello, I will bring you thing, I have a car"
+        NEW_COMMENT :  {
+            "time" : {
+                "unit" : "d",
+                "val" : 4
+            },
+            "price" : 30,
+            "text" : "Hello, I will bring you thing, I have a car"
+        }, 
+        EDITED_COMMENT :  {
+            "time" : {
+                "unit" : "d",
+                "val" : 4
+            },
+            "price" : 80,
+            "text" : "Hello, I am the best one to do this as I am ..."
+        }, 
     },
     REVIEWS : {
         USER_NORMAL : {
@@ -126,19 +136,33 @@ const API_DATA = {
 }
 
 // get user's token by email
-const getTokenTest = async (email) => {
+const getUserByEmail = async (email) => {
     try {
         const user = await User.findOne({email: email})
 
-        return user.token
+        return user
         
     } catch (e) {
         throw new Error(e.message)
     }
 }
 
-module.exports = {
+// get a request
+const getRequestByUserId = async (userId) => {
+    try {
+        const request = await Request.findOne({userId: userId})
+
+        return request
+        
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
+
+export {
     API_DATA,
     CODES,
-    getTokenTest
+    getUserByEmail,
+    getRequestByUserId
 }

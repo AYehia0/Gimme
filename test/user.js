@@ -1,12 +1,12 @@
-const app = require("../src/app")
-const supertest = require("supertest")
-const {API_DATA, CODES, getTokenTest} = require("../src/config/test")
+import app from '../src/app'
+import supertest from 'supertest'
+import {API_DATA, CODES} from '../src/config/test'
+
 const request = supertest(app)
 
 // the url related to the user
-require('dotenv').config()
+import 'dotenv/config'
 const mainUrl = `${process.env.MAIN_API}/${process.env.USER_API}`
-
 
 const userTests = () => {
     // configs returned from the res used to continue testing
@@ -21,6 +21,16 @@ const userTests = () => {
         expect(res.body.status).toBe(true)
         expect(res.body.message).toBe("Success : User registered !!!")
     }, 1000)
+
+    it("Register : should register a user MOD to the database", async () => {
+        const res = await request.post(`${mainUrl}/register`)
+        .send(API_DATA.REGISTER.USER_MOD)
+        .expect(CODES.OK)
+
+        expect(res.body.status).toBe(true)
+        expect(res.body.message).toBe("Success : User registered !!!")
+    })
+
     it("Register : should return user already exists", async () => {
         const res = await request.post(`${mainUrl}/register`)
         .send(API_DATA.REGISTER.USER_NORMAL)
@@ -30,9 +40,15 @@ const userTests = () => {
         expect(res.body.message).toBe("Email/Phone Already Exists")
     })
     it("Login : should login a user", async () => {
+        // login the mod too to fetch a correct token
+        await request.post(`${mainUrl}/login`)
+        .send(API_DATA.LOGIN.USER_MOD)
+        
+
         const res = await request.post(`${mainUrl}/login`)
         .send(API_DATA.LOGIN.USER_NORMAL)
-        .expect(CODES.OK)
+
+        //.expect(CODES.OK)
 
         // capturing the token
         // save it for all the requests
@@ -66,4 +82,4 @@ const userTests = () => {
         expect(res.body.data._id).toBeTruthy()
     })
 }
-module.exports = userTests
+export default userTests

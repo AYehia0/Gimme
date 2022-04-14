@@ -1,5 +1,5 @@
 // this is a middleware to auth users (user and MOD) to access the chat
-const Room = require('../models/Room')
+import Room from '../models/Room'
 
 const chatAuth = async (req, res, next) => {
   try {
@@ -31,6 +31,6 @@ const chatAuth = async (req, res, next) => {
   }
 }
 
-module.exports = {
+export default {
   chatAuth 
 }

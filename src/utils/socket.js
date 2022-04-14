@@ -11,11 +11,10 @@ How to test :
     Notes : 
         - Only certain users can create sockets, check the docs
 */
-
-const Message = require('../models/Message')
-const Comment = require('../models/Comment')
-const Room = require('../models/Room')
-const User = require('../models/User')
+import Message from '../models/Message'
+import Comment from '../models/Comment'
+import Room from '../models/Room'
+import User from '../models/User'
 
 const addChatRoomToUsers = async (mainUser, otherUser) => {
     // flagging this user to be already add to a chat room
@@ -114,4 +113,4 @@ class MainSocket {
     }
 }
 
-module.exports = new MainSocket()
+export default new MainSocket()

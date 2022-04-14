@@ -1,9 +1,10 @@
-const router = require('express').Router()
-const auth = require('../middlewares/auth.js')
+import notifyCont from '../controller/user.notification'
+import { Router } from 'express'
+import auth from '../middlewares/auth'
 
-// the controller
-const notifyCont = require('../controller/user.notification')
+let router = Router()
+
 
 router.post('/update', auth.userAuth, notifyCont.updateUserToken)
 
-module.exports = router
+export default router

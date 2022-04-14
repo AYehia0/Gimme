@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const roomSchema = new Schema({
@@ -88,4 +88,4 @@ roomSchema.statics.getUsersInChat = async function (roomId) {
 const Room = mongoose.model('Room', roomSchema)
 
 // exporting
-module.exports = Room 
+export default Room

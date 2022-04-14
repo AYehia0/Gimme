@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const messageSchema = new Schema({
@@ -77,4 +77,4 @@ messageSchema.statics.getRoomMessages = async function (roomId, opt={}) {
 const Message = mongoose.model('Message', messageSchema)
 
 // exporting
-module.exports = Message
+export default Message

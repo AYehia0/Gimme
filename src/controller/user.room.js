@@ -1,7 +1,5 @@
-const Request = require('../models/Request')
-const Comment = require('../models/Comment')
-const User = require('../models/User')
-const Room = require('../models/Room')
+import Request from '../models/Request'
+import Room from '../models/Room'
 
 // get all the comments' info under a request
 const startChat = async (req, res) => {
@@ -47,6 +45,6 @@ const startChat = async (req, res) => {
         })
     }
 }
-module.exports =  {
+export default  {
     startChat,
 }

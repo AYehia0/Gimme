@@ -1,28 +1,29 @@
 // the db
-const db = require('./config/db')
+import db from './config/db'
 
 // connection to the db
 db.connect(process.env.NODE_ENV)
-require('dotenv').config()
+import 'dotenv/config'
 
 // IMPORTS
 // the main app
-const express = require('express')
-const path = require('path')
-const cors = require('cors')
-const helmet = require('helmet')
-const bodyParser = require('body-parser')
+import express from 'express'
+import path from 'path'
+import cors from 'cors'
+import helmet from 'helmet'
+import bodyParser from 'body-parser'
+const __dirname = path.resolve();
 
 // routers
-const userRoutes = require('./routes/user')
-const reviewRoutes = require('./routes/review')
-const requestRoutes = require('./routes/request')
-const commentRoutes = require('./routes/comment')
-const roomRoutes = require('./routes/room')
-const messageRoutes = require('./routes/message')
-const locationRoutes = require('./routes/location')
-const notificationRoutes = require('./routes/notification')
-const paymentRoutes = require('./routes/payment')
+import userRoutes from './routes/user'
+import reviewRoutes from './routes/review'
+import requestRoutes from './routes/request'
+import commentRoutes from './routes/comment'
+import roomRoutes from './routes/room'
+import messageRoutes from './routes/message'
+import locationRoutes from './routes/location'
+import notificationRoutes from './routes/notification'
+import paymentRoutes from './routes/payment'
 
 // consts
 const mainURL = process.env.MAIN_API
@@ -66,4 +67,4 @@ app.use(`${mainURL}/${process.env.LOCATION_API}`, locationRoutes)
 app.use(`${mainURL}/${process.env.NOTIFICATION_API}`, notificationRoutes)
 app.use(`${mainURL}/${process.env.PAYMENT_API}`, paymentRoutes)
 
-module.exports = app
+export default app

@@ -1,11 +1,12 @@
-const router = require('express').Router()
-const auth = require('../middlewares/auth.js')
+import reviewCont from '../controller/user.review'
+import { Router } from 'express'
+import auth from '../middlewares/auth'
 
-// the controller
-const reviewCont = require('../controller/user.review')
+let router = Router()
+
 
 router.post('/give-review/:id', auth.userAuth, reviewCont.giveReview)
 router.get('/reviews', auth.userAuth, reviewCont.getUserReviews)
 
 // exporting
-module.exports = router
+export default router

@@ -1,29 +1,37 @@
-const app = require("../src/app")
-const supertest = require("supertest")
-const {API_DATA, CODES, getTokenTest} = require("../src/config/test")
-const mongoose = require("mongoose")
+import mongoose from 'mongoose'
+import app from '../src/app'
+import supertest from 'supertest'
+import {API_DATA, CODES, getUserByEmail} from '../src/config/test'
+
 const request = supertest(app)
 
 // the url related to the user
-require('dotenv').config()
+import 'dotenv/config'
 const mainUrl = `${process.env.MAIN_API}/${process.env.REQUEST_API}`
-
 
 const requestTests = () => {
     
 
     let normalUserToken = ""
     let requestId = ""
+    let requestIdDelete = ""
 
     // what are the chance the request really exists ?
     const request404 = new mongoose.Types.ObjectId()
 
     // before testing create a temp db
-    it("Request : Add a request ", async () => {
+    it("Request : should create a new request ", async () => {
 
         // getting the token 
-        const token = await getTokenTest(API_DATA.REGISTER.USER_NORMAL.email)
-        normalUserToken = token
+        const user = await getUserByEmail(API_DATA.REGISTER.USER_NORMAL.email)
+        normalUserToken = user.token
+
+        // one temp request to be deleted lol
+        const tempRes = await request.post(`${mainUrl}/open`)
+        .set("Authorization", `Bearer ${normalUserToken}`)
+        .send(API_DATA.REQUEST.NORMAL)
+      
+        requestIdDelete = tempRes.body.data._id
 
         const res = await request.post(`${mainUrl}/open`)
         .set("Authorization", `Bearer ${normalUserToken}`)
@@ -74,7 +82,7 @@ const requestTests = () => {
 
         expect(res.body.status).toBe(true)
         expect(Array.isArray(res.body.data)).toBe(true)
-        expect(res.body.data).toHaveLength(1)
+        expect(res.body.data).toHaveLength(res.body.data.length)
     })
 
     // Get request by ID
@@ -96,7 +104,7 @@ const requestTests = () => {
 
         expect(res.body.status).toBe(true)
         expect(Array.isArray(res.body.data)).toBe(true)
-        expect(res.body.data).toHaveLength(1)
+        expect(res.body.data).toHaveLength(res.body.data.length)
     })
 
     // get my requests i am doing aka work
@@ -113,7 +121,7 @@ const requestTests = () => {
     })
 
     it("Request : should delete a request", async () => {
-        const res = await request.delete(`${mainUrl}/delete/${requestId}`)
+        const res = await request.delete(`${mainUrl}/delete/${requestIdDelete}`)
         .set("Authorization", `Bearer ${normalUserToken}`)
         .expect(CODES.OK)
 
@@ -122,4 +130,4 @@ const requestTests = () => {
     })
 
 }
-module.exports = requestTests 
+export default requestTests 

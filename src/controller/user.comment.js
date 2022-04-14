@@ -1,6 +1,5 @@
-const mongoose = require('mongoose')
-const Request = require('../models/Request')
-const Comment = require('../models/Comment')
+import Request from '../models/Request'
+import Comment from '../models/Comment'
 
 // write a comment/proposal
 const giveComment = async (req, res) => { 
@@ -270,7 +269,7 @@ const getVerfificationSecret = async (req, res) => {
 }
 
 
-module.exports =  {
+export default {
     giveComment,
     editComment,
     getComments,

@@ -1,11 +1,11 @@
-const router = require('express').Router()
-const auth = require('../middlewares/auth.js')
+import locationCon from '../controller/user.location'
+import { Router } from 'express'
+import auth from '../middlewares/auth'
 
-// the controller
-const locationCon = require('../controller/user.location')
+let router = Router()
 
 // update locatin by reqId
 router.put('/update-location/:id', auth.userAuth,  locationCon.setRequestLocation)
 
 // exporting
-module.exports = router
+export default router

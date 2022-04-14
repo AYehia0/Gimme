@@ -1,9 +1,9 @@
-const router = require('express').Router()
-const auth = require('../middlewares/auth')
-const authComment = require('../middlewares/comment')
+import { Router } from 'express'
+import auth from '../middlewares/auth'
+import requestCont from '../controller/user.request'
 
-// the controller
-const requestCont = require('../controller/user.request')
+let router = Router()
+
 
 // search requests
 router.get('/search', auth.userAuth, requestCont.searchRequests)
@@ -25,4 +25,4 @@ router.put('/edit/:id', auth.userAuth, requestCont.editRequest)
 router.delete('/delete/:id', auth.userAuth, requestCont.deleteRequest)
 
 // exporting
-module.exports = router
+export default router

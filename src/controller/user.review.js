@@ -1,5 +1,5 @@
-const Request = require('../models/Request')
-const Review = require('../models/Review')
+import Request from '../models/Request'
+import Review from '../models/Review'
 
 // a review can't be deleted
 // a review can't be edited
@@ -79,7 +79,8 @@ const getUserReviews = async (req, res) => {
     }
 }
 
-module.exports = {
+
+export default {
     giveReview,
     getUserReviews
 }

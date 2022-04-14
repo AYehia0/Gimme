@@ -1,8 +1,8 @@
-const router = require('express').Router()
-const auth = require('../middlewares/auth.js')
+import commentCont from '../controller/user.comment'
+import { Router } from 'express'
+import auth from '../middlewares/auth'
 
-// the controller
-const commentCont = require('../controller/user.comment')
+let router = Router()
 
 // write a comment
 router.post('/comment/:id', auth.userAuth, commentCont.giveComment)
@@ -22,4 +22,4 @@ router.get('/comment/:id', auth.userAuth, commentCont.getComments)
 router.get('/secret', auth.userAuth, commentCont.getVerfificationSecret)
 
 // exporting
-module.exports = router
+export default router

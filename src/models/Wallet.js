@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const validator = require('validator')
+import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
@@ -21,4 +20,4 @@ const userWalletSchema = new Schema({
 const Wallet = mongoose.model('Wallet', userWalletSchema)
 
 // exporting
-module.exports = Wallet
+export default Wallet

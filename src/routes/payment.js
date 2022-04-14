@@ -1,11 +1,8 @@
-const bodyParser = require("body-parser")
-const router = require('express').Router()
-//.use(bodyParser.raw({type: '*/*'}))
-const express = require("express")
-const auth = require('../middlewares/auth')
+import paymentCont from '../controller/user.payment'
+import { Router } from 'express'
+import auth from '../middlewares/auth'
 
-// the controller
-const paymentCont = require('../controller/user.payment')
+let router = Router()
 
 // retrive stripe's publishable key to be used in the frontend
 router.get("/config", auth.userAuth, paymentCont.getPublishKey)
@@ -22,4 +19,4 @@ router.post("/release-payment", auth.userAuth,  paymentCont.releasePayment)
 router.post("/webhook", paymentCont.customWebhook)
 
 // exporting
-module.exports = router
+export default router

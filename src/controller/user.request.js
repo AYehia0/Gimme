@@ -1,7 +1,6 @@
-const Request = require('../models/Request')
-const Comment = require('../models/Comment')
-const User = require('../models/User')
-const notify = require('../utils/notification')
+import Request from '../models/Request'
+import Comment from '../models/Comment'
+
 
 // create a new request
 const openRequest = async (req, res) => {
@@ -241,7 +240,7 @@ const getSubscibedRequests = async (req, res) => {
 
 
 
-module.exports = {
+export default {
     openRequest,
     editRequest,
     deleteRequest,

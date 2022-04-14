@@ -1,9 +1,9 @@
-const mongoose = require('mongoose')
-const validator = require('validator')
-const bcrybt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+import mongoose from 'mongoose'
+import validator from 'validator'
+import jwt from 'jsonwebtoken'
+import Room from '../models/Room'
+import bcrypt from 'bcryptjs'
 
-const Room = require('../models/Room')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
@@ -95,7 +95,7 @@ userSchema.pre('save', function(next) {
   const currentUser = this
 
   if (currentUser.isModified('password')){
-    currentUser.password = bcrybt.hashSync(currentUser.password, parseInt(process.env.SALT))
+    currentUser.password = bcrypt.hashSync(currentUser.password, parseInt(process.env.SALT))
   }
 
   next()
@@ -175,4 +175,4 @@ userSchema.statics.getChats = async function (userId) {
 const User = mongoose.model('User', userSchema)
 
 // exporting
-module.exports = User
+export default User

@@ -1,4 +1,4 @@
-const Request = require("../models/Request")
+import Request from "../models/Request"
 
 const setRequestLocation = async (req, res) => {
     try {
@@ -25,6 +25,7 @@ const setRequestLocation = async (req, res) => {
     }
 }
 
-module.exports =  {
+
+export default {
     setRequestLocation,
 }

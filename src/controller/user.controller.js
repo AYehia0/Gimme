@@ -1,51 +1,14 @@
-// the main functions that handle the actuall backend
-//const User = require('../models/User')
-
-// const registerUser = async (req, res) => {
-
-//   let message
-//   let statusCode = 200
-
-//   try {
-//     // getting the registeration info from the body of the request
-//     const userInfo = req.body
-
-//     const newUser = User(userInfo)
-
-//     // saving to the db
-//     await newUser.save()
-
-//     // informing the user
-//     res.status(statusCode).send({
-//       status : true,
-//       message : "Success : User registered !!!",
-//       data : "" 
-//     })
-    
-//   } catch (e) {
-//     if (e.message.includes("E11000")) {
-//       message = "Email/Phone Already Exists"
-//       statusCode = 409
-//     }
-//     res.status(statusCode).send({
-//       status: false,
-//       message: message,
-//       data: ""
-//     })
-    
-//   }
-
-// }
+// getting the services
 import *  as userServices from '../services/user.service'
 import resp from '../helpers/responseTemplate'
-
+import success from '../helpers/success'
 
 const registerUser = async (req, res) => {
-  let statusCode = 400
+  let message
+  let statusCode = 200
 
   try {
 
-    console.log("hi")
     await userServices.createAccount(req.body)
 
     res.status(statusCode).send(resp(true,  "Success : User registered !!!", "")) 
@@ -56,11 +19,9 @@ const registerUser = async (req, res) => {
       message = "Email/Phone Already Exists"
       statusCode = 409
     }
-
-    res.status(statusCode).send(resp(false, e.message, ""))
+    res.status(statusCode).send(resp(false, message, ""))
   }
 }
-
 
 // return the token to the user
 // TODO: login by phone number instead of email

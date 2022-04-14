@@ -1,6 +1,5 @@
-const mongoose = require('mongoose')
-const Review = require('./Review')
-const Comment = require('./Comment')
+import mongoose from 'mongoose'
+import Review from './Review'
 
 const Schema = mongoose.Schema
 
@@ -307,4 +306,4 @@ requestSchema.options.toJSON = {
 }
 const Request = mongoose.model('Request', requestSchema)
 
-module.exports = Request
+export default Request

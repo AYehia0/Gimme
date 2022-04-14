@@ -1,4 +1,4 @@
-const Message = require('../models/Message')
+import Message from '../models/Message'
 
 const getChatMessages = async (req, res) => {
     try {
@@ -34,6 +34,6 @@ const getChatMessages = async (req, res) => {
     }
 }
 
-module.exports =  {
+export default {
     getChatMessages,
 }

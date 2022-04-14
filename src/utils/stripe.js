@@ -7,8 +7,9 @@ This util contains the payment functions :
     - creating ...
 
 */
-const creds = require("../config/stripe_key.json")
-const stripe = require('stripe')(creds.api_secret)
+import creds from '../config/stripe_key.json'
+import Stripe from 'stripe';
+const stripe = new Stripe(creds.api_public);
 
 // Save users cards' by creating a SetupIntent
 // https://stripe.com/docs/payments/save-and-reuse?platform=android&ui=payment-sheet
@@ -92,7 +93,7 @@ const capturePayment = async (paymentIntentId) => {
         throw new Error(e.message)
     }
 }
-module.exports = {
+export default {
     createSession,
     createEvent,
     capturePayment

@@ -1,8 +1,10 @@
-const app = require("./app.js")
-const auth = require('./middlewares/auth')
-require('dotenv').config()
+#!/usr/bin/env node --experimental-specifier-resolution=node
+import app from './app'
+import auth from './middlewares/auth'
+import 'dotenv/config'
 
-const MainSocket = require('../src/utils/socket')
+import MainSocket from '../src/utils/socket'
+
 const PORT = process.env.PORT || 8080
 
 const server = app.listen(PORT, () => {
@@ -11,6 +13,7 @@ const server = app.listen(PORT, () => {
 
 
 // making it global for all the project 
-global.io = require('socket.io')(server)
+import {Server} from 'socket.io'
+global.io = new Server(server)
 global.io.use(auth.socketAuth)
 global.io.on('connection', MainSocket.connection)

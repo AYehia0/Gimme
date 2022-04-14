@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
@@ -60,4 +60,4 @@ commentSchema.statics.getVerifyToken = async function(userId, request) {
 
 const Comment = mongoose.model('Comment', commentSchema)
 
-module.exports = Comment 
+export default Comment

@@ -1,5 +1,5 @@
 // connection to the mongodb 
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 mongoose.Promise = global.Promise
 
 const connect = async (dbNAME)  => {
@@ -28,7 +28,7 @@ const drop = async ()  => {
 
 
 
-module.exports = {
+export default {
     connect,
     drop
 }

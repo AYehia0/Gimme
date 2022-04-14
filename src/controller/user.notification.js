@@ -26,13 +26,13 @@ const updateUserToken = async (req, res) => {
         let message = e.message
         res.status(statusCode).send({
             status: false,
-            message: e.message,
+            message: message,
             data: ""
         })
     }
 }
 
 
-module.exports = {
+export default {
     updateUserToken
 }

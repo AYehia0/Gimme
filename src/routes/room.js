@@ -1,8 +1,9 @@
-const router = require('express').Router()
-const auth = require('../middlewares/auth.js')
+import roomCont from '../controller/user.room'
+import { Router } from 'express'
+import auth from '../middlewares/auth'
 
-// the controller
-const roomCont = require('../controller/user.room')
+let router = Router()
+
 
 // create a room
 router.post('/create-room', auth.userAuth, roomCont.startChat)
@@ -12,4 +13,5 @@ router.post('/create-room', auth.userAuth, roomCont.startChat)
 //router.delete('/block-room', auth.userAuth, roomCont.blockChat)
 
 // exporting
-module.exports = router
+
+export default router

@@ -3,8 +3,8 @@
 // "globalSetup": "src/config/global-test.js"
 // "globalTeardown": "tear-down-file-path"
 
-const { MongoMemoryServer } = require("mongodb-memory-server")
-const mongoose = require("mongoose")
+import { MongoMemoryServer } from "mongodb-memory-server"
+import mongoose from 'mongoose'
 
 beforeAll(async () => {
 
