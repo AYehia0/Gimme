@@ -71,7 +71,7 @@ const giveComment = async (req, res) => {
         res.send({
             status: true,
             message: "Success: Comment has been added !!!",
-            data: comment
+            data: newComment
         })   
         
     } catch (e) {
