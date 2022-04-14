@@ -296,6 +296,15 @@ requestSchema.statics.getMyRequests = async function(userId) {
     }
 }
 
+requestSchema.options.toJSON = {
+    transform: function(doc, ret, options) {
+        // maybe later who nows ?
+        // ret.id = ret._id
+        delete ret.paymentIntent
+        delete ret.__v
+        return ret
+    }
+}
 const Request = mongoose.model('Request', requestSchema)
 
 module.exports = Request
