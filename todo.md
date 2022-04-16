@@ -12,8 +12,10 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
+- [ ] Important : Switch to TS
 - [ ] Fixes :
-  - [ ] Clean the request controller : remove close request and make sure everything works
+  - [X] Clean the request controller : remove close request and make sure everything works
+  - [X] Remove paymentIntent from the request
   - [ ] Fix all the un-nesseray try-catches
   - [ ] Remove un-used _id and rename it using UUID
   - [ ] bcrypt.genSalt(14, ...) **Setting to 14 from 10 caused call to be 10x slower**  
