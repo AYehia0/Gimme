@@ -17,39 +17,71 @@ const createAccount = async (data) => {
     await user.save()
 }
 
-// return the token to the user
-// TODO: login by phone number instead of email
-const loginUser = async (req, res) => {
+// return the login token if success
+const getLoginToken = async (data) => {
+    let err = new Error()
+
+    const {email, password} = data
+    if (!email || !password){
+        err.code = 400
+        err.message = "Invalid Syntax : Email and Password are required!"
+        throw err
+    }
+
+    const user = await User.login(email, password, 'user')
+
+    return await user.genToken()
+    
 }
 
 // can be used to show /me or others like /someone
 // depends on what can a user see from others
 // but login is required
-const getMyProfile = async (req, res) => {
+const getOthersProfile = async (userId) => {
+
+    if (! userId)
+        throw new Error("Invalid syntax : UserId is required")
+    
+    const user = await User.findById(userId).select('name -_id isTrusted createTime')
+
+    if (!user)
+        throw new Error("User not found")
+
+    return user
 }
 
-// it can also be used as /me
-const getUserProfile = async (req, res) => {
-}
-// remove the token
-const logoutUser = async (req, res) => {
+// what a user can edit : name and password only
+const editUserProfile = async (user, data) => {
+
+    const {name, password} = data
+
+    if (!name || !password)
+      throw new Error("Username or password are required")
+
+    // edit 
+    user.name = name
+    user.password = password
+
+    await user.save()
+
 }
 
-// what a user can edit : 
-// name, 
-const editUser = async (req, res) => {
-}
+// add/update a profile img to the user
+const addProfilePicture = async (user, img) => {
 
-// upload a profile img
-const changeProfilePicture = async (req, res) => {
+    if (!img)
+      throw new Error("Image is required")
+
+    user.img = `photos/${user._id}/${img}`
+
+    await user.save()
+
 }
 
 export {
     createAccount,
-    loginUser,
-    getMyProfile,
-    getUserProfile,
-    logoutUser,
-    editUser,
-    changeProfilePicture,
+    getLoginToken,
+    getOthersProfile,
+    editUserProfile,
+    addProfilePicture,
 }

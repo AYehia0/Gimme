@@ -2,16 +2,16 @@
 import *  as userServices from '../services/user.service'
 import resp from '../helpers/responseTemplate'
 import success from '../helpers/success'
+import error from '../helpers/error'
 
 const registerUser = async (req, res) => {
   let message
-  let statusCode = 200
-
+  let statusCode = 400
   try {
 
     await userServices.createAccount(req.body)
 
-    res.status(statusCode).send(resp(true,  "Success : User registered !!!", "")) 
+    res.send(resp(true, success.register, "")) 
 
   } catch (e) {
 
@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
       message = "Email/Phone Already Exists"
       statusCode = 409
     }
-    res.status(statusCode).send(resp(false, message, ""))
+    res.status(400).send(resp(false, message, ""))
   }
 }
 
@@ -31,35 +31,16 @@ const loginUser = async (req, res) => {
   try {
     
     // get the username and the password
-    const {email, password} = req.body
+    const token = await userServices.getLoginToken(req.body)
 
-    if (!email || !password){
-      statusCode = 400
-      throw new Error("Invalid Syntax : Email and Password are required!")
-    }
-
-    // user in db ?
-    const user = await User.login(email, password, 'user')
-
-    // get the token
-    const token = await user.genToken()
-
-    res.status(statusCode).send({
-      status: true,
-      message: "Success : User has been logged in !!!",
-      data: token
-    })
+    res.send(resp(true, success.login, token))
   } catch (e) {
     message = e.message
 
     if (message === "User not found, are you registered ?" || message === "Incorrect Password/Email"){
       statusCode = e.code
     }
-    res.status(statusCode).send({
-      status: false,
-      message: message,
-      data: ""
-    })
+    res.status(statusCode).send(resp(false, message, ""))
   }
 }
 
@@ -68,20 +49,13 @@ const loginUser = async (req, res) => {
 // but login is required
 const getMyProfile = async (req, res) => {
   try {
-    
-    const user = req.user 
 
-    res.status(200).send({
-      status: true,
-      message: "",
-      data: user
-    })
+    res.send(resp(true, "", req.user))
+
   } catch (e) {
-     res.send({
-      status: false,
-      message: "Not authorized",
-      data: e.message
-    })
+
+     res.send(resp(false, error.login, ""))
+
   }
 }
 
@@ -89,50 +63,26 @@ const getMyProfile = async (req, res) => {
 const getUserProfile = async (req, res) => {
   try {
 
-    // get the user id 
-    const userId = req.params.id
+    const user = await userServices.getOthersProfile(req.params.id)
+    res.send(resp(true, "", user))
 
-    // probably it's a good idea not to throw an error 
-    // and instead retrun the logged in user
-    if (! userId)
-      throw new Error("Invalid syntax : UserId is required")
-    
-    const user = await User.findById(userId).select('name -_id isTrusted createTime')
-    
-    res.status(200).send({
-      status: true,
-      message: "",
-      data: user
-    })
   } catch (e) {
-     res.send({
-      status: false,
-      message: "Not authorized",
-      data: e.message
-    })
+     res.status(404).send(resp(false, error.notFound, ""))
   }
 }
-// remove the token
 const logoutUser = async (req, res) => {
   try {
     
+    // remove the token
+    // this is possible due to mongoose saving the user pros in the json
     const user = req.user 
-
     user.token = ""
 
     await user.save()
 
-    res.status(200).send({
-      status: true,
-      message: "Logged out successfuly",
-      data: "" 
-    })
+    res.send(resp(true, success.logout, ""))
   } catch (e) {
-     res.send({
-      status: false,
-      message: e.message,
-      data: ""
-    })
+     res.status(400).send(resp(false, e.message, ""))
   }
 }
 
@@ -140,64 +90,24 @@ const logoutUser = async (req, res) => {
 // name, 
 const editUser = async (req, res) => {
   try {
-    // edit here
-    // user can edit name and password only
-    const user = req.user
-    const editFields = req.body
+    await userServices.editUserProfile(req.user, req.body)
 
-    if (! editFields.name || ! editFields.password)
-      throw new Error("Username or password are required")
-    // password is encrypted by default
-
-    // edit 
-    user.name = editFields?.name
-    user.password = editFields?.password
-
-    await user.save()
-
-    res.status(200).send({
-      status: true,
-      message: "Success: Logged out",
-      data: "" 
-    })
+    res.send(resp(true, success.edit, ""))
   } catch (e) {
-     res.send({
-      status: false,
-      message: e.message,
-      data: ""
-    })
+     res.status(400).send(resp(false, e.message, ""))
   }
 }
 
 // upload a profile img
 const changeProfilePicture = async (req, res) => {
-  let statusCode = 400
   try {
-    const user = req.user
 
-    const imgName = req.file.filename
+    await userServices.addProfilePicture(req.user, req.file.filename)
 
-    if (!imgName)
-      throw new Error("Image is required")
+    res.send(resp(true, success.uploadImg, ""))
 
-    // save to the database
-    user.img = `photos/${user._id}/${imgName}`
-
-    // saving
-    await user.save()
-
-    res.status(200).send({
-      status: true,
-      message: "Profile picture has been updated succesfully",
-      data: "" 
-    })
   } catch (e) {
-    let message = e.message
-     res.status(statusCode).send({
-      status: false,
-      message: message,
-      data: ""
-    })
+     res.status(400).send(resp(false, e.message, ""))
   }
 }
 export default {
