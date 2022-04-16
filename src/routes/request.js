@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import auth from '../middlewares/auth'
-import requestCont from '../controller/user.request'
+import requestCont from '../controller/request.controller'
 
 let router = Router()
 

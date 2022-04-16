@@ -117,7 +117,7 @@ userSchema.statics.login = async (email, password) => {
   }
 
   // password check
-  const isValid = bcrybt.compareSync(password, user.password)
+  const isValid = bcrypt.compareSync(password, user.password)
 
   if (!isValid){
     error = new Error("Incorrect Password/Email")

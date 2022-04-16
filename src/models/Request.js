@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Review from './Review'
+import Comment from './Comment'
 
 const Schema = mongoose.Schema
 
@@ -253,46 +254,56 @@ requestSchema.statics.getRequestLocations = async function(toAddress, fromAddres
 
 // get the requests i have to do as a MOD
 requestSchema.statics.getMyRequests = async function(userId) {
-    try {
 
-        // find the user in the comments
-        const reqs = await this.aggregate([
-            {
-                $match : {
-                    mod: userId,
-                    state: { $in : ["fulfilled"] }
-                }
-            },
-            {
-                $lookup : {
-                    from: "comments",
-                    localField: "mod", 
-                    foreignField: "userId",
-                    as : "comment"
-                }
-            },
-            {
-                $project: {
-                    mod: true, 
-                    title: true,
-                    toAddress: true,
-                    fromAddress: true,
-                    reviewed: true,
-                    state: true,
-                    "comment.price": true,
-                    "comment.time": true
-                }
-            },
-            {
-                $unwind: "$comment"
+    // find the user in the comments
+    const reqs = await this.aggregate([
+        {
+            $match : {
+                mod: userId,
+                state: { $in : ["fulfilled"] }
             }
-        ])
+        },
+        {
+            $lookup : {
+                from: "comments",
+                localField: "mod", 
+                foreignField: "userId",
+                as : "comment"
+            }
+        },
+        {
+            $project: {
+                mod: true, 
+                title: true,
+                toAddress: true,
+                fromAddress: true,
+                reviewed: true,
+                state: true,
+                "comment.price": true,
+                "comment.time": true
+            }
+        },
+        {
+            $unwind: "$comment"
+        }
+    ])
 
-        return reqs
-        
-    } catch (e) {
-        throw new Error(e.message)
-    }
+    return reqs
+
+}
+
+// deleting all the comments inside a request
+requestSchema.statics.deleteRequest = async function (request) {
+
+    // delete all the comments : oh boi
+    const commentIDs = request.participants.map(comment => {
+        return comment.commentId
+    })
+
+    await Comment.deleteMany({commentId : commentIDs})
+
+    await this.deleteOne(request._id)
+
 }
 
 requestSchema.options.toJSON = {
