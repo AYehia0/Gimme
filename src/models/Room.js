@@ -63,27 +63,6 @@ roomSchema.statics.startChatRoom = async function (chatMaker, request, user) {
    } 
 }
 
-// get userIds in the chat
-roomSchema.statics.getUsersInChat = async function (roomId) {
-    try {
-
-        let users = []
-
-        const room = await this.findById(roomId)
-
-        if (!room)
-            throw new Error("Room not found")
-
-        users = [room.user, room.roomMaker]
-
-        return users
-        
-    } catch (e) {
-        throw e
-    }
-}
-
-
 // creating the model 
 const Room = mongoose.model('Room', roomSchema)
 

@@ -1,4 +1,4 @@
-import messageCont from '../controller/user.message'
+import messageCont from '../controller/message.controller'
 import { Router } from 'express'
 import auth from '../middlewares/auth'
 import chatAuth from '../middlewares/chat'
@@ -6,7 +6,7 @@ import chatAuth from '../middlewares/chat'
 let router = Router()
 
 // get messages
-router.get('/get-room-msgs/:id', auth.userAuth, chatAuth.chatAuth, messageCont.getChatMessages)
+router.get('/get-room-msgs/:roomId', auth.userAuth, chatAuth.chatAuth, messageCont.getChatMessages)
 
 // exporting
 export default router

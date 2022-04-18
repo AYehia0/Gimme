@@ -1,34 +1,23 @@
 // this is a middleware to auth users (user and MOD) to access the chat
 import Room from '../models/Room'
+import error from '../helpers/error'
 
 const chatAuth = async (req, res, next) => {
-  try {
+  // check if the user are either mod or chatMaker
+  const roomId = req.params.roomId
+  const user = req.user
 
-    // check if the user are either mod or chatMaker
-    const roomId = req.params.id
-    const currentUser = req.user
+  const room = await Room.findById(roomId)
 
-    const authUsers = await Room.getUsersInChat(roomId)
+  // idk if you should add this here : single resp rules SOLID
+  if (!room)
+    throw new error.ServerError(error.invalid.id, 400)
 
-    const userExists = authUsers.findIndex(user => {
-      return user.equals(currentUser._id)
-    })
+  // checking if the user is authorized to perform
+  if (!room.roomMaker.equals(user._id) || !room.user.equals(user._id))
+    throw new error.ServerError(error.user.auth, 403)
 
-    if (userExists === -1)
-      throw new Error("Not authorized")
-
-    // forwarding
-    next()
-
-  } catch (e) {
-    const msg = e.message
-    res.send({
-      status: false,
-      message: msg,
-      data: ""
-    })
-    
-  }
+  next()
 }
 
 export default {

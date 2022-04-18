@@ -49,28 +49,23 @@ messageSchema.statics.addMessageToChat = async function (room, message, addedBy)
 // get latest 8 messages
 // the opt is to skip some message just as pagging/indexing
 messageSchema.statics.getRoomMessages = async function (roomId, opt={}) {
-    try {
 
-        const roomIdObj = mongoose.Types.ObjectId(roomId)
+    const roomIdObj = mongoose.Types.ObjectId(roomId)
 
-        const aggConv = await this.aggregate([
-            {$match: {roomId: roomIdObj}},
-            {$sort: {createdAt : -1}},
+    const aggConv = await this.aggregate([
+        {$match: {roomId: roomIdObj}},
+        {$sort: {createdAt : -1}},
 
-            // IMPORTANT : gettin pages 
-            { $skip: opt.page * opt.limit },
+        // IMPORTANT : gettin pages 
+        { $skip: opt.page * opt.limit },
 
-            { $limit: opt.limit },
+        { $limit: opt.limit },
 
-            // sorting latest first
-            { $sort: { createdAt: -1 } },
-        ])
+        // sorting latest first
+        { $sort: { createdAt: -1 } },
+    ])
 
-        return aggConv
-        
-    } catch (e) {
-       throw e 
-    }
+    return aggConv
 }
 
 // creating the model 
