@@ -16,5 +16,8 @@ export default {
     },
     review : {
         added : "Success : review has been added !!!",
+    },
+    location : {
+        added : "Success : Location has been updated",
     }
 }

@@ -190,32 +190,15 @@ requestSchema.statics.addReview = async function (user, request, {comment, rate}
     }
 }
 // update both the to/from location or just one
-requestSchema.statics.updateRequestLocations = async function(reqId, {toLocation, fromLocation}) {
+requestSchema.statics.updateRequestLocations = async function(request, {toLocation, fromLocation}) {
+    if (toLocation?.length == 2)
+        request.toLocation.coordinates = toLocation.coordinates
 
-    try {
+    if (fromLocation?.length == 2)
+        request.toLocation.coordinates = fromLocation.coordinates
 
-        if (!toLocation && !fromLocation)
-            throw new Error("Can't update Location : empty body")
-
-        const req = await this.findOne({id : reqId})
-
-        // check if you can safely update the request
-        if (req.state != "on")
-            // TODO : throw the status code with the Error
-            throw new Error("Can't edit a closed/fulfilled request")
-
-        if (toLocation?.length == 2)
-            req.toLocation.coordinates = toLocation.coordinates
-
-        if (fromLocation?.length == 2)
-            req.toLocation.coordinates = fromLocation.coordinates
-
-        // saving
-        await req.save()
-       
-    } catch (e) {
-        throw new Error(e.message)
-    }
+    // saving
+    await req.save()
 }
 
 // get all requests by locations

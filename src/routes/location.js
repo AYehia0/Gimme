@@ -1,4 +1,4 @@
-import locationCon from '../controller/user.location'
+import locationCon from '../controller/location.controller'
 import { Router } from 'express'
 import auth from '../middlewares/auth'
 
