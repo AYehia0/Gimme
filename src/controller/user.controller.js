@@ -54,7 +54,7 @@ const getMyProfile = async (req, res) => {
 
   } catch (e) {
 
-     res.send(resp(false, error.login, ""))
+     res.send(resp(false, error.user.login, ""))
 
   }
 }
@@ -67,7 +67,7 @@ const getUserProfile = async (req, res) => {
     res.send(resp(true, "", user))
 
   } catch (e) {
-     res.status(404).send(resp(false, error.notFound, ""))
+     res.status(404).send(resp(false, error.user.notFound, ""))
   }
 }
 const logoutUser = async (req, res) => {
