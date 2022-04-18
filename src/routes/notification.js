@@ -1,4 +1,4 @@
-import notifyCont from '../controller/user.notification'
+import notifyCont from '../controller/notification.controller'
 import { Router } from 'express'
 import auth from '../middlewares/auth'
 

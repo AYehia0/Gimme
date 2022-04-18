@@ -19,5 +19,8 @@ export default {
     },
     location : {
         added : "Success : Location has been updated",
+    },
+    notification : {
+        updated : "Success : notification token has been updated",
     }
 }
