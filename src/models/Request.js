@@ -306,6 +306,24 @@ requestSchema.statics.deleteRequest = async function (request) {
 
 }
 
+requestSchema.methods.deleteComment = async function(commentId) {
+
+    // un-attach from the request
+    // for some reasons .filter doesn't work wtf !!!
+    const commentIndex = this.participants.findIndex((comment) => {
+        return comment.commentId.equals(commentId)
+    })
+
+    this.participants.splice(commentIndex, 1)
+
+    await this.save()
+
+    // delete the comment
+    await Comment.findByIdAndDelete(commentId)
+
+}
+
+
 requestSchema.options.toJSON = {
     transform: function(doc, ret, options) {
         // maybe later who nows ?
