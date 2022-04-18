@@ -22,5 +22,10 @@ export default {
     },
     notification : {
         updated : "Success : notification token has been updated",
+    },
+    payment : {
+        webhook : "Success, webhook is working :D",
+        success : "Session has been created : Please hold the money to choose the MOD",
+        released : "Success : payment has been released !!!"
     }
 }

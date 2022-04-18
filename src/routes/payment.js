@@ -1,4 +1,4 @@
-import paymentCont from '../controller/user.payment'
+import paymentCont from '../controller/payment.controller'
 import { Router } from 'express'
 import auth from '../middlewares/auth'
 
