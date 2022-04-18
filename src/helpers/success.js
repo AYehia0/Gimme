@@ -8,6 +8,10 @@ export default {
         added : "Success : request has been added !!!",
         edit : "Success : request has been edited !!!",
         delete : "Success : request has been deleted !!!",
-    }
-
+    },
+    comment : {
+        added : "Success : comment has been added !!!",
+        edited : "Success : comment has been edited !!!",
+        deleted : "Success : comment has been deleted !!!",
+    },
 }

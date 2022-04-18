@@ -1,5 +1,4 @@
 import Request from '../models/Request'
-import Comment from '../models/Comment'
 import error from '../helpers/error'
 
 // user can create a new request
@@ -20,28 +19,17 @@ const createRequest = async (user, data) => {
 // user can't edit a request having a mod
 const editRequest = async (user, requestId, data) => {
 
-    let err = new Error()
-
-    if (! requestId) {
-        err.code = 404
-        err.message = "Request ID is required"
-        throw err
-    }
+    if (! requestId) 
+        throw new error.ServerError(error.invalid.required("Request ID"), 400)
 
     const request = await Request.findById(requestId)
 
-    if (! request) {
-        err.code = 404
-        err.message = error.request.notfound
-        throw err
-    }
+    if (! request) 
+        throw new error.ServerError(error.request.notfound, 404)
 
     // database can't have anything but : on, fulfilled, closed, deleted
-    if (request.state != "on"){
-        err.code = 403
-        err.message = error.request.edit
-        throw err
-    }
+    if (request.state != "on")
+        throw new error.ServerError(error.request.edit, 403)
 
     Object.entries(data).forEach(([key, val]) => {
         request[key] = val
@@ -55,35 +43,21 @@ const editRequest = async (user, requestId, data) => {
 // deleting a reuqest deletes all the comments inside it
 const deleteReuest = async (user, requestId) => {
 
-    let err = new Error()
-
-    if (! requestId) {
-        err.code = 404
-        err.message = "Request ID is required"
-        throw err
-    }
+    if (! requestId) 
+        throw new error.ServerError(error.invalid.required("Request ID"), 404)
 
     const requestToDel = await Request.findById(requestId)
 
-    if (! requestToDel){
-        err.code = 404
-        err.message = error.invalid.id
-        throw err
-    }
+    if (! requestToDel)
+        throw new error.ServerError(error.invalid.id, 404)
     
-    if (!requestToDel.userId.equals(user._id)){
-        err.code = 403
-        err.message = error.auth
-        throw err
-    }
+    if (!requestToDel.userId.equals(user._id))
+        throw new error.ServerError(error.user.auth, 403)
 
     // ToDo : fix me : if the request is deleted, what happens to the review ? .. requestToDel.state != "on" 
-    if (requestToDel.state === "fulfilled"){
+    if (requestToDel.state === "fulfilled")
         // not allowed
-        err.code = 405
-        err.message = error.request.delete
-        throw err
-    }
+        throw new error.ServerError(error.request.delete, 405)
 
     await Request.deleteRequest(requestToDel)
 
