@@ -25,7 +25,6 @@ const roomSchema = new Schema({
 // to start a chatRoom : chatMaker can do if the mod(to be) in the comments
 // needs the requestId and the userId(mod)
 roomSchema.statics.startChatRoom = async function (chatMaker, request, user) {
-   try {
 
     // check if the chat room between them is already there before ?
     const roomThere = await this.findOne({
@@ -53,14 +52,10 @@ roomSchema.statics.startChatRoom = async function (chatMaker, request, user) {
     })
 
     return {
-            new : true,
-            message : "Creating new room",
-            roomId : newRoom._id
-        }
-       
-   } catch (e) {
-       throw e
-   } 
+        new : true,
+        message : "Creating new room",
+        roomId : newRoom._id
+    }
 }
 
 // creating the model 

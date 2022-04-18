@@ -1,4 +1,4 @@
-import roomCont from '../controller/user.room'
+import roomCont from '../controller/room.controller'
 import { Router } from 'express'
 import auth from '../middlewares/auth'
 
