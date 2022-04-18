@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import Review from './Review'
 import Comment from './Comment'
+import error from '../helpers/error'
 
 const Schema = mongoose.Schema
 
@@ -137,69 +138,55 @@ requestSchema.index({ fromLocation: "2dsphere" })
 requestSchema.index({ toLocation: "2dsphere" })
 
 // check if the user is : mod/user
-requestSchema.statics.addReview = async function (reqId, user, {comment, rate}) {
-    try {
-        if (!comment || !rate)
-            throw new Error("Can't add review : missing comment/rate")
+requestSchema.statics.addReview = async function (user, request, {comment, rate}) {
+    const { mod, reviews } = request
 
-        const req = await this.findOne({id : reqId})
+    const revDetails = await Review.getReviewDetails(reviews)
 
-        if (! req)
-            throw new Error("Request not found")
+    let reviewerId = revDetails.find(rev => {
+        return rev.reviewerId.equals(user._id)
+    })
 
-        const { mod, state, reviews} = req
+    // check if the user is User/MOD
+    // it's a mod
+    if (mod.equals(user._id) && !reviewerId){
 
-        if (! mod || state != "fulfilled")
-            throw new Error("Request isn't fulfilled yet !!!")
-        
-        const revDetails = await Review.getReviewDetails(reviews)
-
-        let reviewerId = revDetails.find(rev => {
-            return rev.reviewerId.equals(user._id)
+        // create the review
+        const modReview = new Review({
+            reviewerId : user._id,
+            toWhom : req.userId,
+            requestId : req._id,
+            title : req.title,
+            body : comment,
+            rate : rate,
+            flow : "user"
         })
 
-        // check if the user is User/MOD
-        // it's a mod
-        if (mod.equals(user._id) && !reviewerId){
+        await modReview.save()
 
-            // create the review
-            const modReview = new Review({
-                reviewerId : user._id,
-                toWhom : req.userId,
-                requestId : req._id,
-                title : req.title,
-                body : comment,
-                rate : rate,
-                flow : "user"
-            })
+        // add to the request
+        reviews.push(modReview._id)
 
-            await modReview.save()
+        await req.save()
 
-            // add to the request
-            reviews.push(modReview._id)
+    }else if (req.userId.equals(user._id) && !reviewerId) {
+        const userReview = new Review({
+            reviewerId : user._id,
+            toWhom : mod,
+            requestId : req._id,
+            title : req.title,
+            body : comment,
+            rate : rate,
+            flow : "customer"
+        })
 
-            await req.save()
+        await userReview.save()
 
-        }else if (req.userId.equals(user._id) && !reviewerId) {
-            const userReview = new Review({
-                reviewerId : user._id,
-                toWhom : mod,
-                requestId : req._id,
-                title : req.title,
-                body : comment,
-                rate : rate,
-                flow : "customer"
-            })
+        reviews.push(userReview._id)
 
-            await userReview.save()
-            reviews.push(userReview._id)
-            await req.save()
-        }else{
-            throw new Error("Can't add review to this request : already added or not authorized")
-        }
-        
-    } catch (e) {
-        throw new Error(e.message)
+        await req.save()
+    }else{
+        throw new error.ServerError(error.invalid.reviewAdded, 405)
     }
 }
 // update both the to/from location or just one

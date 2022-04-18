@@ -17,7 +17,8 @@ export default {
         },
         missing : "Invalid Syntax : There are some missing fields",
         id : "The given ID is either invalid or doesn't exist",
-        location : "Invalid geoJSON type :  { 'type' : 'Point' } is required or the coordinates are invalid"
+        location : "Invalid geoJSON type :  { 'type' : 'Point' } is required or the coordinates are invalid",
+        reviewAdded : "Can't add review to this request : already added or not authorized",
     }, 
     request : {
         delete : "You aren't allowed to delete a request with a state of fulfilled",
@@ -32,5 +33,5 @@ export default {
         yourRequest : "You aren't allowed to comment on your request, LOL",
         price : "The price can't be less than the minimum range of the request",
         delete : "You're not allowed to delete your own comment if you're already chossen as MOD"
-    }
+    },
 }

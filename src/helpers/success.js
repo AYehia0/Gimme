@@ -14,4 +14,7 @@ export default {
         edited : "Success : comment has been edited !!!",
         deleted : "Success : comment has been deleted !!!",
     },
+    review : {
+        added : "Success : review has been added !!!",
+    }
 }
