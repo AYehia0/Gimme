@@ -86,7 +86,6 @@ const searchRequests = async (req, res) => {
 // the expected query is : 
 // { reqId : "requestID", userId : "userid" }
 const getRequests = async (req, res) => {
-    let statusCode = 400
     try {
 
         const requests = await requestServices.getRequestsByID(req.user._id, req.query)
@@ -94,12 +93,7 @@ const getRequests = async (req, res) => {
         res.send(resp(true, "", requests))
 
     } catch (e) {
-        let message = e.message
-
-        if (message.includes("Cast to ObjectId failed") || message.includes("Converting circular structure to JSON")){
-            message = error.invalid.id
-        }
-        res.status(statusCode).send(resp(false, message, ""))
+        res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
 

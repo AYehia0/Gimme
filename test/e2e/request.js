@@ -1,12 +1,14 @@
 import mongoose from 'mongoose'
-import app from '../src/app'
+import app from '../../src/app'
 import supertest from 'supertest'
-import {API_DATA, CODES, getUserByEmail} from '../src/config/test'
+import {API_DATA, CODES, getUserByEmail} from '../../src/config/tests/test'
 
 const request = supertest(app)
 
 // the url related to the user
 import 'dotenv/config'
+import success from '../../src/helpers/success'
+import error from '../../src/helpers/error'
 const mainUrl = `${process.env.MAIN_API}/${process.env.REQUEST_API}`
 
 const requestTests = () => {
@@ -42,7 +44,7 @@ const requestTests = () => {
         requestId = res.body.data._id
 
         expect(res.body.status).toBe(true)
-        expect(res.body.message).toBe("Request has been created !!!")
+        expect(res.body.message).toBe(success.request.added)
     })
     it("Request : should edit an existing request", async () => {
         const res = await request.put(`${mainUrl}/edit/${requestId}`)
@@ -51,7 +53,7 @@ const requestTests = () => {
         .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
-        expect(res.body.message).toBe("Success : request has been edited !!!")
+        expect(res.body.message).toBe(success.request.edit)
     })
     it("Request : should not edit a request with invalid body", async () => {
         const res = await request.put(`${mainUrl}/edit/${requestId}`)
@@ -60,9 +62,6 @@ const requestTests = () => {
         .expect(CODES.BAD)
 
         expect(res.body.status).toBe(false)
-
-        // ToDo : change the mongoose validation to create custom validators 
-        //expect(res.body.message).toBe("Success : request has been edited !!!")
     })
     it("Request : should not edit a request that doesn't exist", async () => {
         const res = await request.put(`${mainUrl}/edit/${request404}`)
@@ -71,7 +70,7 @@ const requestTests = () => {
         .expect(CODES.NOT_FOUND)
 
         expect(res.body.status).toBe(false)
-        expect(res.body.message).toBe("Corrupted ID or Request not found")
+        expect(res.body.message).toBe(error.request.notfound)
     })
 
     // searching requests in the db by locations (to/from)
@@ -87,7 +86,8 @@ const requestTests = () => {
 
     // Get request by ID
     it("Request : should get a request by ID", async () => {
-        const res = await request.get(`${mainUrl}/requests?id=${requestId}`)
+
+        const res = await request.get(`${mainUrl}/requests?reqId=${requestId}`)
         .set("Authorization", `Bearer ${normalUserToken}`)
         .expect(CODES.OK)
 
@@ -126,7 +126,7 @@ const requestTests = () => {
         .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
-        expect(res.body.message).toBe("Request has been deleted !!!")
+        expect(res.body.message).toBe(success.request.delete)
     })
 
 }

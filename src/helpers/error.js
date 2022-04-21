@@ -11,11 +11,14 @@ export default {
         notFound : "User not found",
         auth : "You're not allowed to perform this action",
         registered : "Account already exists",
+        wrong : "Username or password is wrong"
     },
     invalid : {
         required : function (propery) {
             return `${propery} is required`
         },
+        phone : "Invalid Phone Number", 
+        email : "Invalid email",
         missing : "Invalid Syntax : There are some missing fields",
         id : "The given ID is either invalid or doesn't exist",
         location : "Invalid geoJSON type :  { 'type' : 'Point' } is required or the coordinates are invalid",

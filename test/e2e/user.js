@@ -18,8 +18,7 @@ const userTests = () => {
     it("Register : should register a user to the database", async () => {
         const res = await request.post(`${mainUrl}/register`)
         .send(API_DATA.REGISTER.USER_NORMAL)
-        console.log(res)
-        //.expect(CODES.OK)
+        .expect(CODES.OK)
 
         expect(res.body.status).toBe(true)
         expect(res.body.message).toBe(success.register)
@@ -40,7 +39,7 @@ const userTests = () => {
         .expect(CODES.CONFLICT)
 
         expect(res.body.status).toBe(false)
-        expect(res.body.message).toBe("Email/Phone Already Exists")
+        expect(res.body.message).toBe(error.user.registered)
     })
     it("Login : should login a user", async () => {
         // login the mod too to fetch a correct token
@@ -73,7 +72,7 @@ const userTests = () => {
         .expect(CODES.FORBIDDEN)
 
         expect(res.body.status).toBe(false)
-        expect(res.body.message).toBe(error.invalid)
+        expect(res.body.message).toBe(error.user.wrong)
     })
     it("Profile : should return user's profile", async () => {
         const res = await request.get(`${mainUrl}/me`)

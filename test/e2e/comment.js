@@ -1,6 +1,6 @@
-import app from '../src/app'
+import app from '../../src/app'
 import supertest from 'supertest'
-import {API_DATA, CODES, getUserByEmail, getRequestByUserId} from '../src/config/test'
+import {API_DATA, CODES, getUserByEmail, getRequestByUserId} from '../../src/config/tests/test'
 
 const request = supertest(app)
 
@@ -36,14 +36,13 @@ const commentTests = () => {
         const userNormal = await getUserByEmail(API_DATA.REGISTER.USER_NORMAL.email)
         const req = await getRequestByUserId(userNormal._id)
 
-        requestId = req?._id
+        requestId = req?._id.toString()
         modUserToken = userMod.token
 
         const res = await request.post(`${mainUrl}/comment/${requestId}`)
         .set("Authorization", `Bearer ${modUserToken}`)
         .send(API_DATA.COMMENT.NEW_COMMENT)
         .expect(CODES.OK)
-
 
         commentId = res.body.data._id
 

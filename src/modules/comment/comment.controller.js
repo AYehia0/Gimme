@@ -7,7 +7,7 @@ import resp from '../../helpers/responseTemplate'
 const giveComment = async (req, res) => { 
     try {
 
-        const requestId = req.params.reqIid
+        const requestId = req.params.reqId
 
         if (! requestId)
             throw new error.ServerError(error.invalid.required("Request ID"), 400)

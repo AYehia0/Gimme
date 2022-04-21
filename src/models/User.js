@@ -3,6 +3,8 @@ import validator from 'validator'
 import jwt from 'jsonwebtoken'
 import Room from '../models/Room'
 import bcrypt from 'bcryptjs'
+import error from '../helpers/error'
+
 
 const Schema = mongoose.Schema
 
@@ -29,7 +31,7 @@ const userSchema = new Schema({
     unique: true,
     validate(value) {
       if (!validator.isEmail(value))
-        throw new Error("Invalid Email!!!")
+        throw new error.ServerError(error.invalid.email, 405)
     }
   },
   phone : {
@@ -38,7 +40,7 @@ const userSchema = new Schema({
     //required: true,
     validate(value) {
       if (!validator.isMobilePhone(value, ['ar-EG']))
-        throw new Error("Invalid Phone Format!!!")
+        throw new error.ServerError(error.invalid.phone, 400)
     }
   },
   password : {
@@ -49,7 +51,7 @@ const userSchema = new Schema({
         minLength: process.env.MIN_PASS_LEN,
         maxLength: process.env.MAX_PASS_LEN
       }))
-        throw new Error("Weak Password!!!")
+        throw new error.ServerError(error.invalid.phone, 405)
     }
   },
   // a user can be a normal user or delivery user
@@ -104,26 +106,17 @@ userSchema.pre('save', function(next) {
 // login token
 userSchema.statics.login = async (email, password) => {
 
-  let error 
   // finding the user
   const user = await User.findOne({email: email})
 
-  if (!user){
-
-    error = new Error("User not found, are you registered ?")
-    error.code = 404
-
-    throw error
-  }
+  if (!user)
+    throw new error.ServerError(error.user.notFound, 404)
 
   // password check
   const isValid = bcrypt.compareSync(password, user.password)
 
-  if (!isValid){
-    error = new Error("Incorrect Password/Email")
-    error.code = 403
-    throw error
-  }
+  if (!isValid)
+    throw new error.ServerError(error.user.wrong, 403)
 
   return user
 }

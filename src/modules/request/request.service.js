@@ -76,9 +76,10 @@ const searchRequestsByLocation = async (to, from) => {
 const getRequestsByID = async (user, query) => {
 
     if (query.reqId)
-        return [Request.findById(query.reqId)]
 
-    return Request.find({userId: user._id})
+        return [await Request.findById({ _id : query.reqId })]
+
+    return await Request.find({userId: user._id})
 
 }
 

@@ -24,8 +24,6 @@ const registerUser = async (req, res) => {
 // return the token to the user
 // TODO: login by phone number instead of email
 const loginUser = async (req, res) => {
-  let message
-  let statusCode = 200
   try {
     
     const {email, password} = req.body 
@@ -38,12 +36,8 @@ const loginUser = async (req, res) => {
 
     res.send(resp(true, success.login, token))
   } catch (e) {
-    message = e.message
 
-    if (message === "User not found, are you registered ?" || message === "Incorrect Password/Email"){
-      statusCode = e.code
-    }
-    res.status(statusCode).send(resp(false, message, ""))
+    res.status(e.code || 400).send(resp(false, e.message, ""))
   }
 }
 
