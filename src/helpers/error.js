@@ -10,6 +10,7 @@ export default {
         login : "Not authorized",
         notFound : "User not found",
         auth : "You're not allowed to perform this action",
+        registered : "Account already exists",
     },
     invalid : {
         required : function (propery) {

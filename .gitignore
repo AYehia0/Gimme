@@ -2,5 +2,5 @@ node_modules
 uploads
 src/utils/github_notify.js
 test/test_configs
-src/config/fcm.json
-src/config/stripe_key.json
+src/config/keys/fcm.json
+src/config/keys/stripe_key.json

@@ -7,7 +7,7 @@ This util contains the payment functions :
     - creating ...
 
 */
-import creds from '../config/stripe_key.json'
+import creds from '../config/keys/stripe_key.json'
 import Stripe from 'stripe';
 const stripe = new Stripe(creds.api_public);
 

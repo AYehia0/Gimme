@@ -1,5 +1,5 @@
 // the db
-import db from './config/db'
+import db from './config/db/db'
 
 // connection to the db
 db.connect(process.env.NODE_ENV)
@@ -15,15 +15,15 @@ import bodyParser from 'body-parser'
 const __dirname = path.resolve();
 
 // routers
-import userRoutes from './routes/user'
-import reviewRoutes from './routes/review'
-import requestRoutes from './routes/request'
-import commentRoutes from './routes/comment'
-import roomRoutes from './routes/room'
-import messageRoutes from './routes/message'
-import locationRoutes from './routes/location'
-import notificationRoutes from './routes/notification'
-import paymentRoutes from './routes/payment'
+import userRoutes from './modules/user/user.routes'
+import reviewRoutes from './modules/review/review.routes'
+import requestRoutes from './modules/request/request.routes'
+import commentRoutes from './modules/comment/comment.routes'
+import roomRoutes from './modules/room/room.routes'
+import messageRoutes from './modules/message/message.routes'
+import locationRoutes from './modules/location/location.routes'
+import notificationRoutes from './modules/notification/notification.routes'
+import paymentRoutes from './modules/payment/payment.routes'
 
 // consts
 const mainURL = process.env.MAIN_API
