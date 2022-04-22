@@ -3,6 +3,7 @@ import userServices from './user.service'
 import resp from '../../helpers/responseTemplate'
 import success from '../../helpers/success'
 import error from '../../helpers/error'
+import uploader from '../../middlewares/uploader'
 
 const registerUser = async (req, res) => {
   try {
@@ -104,20 +105,34 @@ const editUser = async (req, res) => {
 
 // upload a profile img
 const changeProfilePicture = async (req, res) => {
-  try {
 
-    const img = req.file.filename
+  // passing the profile dir as a string 
+  req.dirType = process.env.UPLOAD_LOC_PROFILE
 
-    if (!img)
-      throw new error.ServerError(error.invalid.required("filename"), 400)
+  uploader.single('image')(req, res, async (err) => {
+    try {
 
-    await userServices.addProfilePicture(req.user, img)
+      if (err?.code === 'LIMIT_FILE_SIZE')
+        throw new error.ServerError(error.invalid.fileSize, 403)
 
-    res.send(resp(true, success.uploadImg, ""))
+      if (err?.message === "INV_TYPE"){
+        throw new error.ServerError(error.invalid.fileType, 403)
+      }
 
-  } catch (e) {
-     res.status(400).send(resp(false, e.message, ""))
-  }
+      const img = req.file?.filename
+
+      if (!img)
+        throw new error.ServerError(error.invalid.required("filename"), 400)
+
+      await userServices.addProfilePicture(req.user, img)
+
+      res.send(resp(true, success.uploadImg, ""))
+    }
+    catch(e) {
+      console.log(e)
+      res.status(e.code || 400).send(resp(false, e.message, ""))
+    }
+  })
 }
 export default {
   registerUser,

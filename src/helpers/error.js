@@ -17,6 +17,8 @@ export default {
         required : function (propery) {
             return `${propery} is required`
         },
+        fileType : "Invalid Type : We only accept files of type image",
+        fileSize : "You exceeded the max filesize : bigger than you mom",
         phone : "Invalid Phone Number", 
         email : "Invalid email",
         missing : "Invalid Syntax : There are some missing fields",

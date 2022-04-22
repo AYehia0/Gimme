@@ -1,10 +1,8 @@
 import userCont from './user.controller'
-import uploader from '../../middlewares/uploader'
 import { Router } from 'express'
 import auth from '../../middlewares/auth'
 
 let router = Router()
-
 
 // register a user
 router.post('/register', userCont.registerUser)
@@ -13,7 +11,7 @@ router.post('/register', userCont.registerUser)
 router.post('/login', userCont.loginUser)
 
 // upload a profile img
-router.post('/profile-img', auth.userAuth, uploader.single('image'), userCont.changeProfilePicture)
+router.post('/profile-img', auth.userAuth, userCont.changeProfilePicture)
 
 // show your profile
 router.get('/me', auth.userAuth , userCont.getMyProfile)
