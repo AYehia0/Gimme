@@ -1,16 +1,18 @@
 import multer from 'multer'
 import fs from 'fs'
 import path from 'path'
+const __dirname = path.resolve()
 
-const uploadLocation = `../../${process.env.UPLOAD_LOC}`
+// what the hell is going on here ??
+const uploadLocation = `${process.env.UPLOAD_LOC}`
 const generalFileSize = process.env.FILE_SIZE
 
 // setting up the storage params
 const storageSettings = multer.diskStorage({
     filename : function (req, file, callback) {
 
-        // the filename as template
-        const fileName = `${Date.now()}${path.extname(file.originalname)}`
+        //const fileName = `${Date.now()}${path.extname(file.originalname)}`
+        const fileName = file.originalname
 
         callback(null, fileName)
     },
