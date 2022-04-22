@@ -12,7 +12,7 @@ import path from 'path'
 import cors from 'cors'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
-const __dirname = path.resolve();
+const __dirname = path.resolve()
 
 // routers
 import userRoutes from './modules/user/user.routes'
@@ -53,7 +53,7 @@ app.use(cors())
 
 // serving static files on the same server
 // probably it's not a good idea as all real life app save to remote server
-const uploadPath = path.join(__dirname, `../${process.env.UPLOAD_LOC}`)
+const uploadPath = path.join(__dirname, `${process.env.UPLOAD_LOC}`)
 app.use("/photos", express.static(uploadPath))
 
 // using the routes

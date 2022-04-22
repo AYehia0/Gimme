@@ -107,6 +107,7 @@ userSchema.pre('save', function(next) {
 userSchema.statics.login = async (email, password) => {
 
   // finding the user
+  // ToDo : login by phone number
   const user = await User.findOne({email: email})
 
   if (!user)
