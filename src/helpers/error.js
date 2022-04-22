@@ -19,6 +19,7 @@ export default {
         },
         fileType : "Invalid Type : We only accept files of type image",
         fileSize : "You exceeded the max filesize : bigger than you mom",
+        route_404 : "Oh no you are lost :( , read the documentation to find your way back",
         phone : "Invalid Phone Number", 
         email : "Invalid email",
         missing : "Invalid Syntax : There are some missing fields",

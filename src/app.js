@@ -24,6 +24,8 @@ import messageRoutes from './modules/message/message.routes'
 import locationRoutes from './modules/location/location.routes'
 import notificationRoutes from './modules/notification/notification.routes'
 import paymentRoutes from './modules/payment/payment.routes'
+import error from './helpers/error'
+import resp from './helpers/responseTemplate'
 
 // consts
 const mainURL = process.env.MAIN_API
@@ -66,5 +68,10 @@ app.use(`${mainURL}/${process.env.MESSAGE_API}`, messageRoutes)
 app.use(`${mainURL}/${process.env.LOCATION_API}`, locationRoutes)
 app.use(`${mainURL}/${process.env.NOTIFICATION_API}`, notificationRoutes)
 app.use(`${mainURL}/${process.env.PAYMENT_API}`, paymentRoutes)
+
+// catch all 404 routes
+app.use((req, res, next) => {
+    res.status(404).send(resp(false, error.invalid.route_404, ""))
+})
 
 export default app
