@@ -55,7 +55,7 @@ const editUserProfile = async (user, data) => {
 // add/update a profile img to the user
 const addProfilePicture = async (user, img) => {
 
-    user.img = `photos/${user._id}/${img}`
+    user.img = `photos/${user._id}/${process.env.UPLOAD_LOC_PROFILE}/${img}`
 
     await user.save()
 
