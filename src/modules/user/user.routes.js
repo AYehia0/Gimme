@@ -17,7 +17,7 @@ router.post('/profile-img', auth.userAuth, userCont.changeProfilePicture)
 router.get('/me', auth.userAuth , userCont.getMyProfile)
 
 // show other user profiles
-router.get('/profile/:id', auth.userAuth , userCont.getUserProfile)
+router.get('/profile/:userId', auth.userAuth , userCont.getUserProfile)
 
 // logout
 router.get('/logout', auth.userAuth, userCont.logoutUser)

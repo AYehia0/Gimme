@@ -8,6 +8,10 @@ import uploader from '../../middlewares/uploader'
 const registerUser = async (req, res) => {
   try {
 
+    const regData = req.body
+    if (!regData?.name && !regData?.email && !regData?.password && !regData?.phone)
+      throw new error.ServerError(error.invalid.required("Name/Email/Phone/Passwrod"))
+
     await userServices.createAccount(req.body)
 
     res.send(resp(true, success.register, "")) 
@@ -64,7 +68,7 @@ const getUserProfile = async (req, res) => {
     if (! req.params.userId)
       throw new error.ServerError(error.invalid.required("UserId"), 400)
  
-    const user = await userServices.getOthersProfile(req.params.id)
+    const user = await userServices.getOthersProfile(req.params.userId)
 
     res.send(resp(true, "", user))
 
