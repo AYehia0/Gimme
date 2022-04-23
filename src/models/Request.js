@@ -213,6 +213,7 @@ requestSchema.statics.getRequestLocations = async function(toAddress, fromAddres
     const requests = await Request.find({
         toAddress : { "$regex": toAddress, "$options": "i" },
         fromAddress : { "$regex": fromAddress, "$options": "i" },
+        state : "on"
     })
 
     return requests
