@@ -8,7 +8,17 @@ import error from '../../helpers/error'
 const giveReview = async (req, res) => {
     try {
 
-        await reviewService.addReviewToRequest(req.user, req.params.reqId, req.body)
+        const requestId = req.params.reqId
+        const review = req.body
+
+        if (! requestId)
+            throw new error.ServerError(error.invalid.required("RequestId"), 400) 
+        
+        if (! review.comment || ! review.rate)
+            throw new error.ServerError(error.invalid.required("Comment/Rate"), 400) 
+
+        await reviewService.addReviewToRequest(req.user, requestId, review)
+
         res.send(resp(true, success.review.added, ""))
         
     } catch (e) {

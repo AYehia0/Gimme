@@ -9,9 +9,6 @@ import success from "../../helpers/success"
 // write a review
 const addReviewToRequest = async (user, requestId, review) => {
 
-    if (! review.comment || ! review.rate)
-        throw new error.ServerError(error.invalid.required("Comment/Rate"), 400) 
-
     const request = await Request.findById(requestId)
 
     if (! request)
