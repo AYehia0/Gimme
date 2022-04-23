@@ -31,13 +31,13 @@ const reviewSchema = new Schema({
     rate : {
         type : Number,
         required : true,
-        min : 1,
-        max : 5
+        min : [1, "You can't add review with stars less than : 1"],
+        max : [5, "You exceeded the max review stars : 5"]
     },
     // the flow flag : determines what the job of the user who gave the review
     flow : {
         type : String,
-        enum : ["user", "customer"],
+        enum : ["mod", "customer"],
         required : true
     }
 })

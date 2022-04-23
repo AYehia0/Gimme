@@ -154,12 +154,12 @@ requestSchema.statics.addReview = async function (user, request, {comment, rate}
         // create the review
         const modReview = new Review({
             reviewerId : user._id,
-            toWhom : req.userId,
-            requestId : req._id,
-            title : req.title,
+            toWhom : request.userId,
+            requestId : request._id,
+            title : request.title,
             body : comment,
             rate : rate,
-            flow : "user"
+            flow : "mod"
         })
 
         await modReview.save()
@@ -167,14 +167,14 @@ requestSchema.statics.addReview = async function (user, request, {comment, rate}
         // add to the request
         reviews.push(modReview._id)
 
-        await req.save()
+        await request.save()
 
-    }else if (req.userId.equals(user._id) && !reviewerId) {
+    }else if (request.userId.equals(user._id) && !reviewerId) {
         const userReview = new Review({
             reviewerId : user._id,
             toWhom : mod,
-            requestId : req._id,
-            title : req.title,
+            requestId : request._id,
+            title : request.title,
             body : comment,
             rate : rate,
             flow : "customer"
@@ -184,8 +184,9 @@ requestSchema.statics.addReview = async function (user, request, {comment, rate}
 
         reviews.push(userReview._id)
 
-        await req.save()
+        await request.save()
     }else{
+        // ToDo : move this from here
         throw new error.ServerError(error.invalid.reviewAdded, 405)
     }
 }

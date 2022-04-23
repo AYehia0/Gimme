@@ -14,7 +14,7 @@ const giveReview = async (req, res) => {
         if (! requestId)
             throw new error.ServerError(error.invalid.required("RequestId"), 400) 
         
-        if (! review.comment || ! review.rate)
+        if (! review.comment || ! review.rate.toString())
             throw new error.ServerError(error.invalid.required("Comment/Rate"), 400) 
 
         await reviewService.addReviewToRequest(req.user, requestId, review)
@@ -30,17 +30,9 @@ const giveReview = async (req, res) => {
 const getUserReviews = async (req, res) => {
     try {
 
-        const job = req.query.job
+        const userId = req.query.userId
 
-        if (!job)
-            throw new error.ServerError(error.invalid.required("Job role"), 400) 
-
-        const validJobs = ["mod", "customer"]
-
-        if (! validJobs.includes(job))
-            throw new error.ServerError(error.invalid.reviewQuery, 400) 
-
-        const reviews = await reviewService.getUserReviews(req.user, job)
+        const reviews = await reviewService.getUserReviews(userId)
 
         res.send(resp(true, "", reviews))              
         

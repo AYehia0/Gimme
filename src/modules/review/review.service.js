@@ -14,32 +14,45 @@ const addReviewToRequest = async (user, requestId, review) => {
     if (! request)
         throw new error.ServerError(error.request.notfound, 404) 
 
-    if (! request.mod || request.state != "fulfilled")
+    if (! request.mod || request.state != "closed")
         throw new error.ServerError(error.request.noMod, 405) 
    
     await Request.addReview(user, request, review)
  
 }
 
-const getUserReviews = async (user, job) => {
-
-    let reviews = []
+const getUserReviews = async (userId) => {
 
     // getting all the reviews where the reviewerId || toWhom equals to the userId
-    if (job == "customer")
-        reviews = await Review.find({
-            toWhom : user._id,
-            flow : "customer"
-        })
+    const reviews = await Review.find({
+        $or : [
+            { toWhom : userId },
+            { reviewerId : userId }
+        ],
+    })
 
-    else if (job == "mod")
-        reviews = await Review.find({
-            toWhom : user._id,
-            flow : "user"
-        })
+    // return the reivews formated
+    const formatedReviews = getFormatedReviews(userId, reviews)
 
-    return reviews
+    return formatedReviews
 
+}
+
+// format the returned reviews to be easy to read for frontend noobs
+const getFormatedReviews = (userId, reviews) => {
+
+    return {
+        // check if the userId is mod
+        as_mod : reviews.filter((review) => {
+            if (review.reviewerId.equals(userId) && (review.flow == "mod"))
+                return review
+        }),
+        // check if the userId is customer 
+        as_customer: reviews.filter((review) => {
+            if (review.reviewerId.equals(userId) && (review.flow == "customer"))
+                return review
+        }),
+    }
 }
 
 export default {

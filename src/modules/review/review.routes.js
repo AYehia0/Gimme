@@ -5,7 +5,7 @@ import auth from '../../middlewares/auth'
 let router = Router()
 
 
-router.post('/give-review/:reqId', auth.userAuth, reviewCont.giveReview)
+router.post('/review/:reqId', auth.userAuth, reviewCont.giveReview)
 router.get('/reviews', auth.userAuth, reviewCont.getUserReviews)
 
 // exporting
