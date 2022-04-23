@@ -32,7 +32,7 @@ export default {
         delete : "You aren't allowed to delete a request with a state of fulfilled",
         edit : "You aren't allowed to edit a request with a state of fulfilled/closed",
         notfound : "You're trying to access a request that doesn't exist",
-        modChoosen : "This request doesn't accept any comments : MOD is already choosen",
+        modChoosen : "This request doesn't accept any comments/sessions : MOD is already choosen",
         closed : "You're not allowed to perform this : request is already closed",
         noMod : "This is request isn't fulfilled yet"
     },

@@ -48,7 +48,7 @@ const createStripeSession = async (user, requestId, commentId ) => {
     const modPrice = comment.price
 
     // saving the request and the mod both together as ref, so that I can reference them later on
-    const requestModRef = `${reqId};${comment.userId};${commentId}`
+    const requestModRef = `${requestId};${comment.userId};${commentId}`
 
     const session = await payment.createSession(user, modPrice, requestModRef)
 
@@ -117,6 +117,9 @@ const capturePaymentHelper = async (request) => {
 const releasePayment = async (user, requestId, secret) => {
 
     const request = await Request.findById(requestId)
+
+    if (! request)
+        throw new error.ServerError(error.request.notfound, 404)
 
     if (! request.userId.equals(user._id))
         throw new error.ServerError(error.user.auth, 401)

@@ -2,6 +2,7 @@ import paymentService from "./payment.service"
 import resp from "../../helpers/responseTemplate"
 import success from "../../helpers/success"
 import error from "../../helpers/error"
+import payment from "../../utils/stripe"
 
 const getPublishKey = async (req, res) => {
 
@@ -60,6 +61,7 @@ const customWebhook = async (req, res) => {
         res.send(resp(true, success.payment.webhook, ""))
 
     } catch (e) {
+        console.log(e)
         res.status(400).send(resp(false, e.message, ""))
     }
 }
@@ -79,7 +81,8 @@ const releasePayment = async (req, res) => {
         res.send(resp(true, success.payment.released, ""))
    
     } catch (e) {
-        res.status(statusCode).send(resp(false, e.message, ""))
+        console.log(e)
+        res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
 

@@ -9,7 +9,7 @@ This util contains the payment functions :
 */
 import creds from '../config/keys/stripe_key.json'
 import Stripe from 'stripe';
-const stripe = new Stripe(creds.api_public);
+const stripe = new Stripe(creds.api_secret);
 
 // Save users cards' by creating a SetupIntent
 // https://stripe.com/docs/payments/save-and-reuse?platform=android&ui=payment-sheet
