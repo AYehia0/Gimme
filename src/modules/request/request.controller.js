@@ -30,7 +30,7 @@ const openRequest = async (req, res) => {
 const editRequest = async (req, res) => {
     let statusCode = 400
     try {
-        await requestServices.editRequest(req.user, req.params.id, req.body)
+        await requestServices.editRequest(req.user, req.params.reqId, req.body)
 
         res.send(resp(true, success.request.edit))
 
@@ -53,7 +53,7 @@ const editRequest = async (req, res) => {
 // delete a request : can't delete a request if the state is not closed
 const deleteRequest = async (req, res) => {
     try {
-        await requestServices.deleteReuest(req.user, req.params.id)
+        await requestServices.deleteReuest(req.user, req.params.reqId)
 
         res.send(resp(true, success.request.delete, ""))
 

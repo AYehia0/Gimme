@@ -19,10 +19,10 @@ router.get('/subscribed', auth.userAuth, requestCont.getSubscibedRequests)
 router.post('/open', auth.userAuth, requestCont.openRequest)
 
 // edit a request
-router.put('/edit/:id', auth.userAuth, requestCont.editRequest)
+router.put('/edit/:reqId', auth.userAuth, requestCont.editRequest)
 
 // delete a request
-router.delete('/delete/:id', auth.userAuth, requestCont.deleteRequest)
+router.delete('/delete/:reqId', auth.userAuth, requestCont.deleteRequest)
 
 // exporting
 export default router
