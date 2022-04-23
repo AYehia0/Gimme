@@ -37,7 +37,7 @@ export default {
     },
     comment : {
         commented : "You aren't allowed to have more than one comment on the same request",
-        notfound : "You're trying to access a comment that doesn't exist",
+        notfound : "You're trying to access a comment that doesn't exist, or you're not authorized",
         yourRequest : "You aren't allowed to comment on your request, LOL",
         price : "The price can't be less than the minimum range of the request",
         delete : "You're not allowed to delete your own comment if you're already chossen as MOD"

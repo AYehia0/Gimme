@@ -17,6 +17,9 @@ const giveComment = async (req, res) => {
         res.send(resp(true, success.comment.added, comment))   
         
     } catch (e) {
+        if (e.code == 11000)
+            return res.status(409).send(resp(false, error.comment.commented, ""))
+
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }

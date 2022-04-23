@@ -6,10 +6,10 @@ import error from '../../helpers/error'
 
 // checks if a user already commented on a request
 // return comment's index in the participants list inside the request
-const getUserComment = (user, request) => {
+const getUserComment = (user, request, commentId) => {
 
     const commentIndex = request.participants.findIndex((comment) => {
-        return comment.userId.equals(user._id)
+        return comment.userId.equals(user._id) && (comment.commentId == commentId) 
     })
 
     return commentIndex 
@@ -31,7 +31,10 @@ const addComment = async (user, requestId, comment) => {
         throw new error.ServerError(error.request.modChoosen, 409)
 
     // getting the comment index
-    const userCommentedInd = getUserComment(user, request)
+    // const userCommentedInd = request.participants.findIndex((comment) => {
+    //     return comment.userId.equals(user._id)
+    // })
+    let userCommentedInd = -1
 
     // comment exists
     if (userCommentedInd !== -1)
@@ -89,7 +92,9 @@ const editComment = async (user, requestId, comment) => {
     if (request.mod)
         throw new error.ServerError(error.request.modChoosen, 403)
    
-    const userComment = getUserComment(user, request)
+    const userComment = request.participants.findIndex((comment) => {
+        return comment.userId.equals(user._id)
+    })
 
     if (userComment == -1) 
         throw new error.ServerError(error.comment.notfound, 404)
@@ -118,7 +123,8 @@ const deleteComment = async (user, requestId, commentId) => {
     if (request.mod == user._id) 
         throw new error.ServerError(error.comment.delete, 405)
 
-    const userCommentedInd = getUserComment(user, request)
+    // check if the commentId is the one the user posted
+    const userCommentedInd = getUserComment(user, request, commentId)
 
     // doesn't exist
     if (userCommentedInd === -1)
