@@ -28,11 +28,6 @@ const getUserReviews = async (user, job) => {
 
     let reviews = []
 
-    const validJobs = ["user", "customer"]
-
-    if (! validJobs.includes(job))
-        throw new error.ServerError(error.invalid.required("Job role"), 400) 
-
     // getting all the reviews where the reviewerId || toWhom equals to the userId
     if (job == "customer")
         reviews = await Review.find({
@@ -40,7 +35,7 @@ const getUserReviews = async (user, job) => {
             flow : "customer"
         })
 
-    else if (job == "user")
+    else if (job == "mod")
         reviews = await Review.find({
             toWhom : user._id,
             flow : "user"

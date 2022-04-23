@@ -22,6 +22,7 @@ export default {
         route_404 : "Oh no you are lost :( , read the documentation to find your way back",
         phone : "Invalid Phone Number", 
         email : "Invalid email",
+        reviewQuery : "Invalid role, make sure it's either a 'customer' or 'mod'",
         missing : "Invalid Syntax : There are some missing fields",
         id : "The given ID is either invalid or doesn't exist",
         location : "Invalid geoJSON type :  { 'type' : 'Point' } is required or the coordinates are invalid",
