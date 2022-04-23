@@ -101,7 +101,7 @@ const capturePaymentHelper = async (request) => {
             balance: paymentSuccess.amount
         })
     }else {
-        userWallet.balance = paymentSuccess.amount
+        userWallet.balance += paymentSuccess.amount
     }
 
     // close the request
