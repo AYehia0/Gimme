@@ -159,6 +159,9 @@ const getVerificationCode = async (user, requestId) => {
 
     const request = await Request.findById(requestId)
 
+    if (! request)
+        throw new error.ServerError(error.request.notfound, 404)
+
     if (! request.mod)
         throw new error.ServerError(error.request.noMod, 404)
 
