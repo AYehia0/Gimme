@@ -13,7 +13,7 @@ const setRequestLocation = async (req, res) => {
         if (!locations.toLocation && !locations.fromLocation)
             throw new error.ServerError(error.invalid.required("To/From Location"), 400)
 
-        await locationService.updateRequestLocation(user, requestId, locations)
+        await locationService.updateRequestLocation(req.user._id, requestId, locations)
 
         res.send(resp(true, success.location.added, ""))
 

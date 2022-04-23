@@ -2,11 +2,14 @@ import Request from "../../models/Request"
 import error from "../../helpers/error"
 
 // user should be the maker of the request
-const updateRequestLocation = async (user, requestId, locations) => {
+const updateRequestLocation = async (userId, requestId, locations) => {
 
     const request = await Request.findById(requestId)
 
-    if (!request.userId.equals(user._id))
+    if (! request)
+        throw new error.ServerError(error.request.notfound, 404)
+
+    if (!request.userId.equals(userId))
         throw new error.ServerError(error.user.auth, 403)
 
     if (request.state != "on")

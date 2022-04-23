@@ -198,28 +198,24 @@ requestSchema.statics.updateRequestLocations = async function(request, {toLocati
         request.toLocation.coordinates = fromLocation.coordinates
 
     // saving
-    await req.save()
+    await request.save()
 }
 
 // get all requests by locations
 // update both the to/from location or just one
 requestSchema.statics.getRequestLocations = async function(toAddress, fromAddress) {
-    try {
 
-        // check if it's undefined -> replace with empty string 
-        toAddress = toAddress || ""
-        fromAddress = fromAddress || ""
+    // check if it's undefined -> replace with empty string 
+    toAddress = toAddress || ""
+    fromAddress = fromAddress || ""
 
-        const requests = await Request.find({
-            toAddress : { "$regex": toAddress, "$options": "i" },
-            fromAddress : { "$regex": fromAddress, "$options": "i" },
-        })
+    const requests = await Request.find({
+        toAddress : { "$regex": toAddress, "$options": "i" },
+        fromAddress : { "$regex": fromAddress, "$options": "i" },
+    })
 
-        return requests
+    return requests
         
-    } catch (e) {
-        throw new Error(e.message)
-    }
 }
 
 // get the requests i have to do as a MOD
