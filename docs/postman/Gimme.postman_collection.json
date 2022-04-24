@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "486f1d2c-5663-4921-bbd4-f4c510784797",
 		"name": "Gimme",
+		"description": "# Getting Started\n## Authorization\n\n1. Create an account by registering ```User/register```\n2. Login to get the token.\n3. Set the token as a global variable to use it later on.\n4. Set the Authorization method as ```Bearer Token``` with the global var you set\n\n# Required Data\n## URL Params\nParams passed with the url, ex : ```/search?userId=123```\n\n## Data Params\nData to be sent in the body as a json object.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -9,13 +10,58 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "register",
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// getting the collection data and setting the body",
+									"let registeration_data = JSON.parse(pm.collectionVariables.get(\"reg_data\"))",
+									"",
+									"let currentUser = registeration_data.shift()",
+									"",
+									"console.log(registeration_data)",
+									"",
+									"currentUser = JSON.stringify(currentUser)",
+									"",
+									"pm.collectionVariables.set(\"current_user\", currentUser)",
+									"pm.collectionVariables.set(\"reg_data\", registeration_data)",
+									"",
+									"pm.request.body.raw = currentUser"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// run the tests X times",
+									"let registerationData = pm.collectionVariables.get(\"reg_data\")",
+									"",
+									"if (registerationData && registerationData?.length > 0){",
+									"    postman.setNextRequest(\"Register\")",
+									"} else {",
+									"    postman.setNextRequest(\"Login\")",
+									"}",
+									"pm.test(`Successful Registeration : `, () => {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(true);",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\" : \"admin\",\n    \"email\" : \"admin@email.com\",\n    \"phone\" : \"01023482920\",\n    \"password\" : \"Helloadmin123_\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -39,13 +85,76 @@
 					"response": []
 				},
 				{
-					"name": "login",
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// run the tests X times",
+									"let loginData = pm.collectionVariables.get(\"login_data\")",
+									"",
+									"if (loginData && loginData?.length > 0){",
+									"    postman.setNextRequest(\"Login\")",
+									"} else {",
+									"    postman.setNextRequest(null)",
+									"}",
+									"pm.test(`Successful Login : `, () => {",
+									"    let jsonData = pm.response.json();",
+									"",
+									"    // setting the token",
+									"    if (jsonData.data) {",
+									"        const tokenType = `${pm.request.body.toJSON().raw.email.split(\"@\")[0]}_token`",
+									"        console.log(`Setting up ${tokenType.toString()} for  ${jsonData.data}`)",
+									"        pm.collectionVariables.set(tokenType.toString(), jsonData.data)",
+									"    }",
+									"    pm.expect(jsonData.status).to.eql(true);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// getting the collection data and setting the body",
+									"let loginData = pm.collectionVariables.get(\"login_data\")",
+									"",
+									"if (! loginData || loginData?.length == 0) {",
+									"    loginData = [",
+									"        {",
+									"            \"email\" : \"customer@email.com\",",
+									"            \"password\" : \"HelloCustomer123_\"",
+									"        },",
+									"        {",
+									"            \"email\" : \"mod@email.com\",",
+									"            \"password\" : \"HelloMod123_\"",
+									"        },",
+									"        {",
+									"            \"email\" : \"another@email.com\",",
+									"            \"password\" : \"HelloAnother123_\"",
+									"        },   ",
+									"    ]",
+									"}",
+									"",
+									"let currentUser = loginData.shift()",
+									"",
+									"pm.collectionVariables.set(\"login_data\", loginData)",
+									"",
+									"pm.request.body.raw = currentUser"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"admin@email.com\",\n    \"password\" : \"Helloadmin123_\"\n}",
+							"raw": "{\n    \"email\" : \"mod@email.com\",\n    \"password\" : \"Hellomod123_\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,18 +179,33 @@
 				},
 				{
 					"name": "Me",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDY3NDY1ODd9.mjCMSwUH4JegshURio2aJQxbomCVljWgh4L1hZHvHJo",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -114,13 +238,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDY3NDY1ODd9.mjCMSwUH4JegshURio2aJQxbomCVljWgh4L1hZHvHJo",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -148,22 +266,37 @@
 				},
 				{
 					"name": "Change Profile Pic",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDY3NDY1ODd9.mjCMSwUH4JegshURio2aJQxbomCVljWgh4L1hZHvHJo",
-								"type": "default"
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
 							}
-						],
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "image",
 									"type": "file",
-									"src": []
+									"src": "/home/none/Pictures/sad.jpeg"
 								}
 							],
 							"options": {
@@ -194,14 +327,18 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDY3NDY1ODd9.mjCMSwUH4JegshURio2aJQxbomCVljWgh4L1hZHvHJo",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -228,6 +365,27 @@
 					},
 					"response": []
 				}
+			],
+			"description": "# Where am i ?\nThis folder contains all the routes related to the users, like creating accounts, logging in/out, editing user info and viewing other users.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -237,16 +395,10 @@
 					"name": "Create",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\" : \"Electronic parts needed\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 90\n    },\n    \"timeRange\" : {\n        \"val\" : 2\n    }\n}",
+							"raw": "{\n    \"title\" : \"Electronic parts needed\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 90\n    },\n    \"timeRange\" : {\n        \"val\" : 2\n    },\n    \"toAddress\" : \"Cairo Naser City Zahraa ST 4030\",\n    \"fromAddress\" : \"Shiben Al Kom betebs\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -270,65 +422,10 @@
 					"response": []
 				},
 				{
-					"name": "Close",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDU1OTMyNTl9.fs2VD-2o9gqqGYRXKSKN3nosTVTm-_uPGQMjeKEjXoU",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/request/close?modId=6215bfcc9f304e65e8e337e5&reqId=620e6aad9c7c24049b4f84e0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"request",
-								"close"
-							],
-							"query": [
-								{
-									"key": "modId",
-									"value": "6215bfcc9f304e65e8e337e5"
-								},
-								{
-									"key": "reqId",
-									"value": "620e6aad9c7c24049b4f84e0"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Edit",
 					"request": {
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"title\" : \"Electronic parts needed and something else, please\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 150\n    },\n    \"timeRange\" : {\n        \"val\" : 3\n    }\n}",
@@ -364,18 +461,9 @@
 				},
 				{
 					"name": "Delete",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4",
-								"type": "default"
-							}
-						],
+						"method": "DELETE",
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -386,7 +474,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/request/delete/620e6a4f431a90550fa6cc71",
+							"raw": "http://localhost:8080/api/request/delete/624d8d01468546f58e2cac79",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -396,7 +484,7 @@
 								"api",
 								"request",
 								"delete",
-								"620e6a4f431a90550fa6cc71"
+								"624d8d01468546f58e2cac79"
 							],
 							"query": [
 								{
@@ -416,13 +504,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQ1MmU4NGJiYjEzZWE4YzNhNDFmYzkiLCJpYXQiOjE2NDkyNDg1Mzl9.rJNrqM64HORD4zPyuWetcg9LV9xuwLlzj0yP67vTHIM",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -433,7 +515,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/request/search-requests?to=naser city",
+							"raw": "http://localhost:8080/api/request/search?to=naser&from=",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -442,12 +524,16 @@
 							"path": [
 								"api",
 								"request",
-								"search-requests"
+								"search"
 							],
 							"query": [
 								{
 									"key": "to",
-									"value": "naser city"
+									"value": "naser"
+								},
+								{
+									"key": "from",
+									"value": ""
 								}
 							]
 						}
@@ -461,13 +547,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQ1MmU4NGJiYjEzZWE4YzNhNDFmYzkiLCJpYXQiOjE2NDkyNDg1Mzl9.rJNrqM64HORD4zPyuWetcg9LV9xuwLlzj0yP67vTHIM",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -478,7 +558,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/request/requests?id=624d8d01468546f58e2cac79",
+							"raw": "http://localhost:8080/api/request/requests?reqId=393939",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -491,8 +571,8 @@
 							],
 							"query": [
 								{
-									"key": "id",
-									"value": "624d8d01468546f58e2cac79"
+									"key": "reqId",
+									"value": "393939"
 								}
 							]
 						}
@@ -506,13 +586,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQ5YmEwZDc1NzJhMTgxMmE2OGY2ZjMiLCJpYXQiOjE2NDkzMDIzMjV9.-V3sBALrqCU0ok-HHCGtgmpwdgjFGpzW2TpzJM6eb3E",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -547,13 +621,7 @@
 					"name": "Comment",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
@@ -564,7 +632,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/comment/comment/620e6aad9c7c24049b4f84e0",
+							"raw": "http://localhost:8080/api/comment/comment/624d8d01468546f58e2cac79",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -574,7 +642,7 @@
 								"api",
 								"comment",
 								"comment",
-								"620e6aad9c7c24049b4f84e0"
+								"624d8d01468546f58e2cac79"
 							]
 						}
 					},
@@ -587,13 +655,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -624,13 +686,7 @@
 					"name": "Delete",
 					"request": {
 						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -661,13 +717,7 @@
 					"name": "Edit",
 					"request": {
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDUxMTA1MDN9.aFDqnj9BS4QEOpzfPW6fttFWcZuLRCmJ21zfWzG0CX4 ",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 2\n    },\n    \"price\" : 50,\n    \"text\" : \"Hello, I will bring you thing, I have a car, Edited!!!\"\n}",
@@ -693,6 +743,48 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Verification Token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comment/secret?reqId=624d8d01468546f58e2cac79",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comment",
+								"secret"
+							],
+							"query": [
+								{
+									"key": "reqId",
+									"value": "624d8d01468546f58e2cac79"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -706,13 +798,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDU4MDU5Mjd9.UVlYBod4GRunBT4tBeqQJldcbfVPLnPqooCjjCEUEwY",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 5\n}",
@@ -748,13 +834,7 @@
 					"name": "Add Review",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjE1YmZjYzlmMzA0ZTY1ZThlMzM3ZTUiLCJpYXQiOjE2NDU4MDU3MTh9._KGAdH5Yv2FwZ320XeLLbsD7lu6Dvh4MHjR1EhMefCo",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 5\n}",
@@ -790,13 +870,7 @@
 					"name": "Update Location",
 					"request": {
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZmZWIyYTQxOTYyZTBiZWU3ZmNlMzkiLCJpYXQiOjE2NDgxMDk0MjR9.MfFk_7uagcUFTwc0c5Culf8Q_yQtG3ouEjY_nxgR9T0",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"toLocation\" : {\n        \"coordinates\" : []\n    },\n    \"fromLocation\" : {\n        \"coordinates\" : []\n    }\n}",
@@ -838,12 +912,366 @@
 				{
 					"name": "Update Token",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\" : \"some_device_token\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notify/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"notify",
+								"update"
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Get PublishKey",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payment/config",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payment",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Stripe Session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"commentId\" : \"624e5b53a62fa0412bc59b67\",\n    \"reqId\" : \"624d8d01468546f58e2cac79\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payment/create-stripe-session",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payment",
+								"create-stripe-session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Release Payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reqId\" : \"624d8d01468546f58e2cac79\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payment/release-payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payment",
+								"release-payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Stripe Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/payment/create-stripe-account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payment",
+								"create-stripe-account"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// setting some vars",
+					"// the registeration data for MODs",
+					"const API_DATA = {",
+					"    REGISTER : [",
+					"        {",
+					"            \"name\" : \"customer\",",
+					"            \"email\" : \"customer@email.com\",",
+					"            \"phone\" : \"01023438928\",",
+					"            \"password\" : \"HelloCustomer123_\"",
+					"        },",
+					"        {",
+					"            \"name\" : \"mod\",",
+					"            \"email\" : \"mod@email.com\",",
+					"            \"phone\" : \"01023438929\",",
+					"            \"password\" : \"HelloMod123_\"",
+					"        },",
+					"        {",
+					"            \"name\" : \"another\",",
+					"            \"email\" : \"another@email.com\",",
+					"            \"phone\" : \"01023438920\",",
+					"            \"password\" : \"HelloAnother123_\"",
+					"        },   ",
+					"    ],",
+					"    REQUEST : {",
+					"        NORMAL : {",
+					"            \"title\" : \"Electronic parts needed\",",
+					"            \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",",
+					"            \"fromLocation\" : {",
+					"                    \"type\" : \"Point\",",
+					"                    \"coordinates\" : [23.402, 22.204]",
+					"            },",
+					"            \"toLocation\" : {",
+					"                    \"type\" : \"Point\",",
+					"                    \"coordinates\" : [-23.402, 28.204]",
+					"            },",
+					"            \"toAddress\" : \"Tanta Al-Hussiny Magry ST-42\",",
+					"            \"fromAddress\" : \"Cairo Hadaiq Sayed-Mohamed ST-40\",",
+					"            \"priceRange\" : {",
+					"                \"min\" : 20,    \"toAddress\" : \"Tanta Al-Hussiny Magry ST-42\",",
+					"                \"fromAddress\" : \"Cairo Hadaiq Sayed-Mohamed ST-40\",",
+					"             ",
+					"                \"max\" : 90",
+					"            },",
+					"            \"timeRange\" : {",
+					"                \"val\" : 2",
+					"            }",
+					"        },",
+					"        EDITED : {",
+					"            NORMAL : {",
+					"                \"title\" : \"Electronic parts needed\",",
+					"                \"body\" : \"I need Something real quick\",",
+					"                \"fromLocation\" : {",
+					"                        \"type\" : \"Point\",",
+					"                        \"coordinates\" : [23.402, 22.204]",
+					"                },",
+					"                \"toLocation\" : {",
+					"                        \"type\" : \"Point\",",
+					"                        \"coordinates\" : [-23.402, 28.204]",
+					"                },",
+					"                \"toAddress\" : \"Tanta Al-Hussiny Magry ST-42\",",
+					"                \"fromAddress\" : \"Cairo Hadaiq Sayed-Mohamed ST-40\",",
+					"                \"priceRange\" : {",
+					"                    \"min\" : 20,",
+					"                    \"max\" : 80",
+					"                },",
+					"                \"timeRange\" : {",
+					"                    \"val\" : 5",
+					"                }",
+					"            },",
+					"            WRONG : {",
+					"                \"title\" : \"Electronic parts needed\",",
+					"                \"body\" : \"I need Something real quick\",",
+					"                \"fromLocation\" : {",
+					"                        \"type\" : \"Point\",",
+					"                        \"coordinates\" : [23.402, 22.204, \"something\"]",
+					"                },",
+					"                \"toAddress\" : \"Tanta Al-Hussiny Magry ST-42\",",
+					"                \"fromAddress\" : \"Cairo Hadaiq Sayed-Mohamed ST-40\",",
+					"                 \"toLocation\" : {",
+					"                        \"type\" : \"Point\",",
+					"                        \"coordinates\" : [-23.402, 28.204]",
+					"                }",
+					"            }",
+					"       }",
+					"   },",
+					"    COMMENT : {",
+					"        NEW_COMMENT :  {",
+					"            \"time\" : {",
+					"                \"unit\" : \"d\",",
+					"                \"val\" : 4",
+					"            },",
+					"            \"price\" : 30,",
+					"            \"text\" : \"Hello, I will bring you thing, I have a car\"",
+					"        }, ",
+					"        EDITED_COMMENT :  {",
+					"            \"time\" : {",
+					"                \"unit\" : \"d\",",
+					"                \"val\" : 4",
+					"            },",
+					"            \"price\" : 80,",
+					"            \"text\" : \"Hello, I am the best one to do this as I am ...\"",
+					"        }, ",
+					"    },",
+					"    REVIEWS : {",
+					"        USER_CUSTOMER : {",
+					"            \"comment\" : \"Good man, the best one to deliver\",",
+					"            \"rate\" : 5",
+					"        },",
+					"        USER_MOD : {",
+					"            \"comment\" : \"Had fun working with him, would probably deliver more things\",",
+					"            \"rate\" : 5",
+					"        }",
+					"    }",
+					"}",
+					"",
+					"// the request data",
+					"pm.collectionVariables.set(\"request_data\", JSON.stringify(API_DATA.REQUEST.NORMAL))",
+					"pm.collectionVariables.set(\"request_data_edited\", JSON.stringify(API_DATA.REQUEST.EDITED))",
+					"",
+					"// the comment data",
+					"pm.collectionVariables.set(\"comment_data\", JSON.stringify(API_DATA.COMMENT.NEW_COMMENT))",
+					"pm.collectionVariables.set(\"comment_data_edited\", JSON.stringify(API_DATA.COMMENT.EDITED_COMMENT))",
+					"",
+					"// the review data",
+					"pm.collectionVariables.set(\"customr_review\", JSON.stringify(API_DATA.REVIEWS.USER_CUSTOMER))",
+					"pm.collectionVariables.set(\"mod_review\", JSON.stringify(API_DATA.REVIEWS.USER_MOD))"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "reg_data",
+			"value": "[{\"name\":\"customer\",\"email\":\"customer@email.com\",\"phone\":\"01023438928\",\"password\":\"HelloCustomer123_\"},{\"name\":\"mod\",\"email\":\"mod@email.com\",\"phone\":\"01023438929\",\"password\":\"HelloMod123_\"},{\"name\":\"another\",\"email\":\"another@email.com\",\"phone\":\"01023438920\",\"password\":\"HelloAnother123_\"}]"
+		},
+		{
+			"key": "request_data",
+			"value": "{\"title\":\"Electronic parts needed\",\"body\":\"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\"fromLocation\":{\"type\":\"Point\",\"coordinates\":[23.402,22.204]},\"toLocation\":{\"type\":\"Point\",\"coordinates\":[-23.402,28.204]},\"toAddress\":\"Tanta Al-Hussiny Magry ST-42\",\"fromAddress\":\"Cairo Hadaiq Sayed-Mohamed ST-40\",\"priceRange\":{\"min\":20,\"toAddress\":\"Tanta Al-Hussiny Magry ST-42\",\"fromAddress\":\"Cairo Hadaiq Sayed-Mohamed ST-40\",\"max\":90},\"timeRange\":{\"val\":2}}"
+		},
+		{
+			"key": "request_data_edited",
+			"value": "{\"NORMAL\":{\"title\":\"Electronic parts needed\",\"body\":\"I need Something real quick\",\"fromLocation\":{\"type\":\"Point\",\"coordinates\":[23.402,22.204]},\"toLocation\":{\"type\":\"Point\",\"coordinates\":[-23.402,28.204]},\"toAddress\":\"Tanta Al-Hussiny Magry ST-42\",\"fromAddress\":\"Cairo Hadaiq Sayed-Mohamed ST-40\",\"priceRange\":{\"min\":20,\"max\":80},\"timeRange\":{\"val\":5}},\"WRONG\":{\"title\":\"Electronic parts needed\",\"body\":\"I need Something real quick\",\"fromLocation\":{\"type\":\"Point\",\"coordinates\":[23.402,22.204,\"something\"]},\"toAddress\":\"Tanta Al-Hussiny Magry ST-42\",\"fromAddress\":\"Cairo Hadaiq Sayed-Mohamed ST-40\",\"toLocation\":{\"type\":\"Point\",\"coordinates\":[-23.402,28.204]}}}"
+		},
+		{
+			"key": "comment_data",
+			"value": "{\"time\":{\"unit\":\"d\",\"val\":4},\"price\":30,\"text\":\"Hello, I will bring you thing, I have a car\"}"
+		},
+		{
+			"key": "comment_data_edited",
+			"value": "{\"time\":{\"unit\":\"d\",\"val\":4},\"price\":80,\"text\":\"Hello, I am the best one to do this as I am ...\"}"
+		},
+		{
+			"key": "customr_review",
+			"value": "{\"comment\":\"Good man, the best one to deliver\",\"rate\":5}"
+		},
+		{
+			"key": "mod_review",
+			"value": "{\"comment\":\"Had fun working with him, would probably deliver more things\",\"rate\":5}"
+		},
+		{
+			"key": "login_data",
+			"value": ""
+		},
+		{
+			"key": "customer_token",
+			"value": ""
+		},
+		{
+			"key": "mod_token",
+			"value": ""
+		},
+		{
+			"key": "another_token",
+			"value": ""
 		}
 	]
 }
