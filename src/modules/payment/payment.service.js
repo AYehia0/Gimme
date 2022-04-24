@@ -56,6 +56,22 @@ const createStripeSession = async (user, requestId, commentId ) => {
 
 }
 
+// create an account
+const createAccountUser = async (user) => {
+
+    let accountId = ""
+
+    if (!user.account_id)
+        accountId = (await payment.createExpressAccount(user)).id
+    else 
+        accountId = user.account_id
+
+    const accountLink = await payment.getAccountLink(accountId)
+
+    return accountLink
+
+}
+
 // custom webshook for stripe events 
 // this function is only used for webhooks, assuming stripe's webhook is secure
 const closeRequestWH = async (requestId, modId, commentId, paymentIntent) => {
@@ -153,4 +169,5 @@ export default {
     createStripeSession,
     closeRequestWH,
     releasePayment,
+    createAccountUser
 }

@@ -3,6 +3,7 @@ import resp from "../../helpers/responseTemplate"
 import success from "../../helpers/success"
 import error from "../../helpers/error"
 import payment from "../../utils/stripe"
+import stripe from "../../utils/stripe"
 
 const getPublishKey = async (req, res) => {
 
@@ -32,6 +33,24 @@ const createStripeSession = async (req, res) => {
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
+
+// create a stripe account for MOD's to receive money
+const createStripeAccount = async (req, res) => {
+    try {
+
+        const user = req.user
+
+        // create a user pay
+        // create an account user
+        const account = await paymentService.createAccountUser(user)
+
+        res.send(resp(true, success.payment.success, account))
+    } catch (e) {
+        res.status(400).send(resp(false, e.message, ""))
+    }
+}
+
+
 
 // setup a webhook to listen for stripe events
 // https://dashboard.stripe.com/test/webhooks/create?endpoint_location=local
@@ -81,7 +100,6 @@ const releasePayment = async (req, res) => {
         res.send(resp(true, success.payment.released, ""))
    
     } catch (e) {
-        console.log(e)
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
@@ -90,5 +108,6 @@ export default {
     getPublishKey,
     createStripeSession,
     customWebhook,
-    releasePayment
+    releasePayment,
+    createStripeAccount
 }

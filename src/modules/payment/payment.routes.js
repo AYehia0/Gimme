@@ -10,6 +10,9 @@ router.get("/config", auth.userAuth, paymentCont.getPublishKey)
 // create a session
 router.post("/create-stripe-session", auth.userAuth,  paymentCont.createStripeSession)
 
+// create a user account if not exists
+router.post("/create-stripe-account", auth.userAuth,  paymentCont.createStripeAccount)
+
 // release the money
 // easy mode : request maker does it without scanning any QR code.
 // hard mode : request maker scans the MOD's QR code.

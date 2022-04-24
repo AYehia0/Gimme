@@ -93,8 +93,44 @@ const capturePayment = async (paymentIntentId) => {
         throw new Error(e.message)
     }
 }
+
+/*
+Why Express ?
+
+Express enables your platform to manage payout schedules, 
+customize the flow of funds, and control branding. Stripe will handle onboarding,
+account management, and identity verification for your platform.
+
+*/
+const createExpressAccount = async (user) => {
+    const account = stripe.accounts.create({
+        type: "express",
+        country: "EG",
+        email: user.email,
+        business_type: "individual",
+        capabilities: {
+            card_payments: {requested: true},
+        },
+    })
+
+    return account
+}
+
+const getAccountLink = async (accountId) => {
+
+    const accountLink = await stripe.accountLinks.create({
+        account: accountId,
+        refresh_url: 'https://example.com/reauth',
+        return_url: 'https://example.com/return',
+        type: 'account_onboarding',
+    })
+
+    return accountLink
+}
 export default {
     createSession,
     createEvent,
-    capturePayment
+    capturePayment,
+    createExpressAccount,
+    getAccountLink
 }
