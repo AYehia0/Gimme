@@ -44,6 +44,10 @@ const addComment = async (user, requestId, comment) => {
     if (request.userId.equals(user._id))
         throw new error.ServerError(error.comment.yourRequest, 405)
 
+    // the user didn't setup hi payment account
+    if (!user.account_id)
+        throw new error.ServerError(error.user.noAccount, 409)
+
     // adding the comment
     // check if the user is allowed to do so : by default ALLOWED
 

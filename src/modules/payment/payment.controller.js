@@ -73,6 +73,14 @@ const customWebhook = async (req, res) => {
 
                 break
 
+            // user creates an account
+            case 'account.updated':
+
+                const accountId = event.data.object.id
+                const userId = event.data.object.metadata._id
+
+                await paymentService.updateStripeAccount(accountId, userId)
+
             default:
                 console.log(`Unhandled event type : ${event.type}`)
         }

@@ -11,7 +11,9 @@ export default {
         notFound : "User not found",
         auth : "You're not allowed to perform this action",
         registered : "Account already exists",
-        wrong : "Username or password is wrong"
+        wrong : "Username or password is wrong",
+        hasAccount : "This user already has a stripe account",
+        noAccount : "You're not allowed to perfrom this before you register your payment account, so that you can receive payments"
     },
     invalid : {
         required : function (propery) {

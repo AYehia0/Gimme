@@ -17,8 +17,11 @@ const stripe = new Stripe(creds.api_secret);
 
 // create session
 // supports : 3D auth
-const createSession = async (user, amountInEGP, refData) => {
+const createSession = async (user, amountInEGP, refData, modAccount) => {
     try {
+
+        // get it from the env var
+        const appFee = 0.1
 
         if (! user?.customer_token) {
 
@@ -37,20 +40,23 @@ const createSession = async (user, amountInEGP, refData) => {
             customer: user.customer_token,
             payment_intent_data: {
                 capture_method: "manual",
-                setup_future_usage: "off_session"
+                setup_future_usage: "off_session",
+                application_fee_amount: amountInEGP*100*appFee,
+                transfer_data: {
+                    destination: modAccount
+                }
             },
             mode: "payment",
-                line_items: [{
-                    price_data: {
-                        currency: 'EGP',
-                        product_data: {
-                            name: 'Gimme'
-                        },
-                        unit_amount: amountInEGP*100,
+            line_items: [{
+                price_data: {
+                    currency: 'EGP',
+                    product_data: {
+                        name: 'Gimme'
                     },
-                    quantity: 1,
+                    unit_amount: amountInEGP*100,
                 },
-            ],
+                quantity: 1,
+            }],
             // used to ref for later
             client_reference_id: refData,
             payment_method_types: ["card"],
@@ -84,8 +90,10 @@ const createEvent = (body, sig) => {
     return event
 }
 
+// send the payment to the other side
 const capturePayment = async (paymentIntentId) => {
     try {
+        // transfer the paymentIntent to account
         const paymentIntent = await stripe.paymentIntents.capture(paymentIntentId)
 
         return paymentIntent
@@ -103,14 +111,21 @@ account management, and identity verification for your platform.
 
 */
 const createExpressAccount = async (user) => {
+
+    console.log(user)
     const account = stripe.accounts.create({
         type: "express",
         country: "EG",
         email: user.email,
         business_type: "individual",
         capabilities: {
-            card_payments: {requested: true},
+            transfers: {requested: true},
         },
+        tos_acceptance: {service_agreement: 'recipient'},
+        metadata : {
+            _id: user._id.toString(),
+            email: user.email
+        }
     })
 
     return account

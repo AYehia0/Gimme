@@ -50,7 +50,12 @@ const createStripeSession = async (user, requestId, commentId ) => {
     // saving the request and the mod both together as ref, so that I can reference them later on
     const requestModRef = `${requestId};${comment.userId};${commentId}`
 
-    const session = await payment.createSession(user, modPrice, requestModRef)
+    const mod = await User.findById(comment.userId.toString())
+
+    if (!mod.account_id)
+        throw new error.ServerError(error.user.noAccount, 409)
+
+    const session = await payment.createSession(user, modPrice, requestModRef, mod.account_id)
 
     return session
 
@@ -61,15 +66,18 @@ const createAccountUser = async (user) => {
 
     let accountId = ""
 
-    if (!user.account_id)
+    if (!user.account_id) {
+
         accountId = (await payment.createExpressAccount(user)).id
-    else 
-        accountId = user.account_id
 
-    const accountLink = await payment.getAccountLink(accountId)
+        const accountLink = await payment.getAccountLink(accountId)
 
-    return accountLink
+        return accountLink
+    }
 
+    // if the user does have a stripe account
+    throw new error.ServerError(error.user.hasAccount, 409)
+    
 }
 
 // custom webshook for stripe events 
@@ -147,9 +155,7 @@ const releasePayment = async (user, requestId, secret) => {
     // the request maker nicely releases the money without scanning
     if (! secret){
 
-        await capturePaymentHelper(request)
-
-        return
+        return await capturePaymentHelper(request)
     
     }else {
         // verify the secret
@@ -164,10 +170,26 @@ const releasePayment = async (user, requestId, secret) => {
 
 }
 
+// update the db with the new stripe account
+// this can't fail
+const updateStripeAccount = async (accountId, userId) => {
+
+    // only for testing
+    if (! accountId || ! userId)
+        throw new error.ServerError("What the heck is going on here ?", 500)
+
+    // find the user and update
+    await User.findOneAndUpdate({_id : userId}, {
+        account_id : accountId
+    })
+
+}
+
 export default {
     getStripePubKey,
     createStripeSession,
     closeRequestWH,
     releasePayment,
-    createAccountUser
+    createAccountUser,
+    updateStripeAccount
 }
