@@ -12,18 +12,22 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
+- [ ] Important : switch to stripe [connect](https://stripe.com/docs/connect) API :
+  - [ ] Before user (MOD) can create a comment, he must have a stripe account connect, so that he/she can receive payments to their bank account --> find a way to create an account by session link, and setup a webhook to flag the user with account_id
+  - [ ] Payment is directly payout to the mod's account.
 - [ ] Important : Switch to TS
+- [ ] Add user input validation using : zod
 - [ ] Fixes :
   - [X] Clean the request controller : remove close request and make sure everything works
   - [X] Remove paymentIntent from the request
-  - [ ] Fix all the un-nesseray try-catches
+  - [X] Fix all the un-nesseray try-catches
   - [ ] Remove un-used _id and rename it using UUID
   - [ ] bcrypt.genSalt(14, ...) **Setting to 14 from 10 caused call to be 10x slower**  
 - [ ] API routes Documentations
   - [X] User endpoints
   - [X] Register endpoints
   - [X] Comment endpoints
-  - [ ] Review endpoints : Shrink the ```customer/user review``` to only one route.
+  - [X] Review endpoints : Shrink the ```customer/user review``` to only one route.
   - [ ] Room/Message endpoints : Room routes aren't needed anymore !
 - [ ] Security
   - [ ] Add request logger
