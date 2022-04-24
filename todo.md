@@ -12,9 +12,11 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
-- [ ] Important : switch to stripe [connect](https://stripe.com/docs/connect) API :
-  - [ ] Before user (MOD) can create a comment, he must have a stripe account connect, so that he/she can receive payments to their bank account --> find a way to create an account by session link, and setup a webhook to flag the user with account_id
-  - [ ] Payment is directly payout to the mod's account.
+- [X] Important : switch to stripe [connect](https://stripe.com/docs/connect) API :
+  - [X] Before user (MOD) can create a comment, he must have a stripe account connect, so that he/she can receive payments to their bank account --> find a way to create an account by session link, and setup a webhook to flag the user with account_id
+  - [X] Payment is directly payout to the mod's account, with off_session.
+- [ ] Change something in the webhook, i don't remember now.
+- [ ] Testing the payments.
 - [ ] Important : Switch to TS
 - [ ] Add user input validation using : zod
 - [ ] Fixes :
