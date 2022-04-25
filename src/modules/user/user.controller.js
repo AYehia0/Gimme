@@ -31,12 +31,6 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     
-    const {email, password} = req.body 
-    if (!email || !password){
-      throw new error.ServerError(error.invalid.required("Email/Password"), 400)
-    }
-
-    // get the username and the password
     const token = await userServices.getLoginToken(req.body)
 
     res.send(resp(true, success.login, token))
@@ -65,10 +59,7 @@ const getMyProfile = async (req, res) => {
 const getUserProfile = async (req, res) => {
   try {
 
-    if (! req.params.userId)
-      throw new error.ServerError(error.invalid.required("UserId"), 400)
- 
-    const user = await userServices.getOthersProfile(req.params.userId)
+    const user = await userServices.getOthersProfile(req.params)
 
     res.send(resp(true, "", user))
 
@@ -133,7 +124,6 @@ const changeProfilePicture = async (req, res) => {
       res.send(resp(true, success.uploadImg, ""))
     }
     catch(e) {
-      console.log(e)
       res.status(e.code || 400).send(resp(false, e.message, ""))
     }
   })

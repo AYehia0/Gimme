@@ -22,4 +22,7 @@ router.get('/profile/:userId', auth.userAuth , userCont.getUserProfile)
 // logout
 router.get('/logout', auth.userAuth, userCont.logoutUser)
 
+// edit profile
+router.put('/edit', auth.userAuth, userCont.editUser)
+
 export default router

@@ -36,6 +36,47 @@ const validateRegisteration = (rawData) => {
 
 }
 
+const validateLogin = (rawData) => {
+
+    const Login = z.object({
+        email: z.string().email(),
+        password: z.string()
+    })
+
+    return Login.parse(rawData)
+
+}
+
+const validateUserId = (rawData) => {
+
+    const UserId = z.object({
+        userId: z.string(),
+    })
+
+    return UserId.parse(rawData)
+
+}
+
+const validateEditProfile = (rawData) => {
+
+    const EditProfile = z.object({
+        name: z.string().optional().max(50),
+        password: z.string().optional(),
+        age: z.number().optional().int().max(100).min(20),
+        gender: z.enum(["male", "female"]).optional(),
+        // maybe it's a bad idea
+        //img: z.string().optional()
+    })
+
+    return EditProfile.parse(rawData)
+
+}
+
+
+
 export default {
-    validateRegisteration
+    validateRegisteration,
+    validateLogin, 
+    validateUserId, 
+    validateEditProfile
 }
