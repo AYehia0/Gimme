@@ -1,24 +1,21 @@
 import roomService from './room.service'
 import resp from '../../helpers/responseTemplate'
-import error from '../../helpers/error'
+import { ZodError } from 'zod'
 
 // get all the comments' info under a request
 const startChat = async (req, res) => {
     try {
 
-        // the maker
-        const maker = req.user
-        const modId = req.query.modId
-        const reqId = req.query.reqId
+        const data = req.body
 
-        if (! modId || ! reqId)
-            throw new error.ServerError(error.invalid.required("Request/User ID"), 400)
-
-        const chatRoomStatus = await roomService.initChatRoom(maker, modId, reqId)
+        const chatRoomStatus = await roomService.initChatRoom(req.user, data)
 
         res.send(resp(true, chatRoomStatus.message, chatRoomStatus))
        
     } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }

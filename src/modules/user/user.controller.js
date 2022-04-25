@@ -35,6 +35,8 @@ const loginUser = async (req, res) => {
 
     res.send(resp(true, success.login, token))
   } catch (e) {
+    if (e instanceof ZodError)
+      return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
 
     res.status(e.code || 400).send(resp(false, e.message, ""))
   }
@@ -64,6 +66,9 @@ const getUserProfile = async (req, res) => {
     res.send(resp(true, "", user))
 
   } catch (e) {
+    if (e instanceof ZodError)
+      return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
      res.status(404).send(resp(false, error.user.notFound, ""))
   }
 }
@@ -85,15 +90,13 @@ const logoutUser = async (req, res) => {
 const editUser = async (req, res) => {
   try {
 
-    const {name, password} = req.body
-
-    if (!name && !password)
-      throw new error.ServerError(error.invalid.required("Name/password"), 400)
-
     await userServices.editUserProfile(req.user, req.body)
 
     res.send(resp(true, success.edit, ""))
   } catch (e) {
+    if (e instanceof ZodError)
+      return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
     res.status(400).send(resp(false, e.message, ""))
   }
 }

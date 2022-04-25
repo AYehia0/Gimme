@@ -1,6 +1,8 @@
 // the validation schema using zod to verify user input
 import {z} from 'zod'
 import validator from 'validator'
+import globalValidation from '../../helpers/validation'
+import error from '../../helpers/error'
 
 const validateRegisteration = (rawData) => {
 
@@ -50,11 +52,13 @@ const validateLogin = (rawData) => {
 const validateUserId = (rawData) => {
 
     const UserId = z.object({
-        userId: z.string(),
+        userId: z.string().refine((value) => globalValidation.isValidMongooseId(value), {
+            message: error.invalid.invalidId,
+            path: ["userId"]
+        }),
     })
 
     return UserId.parse(rawData)
-
 }
 
 const validateEditProfile = (rawData) => {

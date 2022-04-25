@@ -1,24 +1,31 @@
+import error from '../../helpers/error'
 import Request from '../../models/Request'
 import Room from '../../models/Room'
+import roomValidation from './room.validation'
 
-const initChatRoom = async (maker, mod, requestId) => {
+const initChatRoom = async (maker, data) => {
 
+    const {reqId, modId} = roomValidation.validateRoomInit(data)
     // check if the user in the comments 
     // get object of all the comments in one request
-    const request = await Request.findById(requestId)
+    const request = await Request.findById(reqId)
 
     if (! request)
-        throw new Error("Invalid ID : Make sure it's a RequestID and the comment exists !!!")
+        throw new error.ServerError(error.request.notfound, 404)
 
-    const userCommentedInd = request.participants.findIndex((comment) => {
-        return comment.userId.equals(userId)
+    // can't start a chat, if you're not the request maker
+    if (! request.userId.equals(maker._id))
+        throw new error.ServerError(error.user.auth, 404)
+
+    const comment = request.participants.find((comment) => {
+        return comment.userId.equals(modId)
     })
 
-    if (userCommentedInd == -1) 
-        throw new Error("Comment doesn't exist")
-    
+    if (!comment)
+        throw new error.ServerError(error.comment.notfound, 404)
+
     // now create the room
-    const status = await Room.startChatRoom(maker._id, reqId, userId)
+    const status = await Room.startChatRoom(reqId, maker._id, modId)
  
     return status 
 }

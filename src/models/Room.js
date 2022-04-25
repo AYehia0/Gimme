@@ -12,9 +12,11 @@ const roomSchema = new Schema({
         ref : "Request",
         required : true
     },
+    // the user is the mod
     user : {
         type : Schema.Types.ObjectId,
         ref : "User",
+        required: true
     },
 }, {timestamps : true})
 
@@ -24,17 +26,14 @@ const roomSchema = new Schema({
 // Create the chat room 
 // to start a chatRoom : chatMaker can do if the mod(to be) in the comments
 // needs the requestId and the userId(mod)
-roomSchema.statics.startChatRoom = async function (chatMaker, request, user) {
+roomSchema.statics.startChatRoom = async function (request, chatMaker, mod) {
 
     // check if the chat room between them is already there before ?
     const roomThere = await this.findOne({
-        $or : [{
-            chatMaker : chatMaker,
-            user : user
-        },{
-            chatMaker : user,
-            user : chatMaker
-        }]
+        $or : [
+            { chatMaker : chatMaker, user : mod },
+            { chatMaker : mod, user : chatMaker }
+        ]
     })
 
     if (roomThere)
@@ -48,7 +47,7 @@ roomSchema.statics.startChatRoom = async function (chatMaker, request, user) {
     const newRoom = await this.create({
         roomMaker : chatMaker,
         requestId : request,
-        user : user
+        user : mod
     })
 
     return {

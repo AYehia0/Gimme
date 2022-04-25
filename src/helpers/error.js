@@ -27,6 +27,7 @@ export default {
         reviewQuery : "Invalid role, make sure it's either a 'customer' or 'mod'",
         missing : "Invalid Syntax : There are some missing fields",
         id : "The given ID is either invalid or doesn't exist",
+        invalidId: "This is not a valid ID",
         location : "Invalid geoJSON type :  { 'type' : 'Point' } is required or the coordinates are invalid",
         reviewAdded : "Can't add review to this request : already added or not authorized",
     }, 
