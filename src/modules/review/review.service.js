@@ -1,7 +1,8 @@
 import Request from "../../models/Request"
 import Review from "../../models/Review"
 import error from "../../helpers/error"
-import success from "../../helpers/success"
+import globalValidation from '../../helpers/validation'
+import reviewValidation from "./review.validation"
 
 // a review can't be deleted, edited
 // a user can't see the other review unless he submit their
@@ -9,7 +10,9 @@ import success from "../../helpers/success"
 // write a review
 const addReviewToRequest = async (user, requestId, review) => {
 
-    const request = await Request.findById(requestId)
+    const reqId = globalValidation.validateId(requestId, "reqId")
+
+    const request = await Request.findById(reqId)
 
     if (! request)
         throw new error.ServerError(error.request.notfound, 404) 
@@ -17,17 +20,22 @@ const addReviewToRequest = async (user, requestId, review) => {
     if (! request.mod || request.state != "closed")
         throw new error.ServerError(error.request.noMod, 405) 
    
-    await Request.addReview(user, request, review)
+    const reviewData = reviewValidation.validateReviewCreation(review)
+
+    await Request.addReview(user, request, reviewData)
  
 }
 
 const getUserReviews = async (userId) => {
 
+    // validate
+    const id = globalValidation.validateId(userId, "userId")
+
     // getting all the reviews where the reviewerId || toWhom equals to the userId
     const reviews = await Review.find({
         $or : [
-            { toWhom : userId },
-            { reviewerId : userId }
+            { toWhom : id },
+            { reviewerId : id }
         ],
     })
 
