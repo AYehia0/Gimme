@@ -4,13 +4,10 @@ import resp from '../../helpers/responseTemplate'
 import success from '../../helpers/success'
 import error from '../../helpers/error'
 import uploader from '../../middlewares/uploader'
+import {ZodError} from 'zod'
 
 const registerUser = async (req, res) => {
   try {
-
-    const regData = req.body
-    if (!regData?.name && !regData?.email && !regData?.password && !regData?.phone)
-      throw new error.ServerError(error.invalid.required("Name/Email/Phone/Passwrod"))
 
     await userServices.createAccount(req.body)
 
@@ -22,7 +19,10 @@ const registerUser = async (req, res) => {
       e.message = error.user.registered
       e.code = 409
     }
-    res.status(e.code || 400).send(resp(false, e.message, ""))
+    if (e instanceof ZodError)
+      return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+    
+    return res.status(e.code || 400).send(resp(false, e.message, ""))
   }
 }
 
@@ -96,14 +96,14 @@ const editUser = async (req, res) => {
 
     const {name, password} = req.body
 
-    if (!name || !password)
+    if (!name && !password)
       throw new error.ServerError(error.invalid.required("Name/password"), 400)
 
     await userServices.editUserProfile(req.user, req.body)
 
     res.send(resp(true, success.edit, ""))
   } catch (e) {
-     res.status(400).send(resp(false, e.message, ""))
+    res.status(400).send(resp(false, e.message, ""))
   }
 }
 

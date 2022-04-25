@@ -18,7 +18,8 @@ const userSchema = new Schema({
   age : {
     type : Number,
     min : 20,
-    max : 100
+    max : 100,
+    required: true
   },
   gender : {
     type : String, 
@@ -29,30 +30,15 @@ const userSchema = new Schema({
     trim: true,
     required: true,
     unique: true,
-    validate(value) {
-      if (!validator.isEmail(value))
-        throw new error.ServerError(error.invalid.email, 405)
-    }
-  },
+ },
   phone : {
     type: String,
     unique: true,
     //required: true,
-    validate(value) {
-      if (!validator.isMobilePhone(value, ['ar-EG']))
-        throw new error.ServerError(error.invalid.phone, 400)
-    }
   },
   password : {
     type: String,
     required: true,
-    validate (value) {
-      if (!validator.isStrongPassword(value, {
-        minLength: process.env.MIN_PASS_LEN,
-        maxLength: process.env.MAX_PASS_LEN
-      }))
-        throw new error.ServerError(error.invalid.phone, 405)
-    }
   },
   // a user can be a normal user or delivery user
   // or both : special

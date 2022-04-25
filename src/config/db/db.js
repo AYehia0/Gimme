@@ -7,6 +7,7 @@ const connect = async (dbNAME)  => {
     //const dbNAME = process.env.DB_NAME || "test"
     const dbURL = `mongodb://127.0.0.1:27017/`
 
+    // don't connect only if it's testing, as I am using mongoose in memory
     if (dbNAME !== "test")
         mongoose.connect(dbURL, {
             useNewUrlParser: true, 

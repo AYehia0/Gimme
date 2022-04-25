@@ -1,17 +1,14 @@
 // the user services handle all the bussiness logic
 import User from '../../models/User'
 import error from '../../helpers/error'
+import userValidation from './user.validation'
 
 const createAccount = async (data) => {
 
     // checks if userInfo is valid object
-    const {name, email, phone, password} = data
-    const user = new User({
-        name,
-        email,
-        phone,
-        password
-    })
+    const registerationData = userValidation.validateRegisteration(data)
+
+    const user = new User(registerationData)
     
     // saving
     await user.save()
@@ -46,8 +43,13 @@ const getOthersProfile = async (userId) => {
 // what a user can edit : name and password only
 const editUserProfile = async (user, data) => {
 
-    user.name = data.name
-    user.password = data.password
+    const newName = data.name
+    const newPassword = data.password
+    if (newName)
+        user.name = newName
+    
+    if (newPassword)
+        user.password = newPassword
 
     await user.save()
 }

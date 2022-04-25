@@ -1,7 +1,7 @@
 // the db
 import db from './config/db/db'
 
-// connection to the db
+// connection to the db, don't connect in case of testing : using mongodb in memory
 db.connect(process.env.NODE_ENV)
 import 'dotenv/config'
 
