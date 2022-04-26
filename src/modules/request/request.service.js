@@ -1,12 +1,16 @@
 import Request from '../../models/Request'
 import error from '../../helpers/error'
+import requestValidation from './request.validation'
+import globalValidation from '../../helpers/validation'
 
 // user can create a new request
 const createRequest = async (user, data) => {
 
+    const requestData = requestValidation.validateRequest(data)
+
     const request = new Request({
         userId : user._id,
-        ...data
+        ...requestData
     })
 
     await request.save()
@@ -17,21 +21,25 @@ const createRequest = async (user, data) => {
 // user can edit only the requests he created 
 // user can't edit a closed/fulfilled request
 // user can't edit a request having a mod
-const editRequest = async (user, requestId, data) => {
+const editRequest = async (user, id, data) => {
 
-    if (! requestId) 
-        throw new error.ServerError(error.invalid.required("Request ID"), 400)
+    const requestId = globalValidation.validateId(id, "reqId")
 
     const request = await Request.findById(requestId)
 
     if (! request) 
         throw new error.ServerError(error.request.notfound, 404)
 
+    if (!request.userId.equals(user._id))
+        throw new error.ServerError(error.user.auth, 401)
+
     // database can't have anything but : on, fulfilled, closed, deleted
     if (request.state != "on")
         throw new error.ServerError(error.request.edit, 403)
 
-    Object.entries(data).forEach(([key, val]) => {
+    const reqData = requestValidation.validateRequest(data)
+
+    Object.entries(reqData).forEach(([key, val]) => {
         request[key] = val
     })
 
@@ -41,10 +49,9 @@ const editRequest = async (user, requestId, data) => {
 // a request can't be deleted unless it's closed
 // deleting a request from the database by its id
 // deleting a reuqest deletes all the comments inside it
-const deleteReuest = async (user, requestId) => {
+const deleteReuest = async (user, id) => {
 
-    if (! requestId) 
-        throw new error.ServerError(error.invalid.required("Request ID"), 404)
+    const requestId = globalValidation.validateId(id, "reqId")
 
     const requestToDel = await Request.findById(requestId)
 
@@ -63,7 +70,9 @@ const deleteReuest = async (user, requestId) => {
 
 }
 
-const searchRequestsByLocation = async (to, from) => {
+const searchRequestsByLocation = async (searchQuery) => {
+
+    const {to, from} = requestValidation.validateSearchRequest(searchQuery)
 
     const requests = await Request.getRequestLocations(to, from)
 
@@ -75,10 +84,10 @@ const searchRequestsByLocation = async (to, from) => {
 // get all the requests a user (current user only) opened : userId
 const getRequestsByID = async (user, query) => {
 
-    if (query.reqId)
-
-        return [await Request.findById({ _id : query.reqId })]
-
+    if (Object.keys(query).includes("reqId")){
+        const reqId = globalValidation.validateId(query.reqId, "reqId")
+        return [await Request.findById({ _id : reqId })]
+    }
     return await Request.find({userId: user._id})
 
 }

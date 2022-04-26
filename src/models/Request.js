@@ -204,11 +204,8 @@ requestSchema.statics.updateRequestLocations = async function(request, {toLocati
 
 // get all requests by locations
 // update both the to/from location or just one
+// ToDo : add pagination
 requestSchema.statics.getRequestLocations = async function(toAddress, fromAddress) {
-
-    // check if it's undefined -> replace with empty string 
-    toAddress = toAddress || ""
-    fromAddress = fromAddress || ""
 
     const requests = await Request.find({
         toAddress : { "$regex": toAddress, "$options": "i" },
@@ -217,7 +214,6 @@ requestSchema.statics.getRequestLocations = async function(toAddress, fromAddres
     })
 
     return requests
-        
 }
 
 // get the requests i have to do as a MOD

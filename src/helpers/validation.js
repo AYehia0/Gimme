@@ -12,7 +12,7 @@ const isValidMongooseId = (id) => {
 // return the parsed requestId : as valid
 const validateId = (id, path) => {
 
-    return z.string().nonempty({message: "Can't be empty"}).refine((value) => isValidMongooseId(value), {
+    return z.string({required_error:`${path} is required`}).nonempty({message: `${path} : can't be empty`}).refine((value) => isValidMongooseId(value), {
            message : error.invalid.invalidId,
            path: [`${path}`],
         }

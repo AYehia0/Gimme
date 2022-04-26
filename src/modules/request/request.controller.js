@@ -2,6 +2,7 @@ import requestServices from './request.service'
 import resp from '../../helpers/responseTemplate'
 import success from '../../helpers/success'
 import error from '../../helpers/error'
+import { ZodError } from 'zod'
 
 // create a new request
 const openRequest = async (req, res) => {
@@ -12,15 +13,10 @@ const openRequest = async (req, res) => {
         res.send(resp(true, success.request.added, request))
 
     } catch (e) {
-        let message = e.message
-        let statusCode = 400
-        if (message.includes("Can't extract geo keys"))
-            message = error.invalid.location 
+        if (e instanceof ZodError)
+            return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
 
-        if (message.includes("Request validation failed"))
-            message = error.invalid.missing
-        
-        res.status(statusCode).send(resp(false, message, ""))
+        res.status(e.code || 400).send(resp(false, message, ""))
     }
 }
 
@@ -35,18 +31,10 @@ const editRequest = async (req, res) => {
         res.send(resp(true, success.request.edit))
 
     } catch (e) {
-        let message = e.message
-        if (message.includes('Cast to ObjectId failed')){
-            e.code = statusCode
-            message = error.invalid.id
-        }
-
-        if (message.includes("Can't extract geo keys")){
-            e.code = statusCode
-            message = error.invalid.location
-        }
+        if (e instanceof ZodError)
+            return res.status(statusCode).send(resp(false, e.flatten(), ""))
         
-        res.status(e.code || statusCode).send(resp(false, message, ""))
+        res.status(e.code || statusCode).send(resp(false, e.message, ""))
     }
 }
 
@@ -58,6 +46,9 @@ const deleteRequest = async (req, res) => {
         res.send(resp(true, success.request.delete, ""))
 
     } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(statusCode).send(resp(false, e.flatten(), ""))
+
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
@@ -67,17 +58,15 @@ const searchRequests = async (req, res) => {
     let statusCode = 400
     try {
 
-        const requests = await requestServices.searchRequestsByLocation(req.query.to, req.query.from)
+        const requests = await requestServices.searchRequestsByLocation(req.query)
 
         res.send(resp(true, "", requests))
 
     } catch (e) {
-        let message = e.message
-        if (message.includes("Cast to ObjectId failed")){
-            statusCode = 400
-            message = error.invalid.id
-        }
-        res.status(statusCode).send(resp(true, message, ""))
+        if (e instanceof ZodError)
+            return res.status(statusCode).send(resp(false, e.flatten(), ""))
+
+        res.status(statusCode).send(resp(true, e.message, ""))
     }
 }
 
@@ -93,6 +82,9 @@ const getRequests = async (req, res) => {
         res.send(resp(true, "", requests))
 
     } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
@@ -104,7 +96,7 @@ const getSubscibedRequests = async (req, res) => {
         res.send(resp(true, "", requests))
 
     } catch (e) {
-        res.status(400).send(resp(false, e.message, ""))
+        res.status(500).send(resp(false, e.message, ""))
     }
 }
 
