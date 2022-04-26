@@ -141,13 +141,14 @@ Before using stripe, you have to obtain both **publishable** and **secret** keys
 
         stripe listen --forward-to=localhost:8080/api/payment/webhook
     
+- All stripe testing docs can be found [here](https://stripe.com/docs/testing), and for connect : [here](https://stripe.com/docs/connect/testing)
 - Make sure to read [connect](https://stripe.com/docs/connect) docs, and enable it.
 - Stripe connect isn't fully supported in Egypt, for the sake of concepts, I assume other services would work the same way stripe does.
 - Stripe connect partially works in Egypt as ```cross-border-payouts``` but only work with the recipient service agreement :
 
         tos_acceptance: {service_agreement: 'recipient'}
 - Users (MODs) are not allowed to add **Comments** unless they have stripe connect account, check [here]() for more info.
-- MODs must have Bank Accounts to receive their payments, as stripe only supports ```transfers``` :
+- MODs must have Bank Accounts to receive their payments, as stripe only supports ```transfers``` in Egypt:
 
         capabilities: {
             transfers: {requested: true},
