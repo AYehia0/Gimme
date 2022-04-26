@@ -3,7 +3,7 @@ import resp from "../../helpers/responseTemplate"
 import success from "../../helpers/success"
 import error from "../../helpers/error"
 import payment from "../../utils/stripe"
-import stripe from "../../utils/stripe"
+import { ZodError } from "zod"
 
 const getPublishKey = async (req, res) => {
 
@@ -23,13 +23,12 @@ const createStripeSession = async (req, res) => {
         const reqId = req.body.reqId
         const commentId = req.body.commentId
 
-        if (! commentId || ! reqId)
-            throw new error.ServerError(error.invalid.required("Request and Comment ID"))
-
         const session = await paymentService.createStripeSession(user, reqId, commentId)
 
         res.send(resp(true, success.payment.success, session))
     } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
@@ -44,7 +43,7 @@ const createStripeAccount = async (req, res) => {
         // create an account user
         const account = await paymentService.createAccountUser(user)
 
-        res.send(resp(true, success.payment.success, account))
+        res.send(resp(true, success.payment.createAccount, account))
     } catch (e) {
         res.status(400).send(resp(false, e.message, ""))
     }
@@ -67,6 +66,7 @@ const customWebhook = async (req, res) => {
                 const paymentIntent = event.data.object.payment_intent
 
                 // get the requestID and the commentID
+                // ToDo : check the metadata, better that this shit
                 const [reqId, modId, commentId] = event.data.object.client_reference_id.split(";")
 
                 await paymentService.closeRequestWH(reqId, modId, commentId, paymentIntent)
@@ -74,6 +74,7 @@ const customWebhook = async (req, res) => {
                 break
 
             // user creates an account
+            // ToDo : check externel_account.create
             case 'account.updated':
 
                 const accountId = event.data.object.id
@@ -88,7 +89,6 @@ const customWebhook = async (req, res) => {
         res.send(resp(true, success.payment.webhook, ""))
 
     } catch (e) {
-        console.log(e)
         res.status(400).send(resp(false, e.message, ""))
     }
 }

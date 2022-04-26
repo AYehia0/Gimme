@@ -26,6 +26,7 @@ export default {
     payment : {
         webhook : "Success, webhook is working :D",
         success : "Session has been created : Please hold the money to choose the MOD",
-        released : "Success : payment has been released !!!"
+        released : "Success : payment has been released !!!",
+        createAccount : "Please create a stripe account to continue"
     }
 }

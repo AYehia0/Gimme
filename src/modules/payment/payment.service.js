@@ -11,6 +11,8 @@ import error from "../../helpers/error"
 
 import crypto from "crypto"
 
+import globalValidation from '../../helpers/validation'
+
 // this endpoint controller to handle session creation
 // https://stripe.com/docs/payments/save-and-reuse?platform=android&ui=payment-sheet#add-server-endpoint 
 
@@ -24,7 +26,10 @@ const getStripePubKey = () => {
 // create sesssion
 // you can pass the payment_intent_data as manual to ensure "hold"
 // this is equivilant to close_request
-const createStripeSession = async (user, requestId, commentId ) => {
+const createStripeSession = async (user, reqId, commentID) => {
+
+    const requestId = globalValidation.validateId(reqId, "reqId")
+    const commentId = globalValidation.validateId(commentID, "commentId")
 
     const request = await Request.findById(requestId)
 
