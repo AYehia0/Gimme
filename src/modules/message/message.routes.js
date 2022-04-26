@@ -6,7 +6,7 @@ import chatAuth from '../../middlewares/chat'
 let router = Router()
 
 // get messages
-router.get('/get-room-msgs/:roomId', auth.userAuth, chatAuth.chatAuth, messageCont.getChatMessages)
+router.get('/get-room-msgs', auth.userAuth, chatAuth.chatAuth, messageCont.getChatMessages)
 
 // exporting
 export default router

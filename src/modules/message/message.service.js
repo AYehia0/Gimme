@@ -1,7 +1,9 @@
 import Message from "../../models/Message"
+import messageValidation from "./message.validation"
 
-// user must be one in the party room
-const getChatMessages = async (user, roomId, opt) => {
+const getChatMessages = async (roomId, options) => {
+
+    const opt = messageValidation(options)
 
     const conversation = await Message.getRoomMessages(roomId, opt)
 
