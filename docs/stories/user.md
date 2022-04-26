@@ -34,6 +34,7 @@
     - Request is fulfilled/closed
     - The other part gave review.
 - User can Pay to others with only credit cards.
+- User can only receive payments only to his bank account.
 - User must verify the operation when he receives the shippment by scanning a QR code.
 - User can comment on others requests' (check the comment section) 
 - User can chat with others (under some conditions) :

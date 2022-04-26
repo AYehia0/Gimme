@@ -66,8 +66,8 @@ The API has multiple endpoints aka routes, these routes are to be called to comm
 - [Request](./endpoints/request.md)
 - [Comment](./endpoints/comment.md)
 - [Review](./endpoints/review.md)
-- [Location](./endpoints/location.md)
 - [Notification](./endpoints/notification.md)
+- [Payment](./endpoints//payment.md)
 
 ## HTTP requests
 All API requests are made by sending a secure HTTPS request using one of the following methods, depending on the action being taken:
@@ -124,16 +124,34 @@ Since the notification is viewed at the frontend, you should use google's SDK fo
 ## Keys
 Before using FCM:
 - Obtain the key from your google console.
-- Add the key to ```src/config/fcm.json```
+- Add the key to ```src/config/keys/fcm.json```
 ## Sending
 To receive a notification from the backend, users should be subscribed to the notification service (after they are logged in) by sending their token to the backend ([here](./endpoints/notification.md))
 
 User's token is saved with the user's payload under ```notification_token```
 # Payment 
-All payments are handled by [stripe](https://stripe.com/), as it's easy to use, powerful and most importantly secure.
+All payments are handled by [stripe](https://stripe.com/), as it has the best [docs](https://stripe.com/docs), powerful and most importantly secure.
 
 ## Getting Started With Stripe
-Before using stripe, you have to obtain both **publishable** and **secret** keys as specified [here](https://stripe.com/docs/keys#obtain-api-keys), and the endpoint's secret (**webhook secret**) key can be found by running `stripe listen`
+Before using stripe, you have to obtain both **publishable** and **secret** keys as specified [here](https://stripe.com/docs/keys#obtain-api-keys), and the endpoint's secret (**webhook secret**) key can be found by running ```stripe listen```.
+
+
+### Notes
+- Before calling any of the payment routes make sure stripe is configured properly, [Stripe CLI](#stripe-testing) is installed and stripe is listening as :
+
+        stripe listen --forward-to=localhost:8080/api/payment/webhook
+    
+- Make sure to read [connect](https://stripe.com/docs/connect) docs, and enable it.
+- Stripe connect isn't fully supported in Egypt, for the sake of concepts, I assume other services would work the same way stripe does.
+- Stripe connect partially works in Egypt as ```cross-border-payouts``` but only work with the recipient service agreement :
+
+        tos_acceptance: {service_agreement: 'recipient'}
+- Users (MODs) are not allowed to add **Comments** unless they have stripe connect account, check [here]() for more info.
+- MODs must have Bank Accounts to receive their payments, as stripe only supports ```transfers``` :
+
+        capabilities: {
+            transfers: {requested: true},
+        }
 
 ### Stripe Configurations
 Create ```src/config/stripe_key.json``` as follows :
