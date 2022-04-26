@@ -2,6 +2,7 @@ import commentService from './comment.service'
 import error from '../../helpers/error'
 import success from '../../helpers/success'
 import resp from '../../helpers/responseTemplate'
+import { ZodError } from 'zod'
 
 // write a comment/proposal
 const giveComment = async (req, res) => { 
@@ -17,6 +18,9 @@ const giveComment = async (req, res) => {
         res.send(resp(true, success.comment.added, comment))   
         
     } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(400).send(resp(false, e.flatten(), ""))
+
         if (e.code == 11000)
             return res.status(409).send(resp(false, error.comment.commented, ""))
 
@@ -33,7 +37,10 @@ const editComment = async (req, res) => {
         res.send(resp(true, success.comment.edited, ""))
    
     } catch (e) {
-        res.status(e.code || 400).send(resp(false, e.message, ""))
+        if (e instanceof ZodError)
+            return res.status(400).send(resp(false, e.flatten(), ""))
+
+       res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
 
@@ -47,7 +54,10 @@ const deleteComment = async (req, res) => {
         res.send(resp(true, success.comment.deleted, ""))
 
     } catch (e) {
-        res.status(e.code || 400).send(resp(false, e.message, ""))
+        if (e instanceof ZodError)
+            return res.status(400).send(resp(false, e.flatten(), ""))
+
+       res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
 
@@ -58,7 +68,10 @@ const getComments = async (req, res) => {
         res.send(resp(true, "", comments))
         
     } catch (e) {
-        res.status(e.code || 400).send(resp(false, e.message, ""))
+        if (e instanceof ZodError)
+            return res.status(400).send(resp(false, e.flatten(), ""))
+
+      res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
 
@@ -71,6 +84,9 @@ const getVerfificationSecret = async (req, res) => {
         res.send(resp(true, "", verifyToken))
    
     } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(400).send(resp(false, e.flatten(), ""))
+
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }

@@ -16,8 +16,8 @@ const validateRequest = (rawData) => {
         toAddress: z.string().optional(),
         fromAddress: z.string().optional(),
         priceRange: z.object({
-            min: z.number().gt(0),
-            max: z.number().gt(0)
+            min: z.number().nonnegative().gt(0),
+            max: z.number().nonnegative().gt(0)
         }),
         timeRange: z.object({
             unit: z.enum(['w', 'd', 'h']).default('d'),

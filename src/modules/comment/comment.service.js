@@ -1,6 +1,8 @@
 import Comment from '../../models/Comment'
 import Request from '../../models/Request'
 import error from '../../helpers/error'
+import globalValidation from '../../helpers/validation'
+import commentValidation from './comment.validation'
 
 // helper functions for comment validations
 
@@ -18,9 +20,11 @@ const getUserComment = (user, request, commentId) => {
 
 // add a comment for a user on a request
 // returns the added comment
-const addComment = async (user, requestId, comment) => {
+const addComment = async (user, reqId, commentData) => {
 
     // check if the request is a valid one : exists
+    const requestId = globalValidation.validateId(reqId, "reqId")
+
     const request = await Request.findById(requestId)
 
     if (! request) 
@@ -53,6 +57,7 @@ const addComment = async (user, requestId, comment) => {
 
     // validation 
     // check if the price is valid : greater than or equal to min range
+    const comment = commentValidation.validateComment(commentData)
 
     // getting the min range
     const minPrice = request.priceRange.min
@@ -63,9 +68,7 @@ const addComment = async (user, requestId, comment) => {
 
     const newComment = new Comment({
         userId : user._id,
-        text : comment.text,
-        price : comment.price,
-        time : comment.time
+        ...comment
     })
 
     // saving
@@ -85,7 +88,9 @@ const addComment = async (user, requestId, comment) => {
     return newComment
 }
 
-const editComment = async (user, requestId, comment) => {
+const editComment = async (user, reqId, commentData) => {
+
+    const requestId = globalValidation.validateId(reqId, "reqId")
 
     // check if the id is valid
     const request = await Request.findById(requestId)
@@ -106,16 +111,15 @@ const editComment = async (user, requestId, comment) => {
     if (userComment.price < request.priceRange.min)
         throw new error.ServerError(error.comment.price, 405)
 
-    await Comment.findByIdAndUpdate(userComment.commentId, {
-        text : comment.text,
-        price : comment.price,
-        time : comment.time
-    })
+    const comment = commentValidation.validateComment(commentData)
+    await Comment.findByIdAndUpdate(userComment.commentId, comment)
  
 }
 
 // delete a comment by 
-const deleteComment = async (user, requestId, commentId) => {
+const deleteComment = async (user, reqId, commentId) => {
+
+    const requestId = globalValidation.validateId(reqId, "reqId")
 
     const request = await Request.findById(requestId)
 
@@ -138,9 +142,11 @@ const deleteComment = async (user, requestId, commentId) => {
     
 }
 
-const getRequestComments = async (requestId) => {
+const getRequestComments = async (reqId) => {
 
     let comments = []
+
+    const requestId = globalValidation.validateId(reqId, "reqId")
 
     // check if the id is valid
     const request = await Request.findById(requestId)
@@ -159,7 +165,9 @@ const getRequestComments = async (requestId) => {
     return comments
 }
 
-const getVerificationCode = async (user, requestId) => {
+const getVerificationCode = async (user, reqId) => {
+
+    const requestId = globalValidation.validateId(reqId, "reqId")
 
     const request = await Request.findById(requestId)
 
