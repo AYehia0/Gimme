@@ -21,7 +21,6 @@ import requestRoutes from './modules/request/request.routes'
 import commentRoutes from './modules/comment/comment.routes'
 import roomRoutes from './modules/room/room.routes'
 import messageRoutes from './modules/message/message.routes'
-import locationRoutes from './modules/location/location.routes'
 import notificationRoutes from './modules/notification/notification.routes'
 import paymentRoutes from './modules/payment/payment.routes'
 import error from './helpers/error'
@@ -65,7 +64,6 @@ app.use(`${mainURL}/${process.env.REQUEST_API}`, requestRoutes)
 app.use(`${mainURL}/${process.env.COMMENT_API}`, commentRoutes)
 app.use(`${mainURL}/${process.env.ROOM_API}`, roomRoutes)
 app.use(`${mainURL}/${process.env.MESSAGE_API}`, messageRoutes)
-app.use(`${mainURL}/${process.env.LOCATION_API}`, locationRoutes)
 app.use(`${mainURL}/${process.env.NOTIFICATION_API}`, notificationRoutes)
 app.use(`${mainURL}/${process.env.PAYMENT_API}`, paymentRoutes)
 

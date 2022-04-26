@@ -190,18 +190,6 @@ requestSchema.statics.addReview = async function (user, request, {comment, rate}
         throw new error.ServerError(error.invalid.reviewAdded, 405)
     }
 }
-// update both the to/from location or just one
-requestSchema.statics.updateRequestLocations = async function(request, {toLocation, fromLocation}) {
-    if (toLocation?.length == 2)
-        request.toLocation.coordinates = toLocation.coordinates
-
-    if (fromLocation?.length == 2)
-        request.toLocation.coordinates = fromLocation.coordinates
-
-    // saving
-    await request.save()
-}
-
 // get all requests by locations
 // update both the to/from location or just one
 // ToDo : add pagination
