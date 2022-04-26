@@ -73,5 +73,12 @@ app.use(`${mainURL}/${process.env.PAYMENT_API}`, paymentRoutes)
 app.use((req, res, next) => {
     res.status(404).send(resp(false, error.invalid.route_404, ""))
 })
+app.use(function (error, req, res, next) {
+  if (error instanceof SyntaxError) {
+    res.status(400).send({"error" : "https://youtu.be/kiY50iRUUzI"})
+  } else {
+    next()
+  }
+})
 
 export default app
