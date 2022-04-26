@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "486f1d2c-5663-4921-bbd4-f4c510784797",
+		"_postman_id": "95a177ca-be97-48d1-8308-741c2d03d095",
 		"name": "Gimme",
 		"description": "# Getting Started\n## Authorization\n\n1. Create an account by registering ```User/register```\n2. Login to get the token.\n3. Set the token as a global variable to use it later on.\n4. Set the Authorization method as ```Bearer Token``` with the global var you set\n\n# Required Data\n## URL Params\nParams passed with the url, ex : ```/search?userId=123```\n\n## Data Params\nData to be sent in the body as a json object.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -17,16 +17,39 @@
 							"script": {
 								"exec": [
 									"// getting the collection data and setting the body",
-									"let registeration_data = JSON.parse(pm.collectionVariables.get(\"reg_data\"))",
+									"let regData = pm.collectionVariables.get(\"reg_data\")",
 									"",
-									"let currentUser = registeration_data.shift()",
+									"console.log(regData)",
 									"",
-									"console.log(registeration_data)",
+									"if (! regData || regData?.length == 0) {",
+									"    regData = [",
+									"         {",
+									"            \"name\" : \"customer\",",
+									"            \"email\" : \"customer@email.com\",",
+									"            \"phone\" : \"01023438928\",",
+									"            \"password\" : \"HelloCustomer123_\",",
+									"            \"age\" : 24",
+									"        },",
+									"        {",
+									"            \"name\" : \"mod\",",
+									"            \"email\" : \"mod@email.com\",",
+									"            \"phone\" : \"01023438929\",",
+									"            \"password\" : \"HelloMod123_\",",
+									"            \"age\" : 20",
+									"        },",
+									"        {",
+									"            \"name\" : \"another\",",
+									"            \"email\" : \"another@email.com\",",
+									"            \"phone\" : \"01023438920\",",
+									"            \"password\" : \"HelloAnother123_\",",
+									"            \"age\" : 21",
+									"        },  ",
+									"    ]",
+									"}",
 									"",
-									"currentUser = JSON.stringify(currentUser)",
+									"let currentUser = regData.shift()",
 									"",
-									"pm.collectionVariables.set(\"current_user\", currentUser)",
-									"pm.collectionVariables.set(\"reg_data\", registeration_data)",
+									"pm.collectionVariables.set(\"reg_data\", regData)",
 									"",
 									"pm.request.body.raw = currentUser"
 								],
@@ -154,7 +177,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"mod@email.com\",\n    \"password\" : \"Hellomod123_\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -364,6 +387,46 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"bestMod\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"edit"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"description": "# Where am i ?\nThis folder contains all the routes related to the users, like creating accounts, logging in/out, editing user info and viewing other users.",
@@ -394,11 +457,21 @@
 				{
 					"name": "Create",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\" : \"Electronic parts needed\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 90\n    },\n    \"timeRange\" : {\n        \"val\" : 2\n    },\n    \"toAddress\" : \"Cairo Naser City Zahraa ST 4030\",\n    \"fromAddress\" : \"Shiben Al Kom betebs\"\n}",
+							"raw": "{\n    \"title\" : \"Electronic parts needed\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Pointdd\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 90\n    },\n    \"timeRange\" : {\n        \"val\" : 2\n    },\n    \"toAddress\" : \"Cairo Naser City Zahraa ST 4030\",\n    \"fromAddress\" : \"Shiben Al Kom betebs\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -424,11 +497,21 @@
 				{
 					"name": "Edit",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\" : \"Electronic parts needed and something else, please\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 150\n    },\n    \"timeRange\" : {\n        \"val\" : 3\n    }\n}",
+							"raw": "{\n    \"title\" : \"wtf\",\n    \"body\" : \"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\n    \"fromLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [23.402, 22.204]\n    },\n    \"toLocation\" : {\n            \"type\" : \"Point\",\n            \"coordinates\" : [-23.402, 28.204]\n    },\n    \"priceRange\" : {\n        \"min\" : 20,\n        \"max\" : 150\n    },\n    \"timeRange\" : {\n        \"val\" : 3\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -436,7 +519,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/request/edit/620e6a4f431a90550fa6cc71",
+							"raw": "http://localhost:8080/api/request/edit/6266b7720401b6d216dc58a0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -446,7 +529,7 @@
 								"api",
 								"request",
 								"edit",
-								"620e6a4f431a90550fa6cc71"
+								"6266b7720401b6d216dc58a0"
 							],
 							"query": [
 								{
@@ -503,6 +586,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -515,7 +608,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/request/search?to=naser&from=",
+							"raw": "http://localhost:8080/api/request/search",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -525,16 +618,6 @@
 								"api",
 								"request",
 								"search"
-							],
-							"query": [
-								{
-									"key": "to",
-									"value": "naser"
-								},
-								{
-									"key": "from",
-									"value": ""
-								}
 							]
 						}
 					},
@@ -546,6 +629,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -558,7 +651,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/request/requests?reqId=393939",
+							"raw": "http://localhost:8080/api/request/requests?reqId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -572,7 +665,7 @@
 							"query": [
 								{
 									"key": "reqId",
-									"value": "393939"
+									"value": null
 								}
 							]
 						}
@@ -620,6 +713,16 @@
 				{
 					"name": "Comment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -797,11 +900,21 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 5\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -809,7 +922,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/review/reviews?job=customer",
+							"raw": "http://localhost:8080/api/review/reviews?userId=620e6aad9c7c24049b4f84e0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -822,8 +935,8 @@
 							],
 							"query": [
 								{
-									"key": "job",
-									"value": "customer"
+									"key": "userId",
+									"value": "620e6aad9c7c24049b4f84e0"
 								}
 							]
 						}
@@ -833,11 +946,21 @@
 				{
 					"name": "Add Review",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 5\n}",
+							"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -845,7 +968,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/review/user-review/620e6aad9c7c24049b4f84e0",
+							"raw": "http://localhost:8080/api/review/review/620e6aad9c7c24049b4f84e0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -854,51 +977,8 @@
 							"path": [
 								"api",
 								"review",
-								"user-review",
+								"review",
 								"620e6aad9c7c24049b4f84e0"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Location",
-			"item": [
-				{
-					"name": "Update Location",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"toLocation\" : {\n        \"coordinates\" : []\n    },\n    \"fromLocation\" : {\n        \"coordinates\" : []\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/location/update-location/620e6aad9c7c24049b4f84e0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"location",
-								"update-location",
-								"620e6aad9c7c24049b4f84e0"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null,
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -912,11 +992,21 @@
 				{
 					"name": "Update Token",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"token\" : \"some_device_token\"\n}",
+							"raw": "{\n    \"token\" : \"some_shitty_token_from_google\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -950,6 +1040,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -980,11 +1080,21 @@
 				{
 					"name": "Create Stripe Session",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"commentId\" : \"624e5b53a62fa0412bc59b67\",\n    \"reqId\" : \"624d8d01468546f58e2cac79\"\n}",
+							"raw": "{\n    \"reqId\" : \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1010,11 +1120,21 @@
 				{
 					"name": "Release Payment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"reqId\" : \"624d8d01468546f58e2cac79\"\n}",
+							"raw": "{\n    \"reqId\" : \"6263cc0558b56d0eb11c7ef5\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1045,7 +1165,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{customer_token}}",
+									"value": "{{another_token}}",
 									"type": "string"
 								}
 							]
@@ -1078,6 +1198,105 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Create a chat room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reqId\" : \"6266b7720401b6d216dc58a0\",\n    \"modId\" : \"6266b3951a0f8c8ab1e94fe2\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/room/create-room",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"room",
+								"create-room"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "Get messages",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{mod_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roomId\" : \"6266b7720401b6d216dc58a0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/msg/get-room-msgs?page=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"msg",
+								"get-room-msgs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -1097,19 +1316,22 @@
 					"            \"name\" : \"customer\",",
 					"            \"email\" : \"customer@email.com\",",
 					"            \"phone\" : \"01023438928\",",
-					"            \"password\" : \"HelloCustomer123_\"",
+					"            \"password\" : \"HelloCustomer123_\",",
+					"            \"age\" : 24",
 					"        },",
 					"        {",
 					"            \"name\" : \"mod\",",
 					"            \"email\" : \"mod@email.com\",",
 					"            \"phone\" : \"01023438929\",",
-					"            \"password\" : \"HelloMod123_\"",
+					"            \"password\" : \"HelloMod123_\",",
+					"            \"age\" : 20",
 					"        },",
 					"        {",
 					"            \"name\" : \"another\",",
 					"            \"email\" : \"another@email.com\",",
 					"            \"phone\" : \"01023438920\",",
-					"            \"password\" : \"HelloAnother123_\"",
+					"            \"password\" : \"HelloAnother123_\",",
+					"            \"age\" : 21",
 					"        },   ",
 					"    ],",
 					"    REQUEST : {",
@@ -1230,10 +1452,6 @@
 	],
 	"variable": [
 		{
-			"key": "reg_data",
-			"value": "[{\"name\":\"customer\",\"email\":\"customer@email.com\",\"phone\":\"01023438928\",\"password\":\"HelloCustomer123_\"},{\"name\":\"mod\",\"email\":\"mod@email.com\",\"phone\":\"01023438929\",\"password\":\"HelloMod123_\"},{\"name\":\"another\",\"email\":\"another@email.com\",\"phone\":\"01023438920\",\"password\":\"HelloAnother123_\"}]"
-		},
-		{
 			"key": "request_data",
 			"value": "{\"title\":\"Electronic parts needed\",\"body\":\"I need someone to bring me some Electronic parts from this store, I will be waiting for it, thanks in advance\",\"fromLocation\":{\"type\":\"Point\",\"coordinates\":[23.402,22.204]},\"toLocation\":{\"type\":\"Point\",\"coordinates\":[-23.402,28.204]},\"toAddress\":\"Tanta Al-Hussiny Magry ST-42\",\"fromAddress\":\"Cairo Hadaiq Sayed-Mohamed ST-40\",\"priceRange\":{\"min\":20,\"toAddress\":\"Tanta Al-Hussiny Magry ST-42\",\"fromAddress\":\"Cairo Hadaiq Sayed-Mohamed ST-40\",\"max\":90},\"timeRange\":{\"val\":2}}"
 		},
@@ -1256,6 +1474,10 @@
 		{
 			"key": "mod_review",
 			"value": "{\"comment\":\"Had fun working with him, would probably deliver more things\",\"rate\":5}"
+		},
+		{
+			"key": "reg_data",
+			"value": ""
 		},
 		{
 			"key": "login_data",
