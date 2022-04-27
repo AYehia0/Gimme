@@ -160,7 +160,7 @@ const getRequestComments = async (reqId) => {
     })
 
     if (commentIDs.length != 0)
-        comments = await Comment.find().where('commentId').in(commentIDs).exec()
+        comments = await Comment.find({_id: {$in: commentIDs}})
 
     return comments
 }
