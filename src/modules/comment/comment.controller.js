@@ -80,7 +80,7 @@ const getComments = async (req, res) => {
 const getVerfificationSecret = async (req, res) => {
     try {
 
-        const verifyToken = await commentService.getVerificationCode(req.user, req.query.reqId)
+        const verifyToken = await commentService.getVerificationCode(req.user, req.params.reqId)
         res.send(resp(true, "", verifyToken))
    
     } catch (e) {

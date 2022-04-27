@@ -27,7 +27,7 @@ const giveReview = async (req, res) => {
 const getUserReviews = async (req, res) => {
     try {
 
-        const userId = req.query.userId
+        const userId = req.params.userId
 
         const reviews = await reviewService.getUserReviews(userId)
 

@@ -19,7 +19,7 @@ router.delete('/comment', auth.userAuth, commentCont.deleteComment)
 router.get('/comment/:reqId', auth.userAuth, commentCont.getComments)
 
 // get the payment verification secret 
-router.get('/secret', auth.userAuth, commentCont.getVerfificationSecret)
+router.get('/secret/:reqId', auth.userAuth, commentCont.getVerfificationSecret)
 
 // exporting
 export default router
