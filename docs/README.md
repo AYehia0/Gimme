@@ -155,7 +155,7 @@ Before using stripe, you have to obtain both **publishable** and **secret** keys
         }
 
 ### Stripe Configurations
-Create ```src/config/stripe_key.json``` as follows :
+Create ```src/config/keys/stripe_key.json``` as follows :
 ```json
 {
     "api_public"  : "",
