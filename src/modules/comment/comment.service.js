@@ -64,7 +64,7 @@ const addComment = async (user, reqId, commentData) => {
 
     // TODO : is it safe ?
     if (comment.price < minPrice)
-        throw new error.ServerError(error.comment.price, 409)
+        throw new error.ServerError(error.comment.price, 405)
 
     const newComment = new Comment({
         userId : user._id,
@@ -175,7 +175,7 @@ const getVerificationCode = async (user, reqId) => {
         throw new error.ServerError(error.request.notfound, 404)
 
     if (! request.mod)
-        throw new error.ServerError(error.request.noMod, 404)
+        throw new error.ServerError(error.request.noMod, 409)
 
     if (! request.mod.equals(user._id))
         throw new error.ServerError(error.user.auth, 401)

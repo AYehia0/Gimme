@@ -112,7 +112,6 @@ account management, and identity verification for your platform.
 */
 const createExpressAccount = async (user) => {
 
-    console.log(user)
     const account = stripe.accounts.create({
         type: "express",
         country: "EG",

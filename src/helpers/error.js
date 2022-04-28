@@ -39,7 +39,7 @@ export default {
         notfound : "You're trying to access a request that doesn't exist",
         modChoosen : "This request doesn't accept any comments/sessions : MOD is already choosen",
         closed : "You're not allowed to perform this : request is already closed",
-        noMod : "This is request isn't fulfilled yet"
+        noMod : "This is request isn't closed yet"
     },
     comment : {
         commented : "You aren't allowed to have more than one comment on the same request",

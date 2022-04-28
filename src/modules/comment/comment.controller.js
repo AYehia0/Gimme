@@ -10,9 +10,6 @@ const giveComment = async (req, res) => {
 
         const requestId = req.params.reqId
 
-        if (! requestId)
-            throw new error.ServerError(error.invalid.required("Request ID"), 400)
-
         const comment = await commentService.addComment(req.user, requestId, req.body)
 
         res.send(resp(true, success.comment.added, comment))   

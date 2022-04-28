@@ -10,23 +10,23 @@ export default {
         delete : "Success : request has been deleted.",
     },
     comment : {
-        added : "Success : comment has been added !!!",
-        edited : "Success : comment has been edited !!!",
-        deleted : "Success : comment has been deleted !!!",
+        added : "Success : comment has been added.",
+        edited : "Success : comment has been edited.",
+        deleted : "Success : comment has been deleted.",
     },
     review : {
-        added : "Success : review has been added !!!",
+        added : "Success : review has been added.",
     },
     location : {
         added : "Success : Location has been updated",
     },
     notification : {
-        updated : "Success : notification token has been updated",
+        updated : "Success : notification token has been updated.",
     },
     payment : {
         webhook : "Success, webhook is working :D",
         success : "Session has been created : Please hold the money to choose the MOD",
-        released : "Success : payment has been released !!!",
+        released : "Success : payment has been released.",
         createAccount : "Please create a stripe account to continue"
     }
 }
