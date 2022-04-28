@@ -4,10 +4,10 @@ const validateComment = (rawData) => {
 
     const Comment = z.object({
         text: z.string().nonempty("Text field can't be empty").max(200),
-        price: z.number().nonnegative().gt(0),
+        price: z.number().nonnegative(),
         time: z.object({
             unit: z.enum(["w", "d", "h"]).default("d"),
-            val: z.number().nonnegative().gt(0)
+            val: z.number().negative()
         })
     })
 
