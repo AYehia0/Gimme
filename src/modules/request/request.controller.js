@@ -13,10 +13,13 @@ const openRequest = async (req, res) => {
         res.send(resp(true, success.request.added, request))
 
     } catch (e) {
+        if (e.message.contains("Can't extract geo keys"))
+            return res.status(400).send(resp(false, error.invalid.location, ""))
+
         if (e instanceof ZodError)
             return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
 
-        res.status(e.code || 400).send(resp(false, message, ""))
+        res.status(e.code || 400).send(resp(false, e.message, ""))
     }
 }
 
@@ -47,7 +50,7 @@ const deleteRequest = async (req, res) => {
 
     } catch (e) {
         if (e instanceof ZodError)
-            return res.status(statusCode).send(resp(false, e.flatten(), ""))
+            return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
 
         res.status(e.code || 400).send(resp(false, e.message, ""))
     }

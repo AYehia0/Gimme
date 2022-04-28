@@ -47,11 +47,12 @@ const editUserProfile = async (user, editData) => {
     const data = userValidation.validateEditProfile(editData)
 
     // not the best thing to do, but meh I wanna sleep :(
-    if (Object.keys(data).length !== 0)
+    if (Object.keys(data).length !== 0) {
         for (const [key, value] of Object.entries(data)) {
             user[`${key}`] = value
         }
-    await user.save()
+        await user.save()
+    }
 }
 
 // add/update a profile img to the user

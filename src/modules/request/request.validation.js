@@ -1,4 +1,5 @@
 import {z} from 'zod'
+import validator from 'validator'
 
 const validateRequest = (rawData) => {
 
@@ -6,12 +7,28 @@ const validateRequest = (rawData) => {
         title: z.string().nonempty("Title can't be empty").max(200),
         body: z.string().nonempty("Body can't be empty").max(300),
         toLocation: z.object({
-            type: z.string().default("Point").transform((val) => "Point"),
-            coordinates : z.number().array().length(2)
+            type: z.string().default("Point"),
+            coordinates : z.number().array().length(2).superRefine(([lat, long], ctx) => {
+                if (!validator.isLatLong(`${lat},${long}`)){
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Invalid long/lat",
+                        fatal: true,
+                    })
+                }
+            })
         }),
         fromLocation: z.object({
             type: z.string().default("Point").transform((val) => "Point"),
-            coordinates : z.number().array().length(2)
+            coordinates : z.number().array().length(2).superRefine(([lat, long], ctx) => {
+                if (!validator.isLatLong(`${lat},${long}`)) {
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Invalid long/lat",
+                        fatal: true,
+                    })
+                }
+            })
         }),
         toAddress: z.string().optional(),
         fromAddress: z.string().optional(),
@@ -25,6 +42,7 @@ const validateRequest = (rawData) => {
         })
     })
 
+    console.log(Request.parse(rawData))
     return Request.parse(rawData)
 
 }

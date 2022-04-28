@@ -8,7 +8,9 @@ export default {
     ServerError,
     user : {
         login : "Not authorized",
-        notFound : "User not found",
+        notFound : "This username isn't registered",
+        headerToken: "Authorization token is required : make sure to set it in the headers",
+        tokenExpired: "User not found or token has been expired",
         auth : "You're not allowed to perform this action",
         registered : "Account already exists",
         wrong : "Username or password is wrong",
@@ -32,7 +34,7 @@ export default {
         reviewAdded : "Can't add review to this request : already added or not authorized",
     }, 
     request : {
-        delete : "You aren't allowed to delete a request with a state of fulfilled",
+        delete : "You aren't allowed to delete a request with a fulfilled state",
         edit : "You aren't allowed to edit a request with a state of fulfilled/closed",
         notfound : "You're trying to access a request that doesn't exist",
         modChoosen : "This request doesn't accept any comments/sessions : MOD is already choosen",

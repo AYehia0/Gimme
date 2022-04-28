@@ -1,5 +1,7 @@
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
+import error from '../helpers/error'
+import resp from '../helpers/responseTemplate'
 
 const userAuth = async (req, res, next) => {
   try {
@@ -9,7 +11,7 @@ const userAuth = async (req, res, next) => {
     const authHeader = req.header('Authorization')
 
     if (!authHeader)
-      throw new Error("Authorization header isn't set properly")
+      throw new error.ServerError(error.user.headerToken, 400)
 
     const token = authHeader.replace("Bearer ", "")
 
@@ -21,24 +23,17 @@ const userAuth = async (req, res, next) => {
     const user = await User.findOne({_id: userId, token: token})
 
     if (!user)
-      throw new Error("User not found or Token has been expired")
+      throw new error.ServerError(error.user.tokenExpired, 401)
 
     // setting new req
     req.user = user
     req.token = token
 
-
     // forwarding
     next()
 
   } catch (e) {
-    const msg = e.message.includes('invalid signature') ? "Invalid Token LOL" : e.message
-    res.send({
-      status: false,
-      message: msg,
-      data: ""
-    })
-    
+    res.status(e.code || 401).send(resp(false, e.message, ""))
   }
 }
 
@@ -52,7 +47,7 @@ const socketAuth = async (socket, next) => {
     const token = socket.handshake.headers.token
 
     if (!token)
-      throw new Error("Token isn't set properly in the socket")
+      throw new error.ServerError(error.user.headerToken, 400)
 
     // validation
     const isValidToken = jwt.verify(token, process.env.JWT_TOKEN)
@@ -62,7 +57,7 @@ const socketAuth = async (socket, next) => {
     const user = await User.findOne({_id: userId, token: token}).select("-password -phone")
 
     if (!user)
-      throw new Error("User not found or Token has been expired")
+      throw new error.ServerError(error.user.tokenExpired, 401)
 
     // setting user in the socket
     socket.user = user
@@ -71,6 +66,7 @@ const socketAuth = async (socket, next) => {
     next()
 
   } catch (e) {
+    // ToDo : change this.
     next(new Error(e.message))
   }
 }

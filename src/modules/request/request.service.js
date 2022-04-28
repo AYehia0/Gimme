@@ -35,7 +35,7 @@ const editRequest = async (user, id, data) => {
 
     // database can't have anything but : on, fulfilled, closed, deleted
     if (request.state != "on")
-        throw new error.ServerError(error.request.edit, 403)
+        throw new error.ServerError(error.request.edit, 405)
 
     const reqData = requestValidation.validateRequest(data)
 
@@ -86,7 +86,7 @@ const getRequestsByID = async (user, query) => {
 
     if (Object.keys(query).includes("reqId")){
         const reqId = globalValidation.validateId(query.reqId, "reqId")
-        return [await Request.findById({ _id : reqId })]
+        return [await Request.findById(reqId)]
     }
     return await Request.find({userId: user._id})
 

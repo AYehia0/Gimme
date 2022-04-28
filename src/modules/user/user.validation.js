@@ -64,9 +64,9 @@ const validateUserId = (rawData) => {
 const validateEditProfile = (rawData) => {
 
     const EditProfile = z.object({
-        name: z.string().optional().max(50),
+        name: z.string().max(50).optional(),
         password: z.string().optional(),
-        age: z.number().optional().int().max(100).min(20),
+        age: z.number().int().max(100).min(20).optional(),
         gender: z.enum(["male", "female"]).optional(),
         // maybe it's a bad idea
         //img: z.string().optional()
