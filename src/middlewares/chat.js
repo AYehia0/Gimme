@@ -21,10 +21,10 @@ const chatAuth = async (req, res, next) => {
       throw new error.ServerError(error.invalid.id, 400)
 
     // checking if the user is authorized to perform
-    if (!room.roomMaker.equals(user._id) || !room.user.equals(user._id))
+    if (room.roomMaker.equals(user._id) || room.user.equals(user._id))
+      return next()
+    else
       throw new error.ServerError(error.user.auth, 403)
-
-    next()
     
   } catch (e) {
     if (e instanceof ZodError)
