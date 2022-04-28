@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "48d0322f-369c-4220-b810-a54a167cf05c",
 		"name": "Gimme Final Docs",
-		"description": "Gimme is a project aims to help people who can't afford renting a  \ndelivery company to ship their simple needs over the country, it's  \nbasically `from the people to the people` service.\n\n#### Quickstart\n\nAlmost all the routes require an A**uthorization token :**\n\n1.  Create an account.\n2.  Login to get the token.\n3.  Set the Authorization token in the header as : `Bearer`",
+		"description": "Gimme is a project aims to help people who can't afford renting a  \ndelivery company to ship their simple needs over the country, it's  \nbasically `from the people to the people` service.\n\n### Quickstart\n\nAlmost all the routes require an A**uthorization token :**\n\n1.  Create an account.\n2.  Login to get the token.\n3.  Set the Authorization token in the header as : `Bearer <token>`\n    \n\n### Common Errors\n\n*   **Not found** : Status Code `404`\n    \n\nHappens when you're trying to access a `route/resource` that doesn't exist.\n\n``` json\n{\n    \"status\": false,\n    \"message\": \"Oh no you are lost :( , read the documentation to find your way back\",\n    \"data\": \"\"\n}\n\n```\n\n*   **Parsing Errors** : Status Code `400`\n    \n\n``` json\n{\n    \"error\" : \"https://youtu.be/kiY50iRUUzI\"\n}\n\n```\n\n*   **Required Fields** : Status Code `400`\n    \n\nHappens when your passing invalid data, or some required data are missing.\n\n``` json\n{\n    \"status\": false,\n    \"message\": {\n        \"formErrors\": [],\n        \"fieldErrors\": {\n            \"body\": [\n                \"Required\"\n            ],\n            \"toLocation\": [\n                \"Invalid long/lat\"\n            ],\n            \"fromLocation\": [\n                \"Invalid long/lat\"\n            ]\n        }\n    },\n    \"data\": \"\"\n}\n\n```\n\n*   **Not found** : Status Code `404`\n    \n\nHappens whenever you're trying to access a resource that doesn't exist.\n\n``` json\n{\n    \"status\": false,\n    \"message\": \"You're trying to access a request that doesn't exist\",\n    \"data\": \"\"\n}\n\n```\n\n*   **Not authorized** : Status Code `401`\n    \n\nHappens when you're trying to access a protected resource without proper access rights.\n\n``` json\n    {  \n    \"status\": false,  \n    \"message\": \"You're not allowed to perform this action\",  \n    \"data\": \"\"  \n    }\n\n```\n\n*   **Authorization Token Errors** : Status Code `401`\n    \n\nHappens if token is corrupted or logged in from other device\n\n``` json\n    {  \n    \"status\": false,  \n    \"message\": \"jwt malformed\",  \n    \"data\": \"\"  \n    }\n\n```",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -124,10 +124,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/register",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/register",
 									"path": [
 										"api",
 										"user",
@@ -319,10 +316,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/login",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/login",
 									"path": [
 										"api",
 										"user",
@@ -352,10 +346,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/login",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/login",
 									"path": [
 										"api",
 										"user",
@@ -385,10 +376,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/login",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/login",
 									"path": [
 										"api",
 										"user",
@@ -471,10 +459,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/me",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/me",
 									"path": [
 										"api",
 										"user",
@@ -536,10 +521,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/logout",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/logout",
 									"path": [
 										"api",
 										"user",
@@ -621,10 +603,7 @@
 									]
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/profile-img",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/profile-img",
 									"path": [
 										"api",
 										"user",
@@ -773,10 +752,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/profile/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/profile/:userId",
 									"path": [
 										"api",
 										"user",
@@ -894,10 +870,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/edit",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/user/edit",
 									"path": [
 										"api",
 										"user",
@@ -992,10 +965,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/request/open",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/request/open",
 									"path": [
 										"api",
 										"request",
@@ -1111,10 +1081,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/request/edit/:reqId",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/request/edit/:reqId",
 									"path": [
 										"api",
 										"request",
@@ -1295,10 +1262,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/request/delete/:reqId",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/request/delete/:reqId",
 									"path": [
 										"api",
 										"request",
@@ -1441,10 +1405,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/request/search?to=Cairo&from=Alex",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/request/search?to=Cairo&from=Alex",
 									"path": [
 										"api",
 										"request",
@@ -1533,9 +1494,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}api/request/requests",
+									"raw": "api/request/requests",
 									"host": [
-										"{{baseUrl}}api"
+										"api"
 									],
 									"path": [
 										"request",
@@ -1635,10 +1596,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/request/subscribed",
-									"host": [
-										"{{baseUrl}}"
-									],
+									"raw": "/api/request/subscribed",
 									"path": [
 										"api",
 										"request",
@@ -1703,7 +1661,205 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/comment/comment/:reqId",
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : comment has been added !!!\",\n    \"data\": {\n        \"userId\": \"6266b3961a0f8c8ab1e94fe6\",\n        \"text\": \"a comment from the another guy\",\n        \"price\": 50,\n        \"time\": {\n            \"unit\": \"d\",\n            \"val\": 4\n        },\n        \"_id\": \"626aa781cacceb58f2f39a32\",\n        \"__v\": 0\n    }\n}"
+						},
+						{
+							"name": "Failed : Commenting on your request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/comment/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"You aren't allowed to comment on your request, LOL\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : No Stripe Connect Account",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/comment/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"You're not allowed to perfrom this before you register your payment account, so that you can receive payments\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : Multiple comments",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/comment/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"You aren't allowed to have more than one comment on the same request\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : Price can't be less than the request's",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 4\n    },\n    \"price\" : 30,\n    \"text\" : \"Hello, I will bring you thing, I have a car\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/comment/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"The price can't be less than the minimum range of the request\",\n    \"data\": \"\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Get all the comments in request",
@@ -1741,7 +1897,45 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/comment/comment/:reqId",
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"time\": {\n                \"unit\": \"d\",\n                \"val\": 4\n            },\n            \"_id\": \"626aa781cacceb58f2f39a32\",\n            \"userId\": \"6266b3961a0f8c8ab1e94fe6\",\n            \"text\": \"a comment from the another guy\",\n            \"price\": 50,\n            \"__v\": 0\n        }\n    ]\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete a comment",
@@ -1776,7 +1970,85 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/comment/comment/:reqId",
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : comment has been deleted.\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : MOD is choosen",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/comment/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"You're not allowed to delete your own comment if you're already chossen as MOD\",\n    \"data\": \"\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Edit a comment",
@@ -1811,7 +2083,85 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 2\n    },\n    \"price\" : 50,\n    \"text\" : \"Hello, I will bring you thing, I have a car, Edited!!!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/comment/comment/:reqId",
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : comment has been edited.\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : MOD is choosen",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"time\" : {\n        \"unit\" : \"d\",\n        \"val\" : 2\n    },\n    \"price\" : 50,\n    \"text\" : \"Hello, I will bring you thing, I have a car, Edited!!!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/comment/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"comment",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"This request doesn't accept any comments/sessions : MOD is already choosen\",\n    \"data\": \"\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Get comment verification secret",
@@ -1857,9 +2207,128 @@
 									"value": null
 								}
 							]
-						}
+						},
+						"description": "### Notes\n\n- The verification secret is used to complete the payment.\n- Only the authorized user `MOD` can see his verification secret."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/comment/secret/:reqId",
+									"path": [
+										"api",
+										"comment",
+										"secret",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"\",\n    \"data\": \"23sdg049fads2082ksdfjlj2039fdg409fsjfslsdkfj938023840\"\n}"
+						},
+						{
+							"name": "Failed : Request not fulfilled",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/secret/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"secret",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"This is request isn't fulfilled yet\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : Not authorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/comment/secret/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"secret",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"You're not allowed to perform this action\",\n    \"data\": \"\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -1912,7 +2381,45 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/review/reviews/:userId",
+									"path": [
+										"api",
+										"review",
+										"reviews",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"as_mod\": [\n            {\n                \"_id\": \"626ab53a752eb69eca156785\",\n                \"reviewerId\": \"6266b3961a0f8c8ab1e94fe6\",\n                \"toWhom\": \"6266b3951a0f8c8ab1e94fe2\",\n                \"requestId\": \"6266b7720401b6d216dc58a0\",\n                \"title\": \"wtf\",\n                \"body\": \"Had fun working with him, would probably deliver more things\",\n                \"rate\": 1,\n                \"flow\": \"mod\",\n                \"__v\": 0\n            }\n        ],\n        \"as_customer\": []\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "Add a review to a request",
@@ -1957,7 +2464,125 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/review/review/:reqId",
+									"path": [
+										"api",
+										"review",
+										"review",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : review has been added.\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : Already added or not authorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/review/review/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"review",
+										"review",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"Can't add review to this request : already added or not authorized\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Failed : Request not closed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"comment\" : \"Had fun working with him, would probably deliver more things\",\n    \"rate\" : 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/review/review/:reqId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"review",
+										"review",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"This is request isn't closed yet\",\n    \"data\": \"\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -1998,9 +2623,41 @@
 								"notify",
 								"update"
 							]
-						}
+						},
+						"description": "### Notes \n\nThis route should be only called by the APP itself, none can call this.\n\nThis introduces an `API-KEY`, which will be implemented soon."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\" : \"some_shitty_token_from_google\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/notify/update",
+									"path": [
+										"api",
+										"notify",
+										"update"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : notification token has been updated.\",\n    \"data\": \"\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -2044,9 +2701,41 @@
 								"payment",
 								"config"
 							]
-						}
+						},
+						"description": "## Notes\n\n**On the client-side.** Can be publicly-accessible in your web or mobile app’s client-side code (such as checkout.js) to [tokenize](https://stripe.com/docs/api/tokens) payment information such as with [Stripe Elements](https://stripe.com/docs/payments/elements). By default, [Stripe Checkout](https://stripe.com/docs/payments/checkout) tokenizes payment information."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/payment/config",
+									"path": [
+										"api",
+										"payment",
+										"config"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"\",\n    \"data\": \"pk_test_51KltjSB4NnMxVIufNEaVoOm3EdwkEt9nlqhsSdg6NOfuokrsdq3MSMOQhEFlcWOTvFCRpOYf9kwol59AvGbSG52y00n3R3DT9S\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Create stripe checkout session",
@@ -2065,7 +2754,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"reqId\" : \"\"\n}",
+							"raw": "{\n    \"commentId\" : \"62641de980bcbadb3975e1fc\",\n    \"reqId\" : \"6263cc0558b56d0eb11c7ef5\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2082,9 +2771,48 @@
 								"payment",
 								"create-stripe-session"
 							]
-						}
+						},
+						"description": "Create a payment checkout, used to hold the customer's payment till the request is closed."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"commentId\" : \"62641de980bcbadb3975e1fc\",\n    \"reqId\" : \"6263cc0558b56d0eb11c7ef5\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/payment/create-stripe-session/:reqId",
+									"path": [
+										"api",
+										"payment",
+										"create-stripe-session",
+										":reqId"
+									],
+									"variable": [
+										{
+											"key": "reqId",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Session has been created : Please hold the money to choose the MOD\",\n    \"data\": {\n        \"id\": \"cs_test_a1UUqgKmmYz2GgPUjPYzzzz2pwYNmrbFfQXwt5dc7RSSMexNgQW2G66EMh\",\n        \"object\": \"checkout.session\",\n        \"after_expiration\": null,\n        \"allow_promotion_codes\": null,\n        \"amount_subtotal\": 5000,\n        \"amount_total\": 5000,\n        \"automatic_tax\": {\n            \"enabled\": false,\n            \"status\": null\n        },\n        \"billing_address_collection\": null,\n        \"cancel_url\": \"https://checkout.stripe.dev/cancel\",\n        \"client_reference_id\": \"6266b7720401b6d216dc58a0;6266b3961a0f8c8ab1e94fe6;626aa781cacceb58f2f39a32\",\n        \"consent\": null,\n        \"consent_collection\": null,\n        \"currency\": \"egp\",\n        \"customer\": \"cus_LaorpzcP83pvl2\",\n        \"customer_creation\": null,\n        \"customer_details\": {\n            \"address\": null,\n            \"email\": \"customer@email.com\",\n            \"name\": null,\n            \"phone\": null,\n            \"tax_exempt\": \"none\",\n            \"tax_ids\": null\n        },\n        \"customer_email\": null,\n        \"expires_at\": 1651261690,\n        \"livemode\": false,\n        \"locale\": null,\n        \"metadata\": {},\n        \"mode\": \"payment\",\n        \"payment_intent\": \"pi_3KtdJuB4NnMxVIuf0Y9J1V00\",\n        \"payment_link\": null,\n        \"payment_method_options\": {},\n        \"payment_method_types\": [\n            \"card\"\n        ],\n        \"payment_status\": \"unpaid\",\n        \"phone_number_collection\": {\n            \"enabled\": false\n        },\n        \"recovered_from\": null,\n        \"setup_intent\": null,\n        \"shipping\": null,\n        \"shipping_address_collection\": null,\n        \"shipping_options\": [],\n        \"shipping_rate\": null,\n        \"status\": \"open\",\n        \"submit_type\": null,\n        \"subscription\": null,\n        \"success_url\": \"https://checkout.stripe.dev/success\",\n        \"total_details\": {\n            \"amount_discount\": 0,\n            \"amount_shipping\": 0,\n            \"amount_tax\": 0\n        },\n        \"url\": \"https://checkout.stripe.com/pay/cs_test_a1UUqgKmmYz2GgPUjPYzzzz2pwYNmrbFfQXwt5dc7RSSMexNgQW2G66EMh#fidkdWxOYHwnPyd1blpxYHZxWjA0Tmlxb1ZHMUtrSH1TTHBjS0BkU2pKaDZAYXJuQHE8a2l0bXZWYWIzS0pjcGpud3ZhdDZIVkhKVG1AQ2lmUkpRc0NGV3VKXGM8bnJqaTA8RHNCZ1ZCMDd8NTVrNlc2QVE8VicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl\"\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "Release payment to the mod",
@@ -2103,7 +2831,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"reqId\" : \"6263cc0558b56d0eb11c7ef5\"\n}",
+							"raw": "{\n    \"reqId\" : \"6266b7720401b6d216dc58a0\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2120,9 +2848,74 @@
 								"payment",
 								"release-payment"
 							]
-						}
+						},
+						"description": "Release the payment :\n- By the Customer, without the MOD verification code.\n- By Scanning the QR code : \n  - Customer Scans the QR code generated by the MOD."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success : No verification secret",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reqId\" : \"6263cc0558b56d0eb11c7ef5\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/payment/release-payment",
+									"path": [
+										"api",
+										"payment",
+										"release-payment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : payment has been released.\",\n    \"data\": \"\"\n}"
+						},
+						{
+							"name": "Success : With verification secret",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reqId\" : \"6263cc0558b56d0eb11c7ef5\",\n    \"verify_secret\" : \"f3c3d95c71444d9b4ef65f13eaed18ea420c7c4267ed5575cffd55021cfcc9b6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/payment/release-payment",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"payment",
+										"release-payment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Success : payment has been released.\",\n    \"data\": \"\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Create stripe account",
@@ -2158,9 +2951,41 @@
 								"payment",
 								"create-stripe-account"
 							]
-						}
+						},
+						"description": "### Why Connect?\n\n[Stripe Connect](https://stripe.com/docs/connect) is the most suitable way to do online payments and receiving payments.\n\n### Notes\n\n*   This route should be protected by an `API KEY`.\n*   Users, who want to receive payments, must have a stripe account before adding a comment.\n*   The API call, takes sometime to create an account."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/payment/create-stripe-account",
+									"path": [
+										"api",
+										"payment",
+										"create-stripe-account"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Please create a stripe account to continue\",\n    \"data\": {\n        \"object\": \"account_link\",\n        \"created\": 1651173549,\n        \"expires_at\": 1651173849,\n        \"url\": \"https://connect.stripe.com/express/onboarding/vFD6OD5Glp4Z\"\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -2203,7 +3028,71 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success : New room",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reqId\" : \"6266b7720401b6d216dc58a0\",\n    \"modId\" : \"6266b3951a0f8c8ab1e94fe2\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/room/create-room",
+									"path": [
+										"api",
+										"room",
+										"create-room"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Creating new room\",\n    \"data\": {\n        \"new\": true,\n        \"message\": \"Creating new room\",\n        \"roomId\": \"626af5143fa9691d013fb49c\"\n    }\n}"
+						},
+						{
+							"name": "Success : Old room",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reqId\" : \"6266b7720401b6d216dc58a0\",\n    \"modId\" : \"6266b3951a0f8c8ab1e94fe2\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/room/create-room",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"room",
+										"create-room"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"Fetching old messages\",\n    \"data\": {\n        \"new\": false,\n        \"message\": \"Fetching old messages\",\n        \"roomId\": \"626af5143fa9691d013fb49c\"\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -2255,9 +3144,51 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get chat messages",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"roomId\" : \"6266b7720401b6d216dc58a0\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/api/msg/get-room-msgs?page=4&limit=3",
+									"path": [
+										"api",
+										"msg",
+										"get-room-msgs"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "4",
+											"description": "Page number"
+										},
+										{
+											"key": "limit",
+											"value": "3",
+											"description": "Number of messages, max 8"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"\",\n    \"data\": []\n}"
+						}
+					]
 				}
-			]
+			],
+			"description": "Get messages from chat room.\n\nDidn't test yet #!"
 		}
 	],
 	"auth": {
