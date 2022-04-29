@@ -13,11 +13,13 @@
 
 ## Contents
 
-- [Auth](./endpoints/auth.md)
-- [User](./endpoints/user.md)
-- [Request](./endpoints/request.md)
-- [Comment](./endpoints/comment.md)
-- [Review](./endpoints/review.md)
-- [Notification](./endpoints/notification.md)
-- [Payment](./endpoints//payment.md)
+- [~~Auth~~](./endpoints/auth.md)
+- [~~User~~](./endpoints/user.md)
+- [~~Request~~](./endpoints/request.md)
+- [~~Comment~~](./endpoints/comment.md)
+- [~~Review~~](./endpoints/review.md)
+- [~~Notification~~](./endpoints/notification.md)
+- [~~Payment~~](./endpoints//payment.md)
+
+All the local docs are deprecated now, head to [here](https://documenter.getpostman.com/view/20745767/UyrEiaYr) for the latest docs, or access it by importing this [postman collection](../postman/Gimme.postman_collection.json).
 
