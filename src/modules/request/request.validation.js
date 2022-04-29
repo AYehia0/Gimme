@@ -56,7 +56,15 @@ const validateSearchRequest = (rawData) => {
     return Search.parse(rawData)
 }
 
+const validateRequestState = (rawData) => {
+    const State = z.enum(["on", "closed", "fulfilled"]).default("on")
+
+    return State.parse(rawData)
+
+}
+
 export default {
     validateRequest, 
-    validateSearchRequest
+    validateSearchRequest, 
+    validateRequestState
 }

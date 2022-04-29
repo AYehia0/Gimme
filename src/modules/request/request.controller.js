@@ -103,7 +103,20 @@ const getSubscibedRequests = async (req, res) => {
     }
 }
 
+// get my commented requests
+const getMyCommentedRequests = async (req, res) => {
+    try {
+        const state = req.query.state
+        const requests = await requestServices.getMyOnRequests(req.user._id, state)
+        res.send(resp(true, "", requests))
 
+    } catch (e) {
+        if (e instanceof ZodError)
+            return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
+        res.status(500).send(resp(false, e.message, ""))
+    }
+}
 
 export default {
     openRequest,
@@ -111,5 +124,6 @@ export default {
     deleteRequest,
     searchRequests,
     getRequests,
-    getSubscibedRequests
+    getSubscibedRequests,
+    getMyCommentedRequests
 }

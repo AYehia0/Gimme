@@ -99,6 +99,15 @@ const getRequestsForMOD = async (userId) => {
 
 }
 
+// get on requests, i commented on
+const getMyOnRequests = async (userId, state) => {
+
+    const rightState = requestValidation.validateRequestState(state)
+    return await Request.find({"participants.userId" : userId , state : rightState})
+
+}
+
+
 
 export default {
     createRequest,
@@ -106,5 +115,6 @@ export default {
     deleteReuest,
     searchRequestsByLocation,
     getRequestsByID,
-    getRequestsForMOD
+    getRequestsForMOD, 
+    getMyOnRequests
 }
