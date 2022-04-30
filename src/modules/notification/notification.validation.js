@@ -7,5 +7,5 @@ export default function (rawData) {
         token: z.string().nonempty("Notification token can't be empty").max(300)
     })
 
-    Notification.parse(rawData)
+    return Notification.parse(rawData)
 }
