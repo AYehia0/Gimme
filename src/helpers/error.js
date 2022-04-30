@@ -21,6 +21,7 @@ export default {
         required : function (propery) {
             return `${propery} is required`
         },
+        fcm_token : "This isn't a valid fcm token",
         fileType : "Invalid Type : We only accept files of type image",
         fileSize : "You exceeded the max filesize : bigger than you mom",
         route_404 : "Oh no you are lost :( , read the documentation to find your way back",

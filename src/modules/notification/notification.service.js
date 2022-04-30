@@ -1,15 +1,29 @@
 import notificationValidation from "./notification.validation"
-
+import notification from '../../utils/notification'
+import Notification from "../../models/Notification"
+import error from "../../helpers/error"
 
 const updateNotificationToken = async (user, data) => {
 
     const {token} = notificationValidation(data)
 
-    // updating the token to the db
-    user.notification = token
+    // check if the token is valid 
+    notification.verifyFcmRegToken(token).then(result => {
 
-    // saving
-    await user.save()
+        // create a notification profile if not exist
+        let update = {
+            notification_token : token
+        }
+        let opts = {
+            upsert : true,
+        }
+        await Notification.findOneAndUpdate({userId: user._id}, update, opts)
+        
+    }).catch(e => {
+
+        throw error.ServerError(error.invalid.fcm_token, 400)
+
+    })
 
 }
 

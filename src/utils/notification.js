@@ -1,6 +1,7 @@
 import User from '../models/User'
 import admin from 'firebase-admin'
 import serviceAccount from '../config/keys/fcm.json'
+import Notification from '../models/Notification'
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -25,9 +26,9 @@ const pushNotificationToOne = (token, message) => {
 const pushNotificationToMulti = async (data) => {
 
     // getting all the tokens 
-    const users = await User.find()
+    const users = await Notification.find()
     const tokens = users.map(user => {
-        return user.notification
+        return user.notification_token
     })
 
     admin.messaging().sendToDevice(tokens, data)
@@ -38,7 +39,15 @@ const pushNotificationToMulti = async (data) => {
     })
 }
 
+// using the fcm dry run to verify the token
+const verifyFcmRegToken = (fcmToken) => {
+    return admin.messaging().send({
+        token: fcmToken
+    }, true)
+}
+
 export default {
     pushNotificationToOne,
-    pushNotificationToMulti,
+    pushNotificationToMulti, 
+    verifyFcmRegToken
 }

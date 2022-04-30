@@ -109,9 +109,8 @@ const closeRequestWH = async (requestId, modId, commentId, paymentIntent) => {
         "msg" : "Congratuation you're the choosen one :D"
     }
 
-    if (choosenMod.notification_token)
-        notify.pushNotificationToOne(choosenMod.notification_token, notification_msg)
- 
+    // send a notification with the new notification Model
+
 }
 
 // helper function to capture the payment and add amount to user's wallet

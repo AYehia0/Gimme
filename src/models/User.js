@@ -70,10 +70,6 @@ const userSchema = new Schema({
     type : String,
     unique : true
   },
-  notification_token : {
-    type : String,
-    default : ""
-  },
   chats : [{
       type : Schema.Types.ObjectId,
       ref : "Room",
