@@ -17,9 +17,9 @@ Pre-installation:
   - [X] Before user (MOD) can create a comment, he must have a stripe account connect, so that he/she can receive payments to their bank account --> find a way to create an account by session link, and setup a webhook to flag the user with account_id
   - [X] Payment is directly payout to the mod's account, with off_session.
 - [ ] Change something in the webhook, i don't remember now.
-- [ ] Testing the payments.
+- [X] Testing the payments.
 - [ ] Important : Switch to TS
-- [ ] Add user input validation using : zod
+- [X] Add user input validation using : zod
 - [ ] Fixes :
   - [X] Clean the request controller : remove close request and make sure everything works
   - [X] Remove paymentIntent from the request
@@ -37,7 +37,7 @@ Pre-installation:
   - [ ] Prevent spamming, hehe
 - [X] List the API routes
   - The database design
-    - [ ] change mongoose required to : ```required: [true, "XXXX is required"]```
+    - [X] change mongoose required to : ```required: [true, "XXXX is required"]```
     - [X] User model
       - [X] Edit a user profile : EZ !!!
         - [ ] Check if the email is verified by sending an email to that email asking for a code or something 
