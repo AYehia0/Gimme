@@ -7,7 +7,7 @@ const validateComment = (rawData) => {
         price: z.number().nonnegative(),
         time: z.object({
             unit: z.enum(["w", "d", "h"]).default("d"),
-            val: z.number().negative()
+            val: z.number().nonnegative()
         })
     })
 
