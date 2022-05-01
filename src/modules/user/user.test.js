@@ -1,6 +1,5 @@
 import userServices from './user.service'
 import globalStub from '../../config/tests/test'
-import 'dotenv/config'
 import jsonwebtoken from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
@@ -76,14 +75,9 @@ describe("User unit tests : ", () => {
 
     it("should log out a user", async () => {
 
-
         await userServices.logoutUser(user)
 
         expect(user.token).toBe("")
 
     })
-
-
-
-
 })

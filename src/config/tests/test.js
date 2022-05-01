@@ -27,7 +27,7 @@ const API_DATA = {
     },
     EDIT : {
         USER_NORMAL : {
-            "name" : "not_me",
+            "name" : "someone",
             "password" : "HelloSomeone123_edited",
             "age" : 25
         },
@@ -65,9 +65,7 @@ const API_DATA = {
             "toAddress" : "Tanta Al-Hussiny Magry ST-42",
             "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
             "priceRange" : {
-                "min" : 20,    "toAddress" : "Tanta Al-Hussiny Magry ST-42",
-                "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
-             
+                "min" : 20,  
                 "max" : 90
             },
             "timeRange" : {
@@ -76,25 +74,12 @@ const API_DATA = {
         },
         EDITED : {
             NORMAL : {
-                "title" : "Electronic parts needed",
+                "title" : "Electronic parts needed, edited",
                 "body" : "I need Something real quick",
                 "fromLocation" : {
                         "type" : "Point",
                         "coordinates" : [23.402, 22.204]
                 },
-                "toLocation" : {
-                        "type" : "Point",
-                        "coordinates" : [-23.402, 28.204]
-                },
-                "toAddress" : "Tanta Al-Hussiny Magry ST-42",
-                "fromAddress" : "Cairo Hadaiq Sayed-Mohamed ST-40",
-                "priceRange" : {
-                    "min" : 20,
-                    "max" : 80
-                },
-                "timeRange" : {
-                    "val" : 5
-                }
             },
             WRONG : {
                 "title" : "Electronic parts needed",

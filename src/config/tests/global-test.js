@@ -5,6 +5,7 @@
 
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoose from 'mongoose'
+import 'dotenv/config'
 
 beforeAll(async () => {
 
