@@ -1,9 +1,9 @@
 import {z} from 'zod'
 import validator from 'validator'
 
-const validateRequest = (rawData) => {
+const validateRequest = (rawData, edit=false) => {
 
-    const Request = z.object({
+    let Request = z.object({
         title: z.string().nonempty("Title can't be empty").max(200),
         body: z.string().nonempty("Body can't be empty").max(300),
         toLocation: z.object({
@@ -42,7 +42,11 @@ const validateRequest = (rawData) => {
         })
     })
 
-    console.log(Request.parse(rawData))
+    if (edit){
+        
+        let deepPartialRequest = Request.deepPartial()
+        return deepPartialRequest.parse(rawData)
+    }
     return Request.parse(rawData)
 
 }

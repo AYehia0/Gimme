@@ -37,13 +37,15 @@ const editRequest = async (user, id, data) => {
     if (request.state != "on")
         throw new error.ServerError(error.request.edit, 405)
 
-    const reqData = requestValidation.validateRequest(data)
+    const reqData = requestValidation.validateRequest(data, true)
 
     Object.entries(reqData).forEach(([key, val]) => {
         request[key] = val
     })
 
     await request.save()
+
+    return request
 }
 
 // a request can't be deleted unless it's closed
