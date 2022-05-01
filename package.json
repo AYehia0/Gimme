@@ -4,6 +4,7 @@
   "description": "Gimme is a project aims to help people who can't afford renting a delivery company to ship their simple needs over the country, it's basically ```from the people to the people``` service.",
   "main": "index.js",
   "scripts": {
+    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --forceExit  --maxWorkers=1 \"src/modules/*/.*\\.test\\.js\"",
     "e2e": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --forceExit  --maxWorkers=1 \"test/e2e/.*\\.test\\.js\"",
     "dev" : "NODE_ENV=development nodemon --experimental-specifier-resolution=node src/server.js",
     "production" : "NODE_ENV=production nodemon --experimental-specifier-resolution=node src/server.js"

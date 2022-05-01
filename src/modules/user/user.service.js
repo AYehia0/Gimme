@@ -53,6 +53,7 @@ const editUserProfile = async (user, editData) => {
         }
         await user.save()
     }
+    return user
 }
 
 // add/update a profile img to the user

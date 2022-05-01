@@ -15,7 +15,8 @@ const API_DATA = {
             "name" : "someone",
             "email" : "someone@email.com",
             "phone" : "01023438928",
-            "password" : "HelloSomeone123_"
+            "password" : "HelloSomeone123_",
+            "age" : 24
         },
         USER_MOD : {
             "name" : "someoneElse",
@@ -23,6 +24,13 @@ const API_DATA = {
             "phone" : "01023438929",
             "password" : "HelloSomeoneElse123_"
         }
+    },
+    EDIT : {
+        USER_NORMAL : {
+            "name" : "not_me",
+            "password" : "HelloSomeone123_edited",
+            "age" : 25
+        },
     },
     LOGIN : {
         USER_NORMAL : {
@@ -160,7 +168,7 @@ const getRequestByUserId = async (userId) => {
 }
 
 
-export {
+export default {
     API_DATA,
     CODES,
     getUserByEmail,
