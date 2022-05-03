@@ -101,18 +101,19 @@ const editComment = async (user, reqId, commentData) => {
     if (request.mod)
         throw new error.ServerError(error.request.modChoosen, 403)
    
-    const userComment = request.participants.findIndex((comment) => {
+    const userComment = request.participants.find((comment) => {
         return comment.userId.equals(user._id)
     })
 
-    if (userComment == -1) 
+    if (!userComment) 
         throw new error.ServerError(error.comment.notfound, 404)
 
     if (userComment.price < request.priceRange.min)
         throw new error.ServerError(error.comment.price, 405)
 
     const comment = commentValidation.validateComment(commentData)
-    await Comment.findByIdAndUpdate(userComment.commentId, comment)
+
+    return await Comment.findByIdAndUpdate(userComment.commentId, comment, {new: true})
  
 }
 
