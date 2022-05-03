@@ -35,13 +35,12 @@ const addComment = async (user, reqId, commentData) => {
         throw new error.ServerError(error.request.modChoosen, 409)
 
     // getting the comment index
-    // const userCommentedInd = request.participants.findIndex((comment) => {
-    //     return comment.userId.equals(user._id)
-    // })
-    let userCommentedInd = -1
+    const userCommented = request.participants.find((comment) => {
+        return comment.userId.equals(user._id)
+    })
 
     // comment exists
-    if (userCommentedInd !== -1)
+    if (userCommented)
         throw new error.ServerError(error.comment.commented, 405)
 
     // check if the user commenting isn't the one who created the request lol
