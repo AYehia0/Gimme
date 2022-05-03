@@ -12,6 +12,7 @@ Pre-installation:
   - express mongoose dotenv jsonwebtoken cors bcryptjs validator helmet  
   - DEV : nodemon
 - [X] Init the server
+- [ ] Continue the unit tests for all the routes, oh boi :'(
 - [ ] Important : Introduce API key for certain routes, which the user can't call himself.
 - [X] Important : switch to stripe [connect](https://stripe.com/docs/connect) API :
   - [X] Before user (MOD) can create a comment, he must have a stripe account connect, so that he/she can receive payments to their bank account --> find a way to create an account by session link, and setup a webhook to flag the user with account_id
