@@ -8,7 +8,7 @@ const updateNotificationToken = async (user, data) => {
     const {token} = notificationValidation(data)
 
     // check if the token is valid 
-    notification.verifyFcmRegToken(token).then(result => {
+    notification.verifyFcmRegToken(token).then(async (result) => {
 
         // create a notification profile if not exist
         let update = {
