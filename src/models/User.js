@@ -63,12 +63,10 @@ const userSchema = new Schema({
   },
   customer_token : {
     type : String,
-    unique : true
   },
   // important to keep track of users who recevie payments
   account_id : {
     type : String,
-    unique : true
   },
   chats : [{
       type : Schema.Types.ObjectId,
