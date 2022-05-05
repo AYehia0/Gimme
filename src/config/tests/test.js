@@ -1,4 +1,5 @@
 import Request from '../../models/Request'
+import Review from '../../models/Review'
 import User from '../../models/User'
 
 const CODES = {
@@ -152,10 +153,38 @@ const getRequestByUserId = async (userId) => {
     }
 }
 
+// create a request with mod
+const createRequestWithMod = async (user, mod, commentId) => {
+    const userRequest = new Request({
+        userId : user._id,
+        ...API_DATA.REQUEST.NORMAL
+    })
+
+    userRequest.participants.push({
+        userId : mod._id,
+        commentId : commentId
+    })
+
+    userRequest.state = 'closed'
+    userRequest.mod = mod._id
+
+    await userRequest.save()
+
+    return userRequest
+
+}
+
+const getReviewById = async (id) => {
+
+    return await Review.findById(id)
+}
+
 
 export default {
     API_DATA,
     CODES,
     getUserByEmail,
-    getRequestByUserId
+    getRequestByUserId, 
+    createRequestWithMod, 
+    getReviewById
 }
