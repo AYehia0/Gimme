@@ -1,5 +1,7 @@
 export default {
     register : "Success : Account has been created.",
+	verificationSent : "A verification link has been sent to your email",
+	verified : "Success : Account has been verified, you can login in now",
     login : "Success : User has been logged in.",
     logout : "Success : User has been logged out.",
     edit : "Success : User's profile has been edited.",
