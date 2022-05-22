@@ -75,6 +75,14 @@ const validateEditProfile = (rawData) => {
     return EditProfile.parse(rawData)
 
 }
+const validateUserEmail = (rawData) => {
+
+	const VerificationEmail = z.object({
+		email : z.string().email()
+	})
+
+    return VerificationEmail.parse(rawData)
+}
 
 
 
@@ -82,5 +90,6 @@ export default {
     validateRegisteration,
     validateLogin, 
     validateUserId, 
-    validateEditProfile
+    validateEditProfile,
+	validateUserEmail
 }
