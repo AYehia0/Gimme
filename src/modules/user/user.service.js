@@ -1,7 +1,12 @@
 // the user services handle all the bussiness logic
 import User from '../../models/User'
+import Token from '../../models/Token'
 import error from '../../helpers/error'
 import userValidation from './user.validation'
+import mailer from "../../utils/email"
+import crypto from "crypto"
+import globalValidation from "../../helpers/validation"
+
 
 const createAccount = async (data) => {
 
@@ -12,9 +17,80 @@ const createAccount = async (data) => {
     
     // saving
     await user.save()
-
-    // only for tesing
+	// only for tesing
     return user
+}
+
+const generateVerificationToken = async (user) => {
+
+	// check if the token exists
+	let token = await Token.findOne({userId: user._id})
+
+	// token doesn't exist maybe expired
+	if (!token) {
+		const generated = crypto.randomBytes(16).toString('hex')
+		token = new Token({
+			userId : user._id,
+			token : generated
+		})
+		await token.save()
+	}
+	
+	return token
+}
+
+const sendEmail = async (emailBody) => {
+
+	await mailer.sendMail(emailBody)
+}
+
+// verification by userId and token
+const verifyUser = async (userData) => {
+
+	const {userId, token} = userData
+
+    const id = globalValidation.validateId(userId, "userId")
+
+	const user = await User.findById(id)
+
+	if (!user)
+		throw new error.ServerError(error.user.notFound, 404)
+
+	// check if user is already verified
+	if (user.isVerified)
+		throw new error.ServerError(error.user.verified, 405)
+
+	// check the token
+	const dbToken = await Token({userId : id, token: token})
+
+	if (!dbToken)
+		throw new error.ServerError(error.invalid.verificationToken, 403)
+
+	user.isVerified = true
+	await user.save()
+
+	// delete the token
+	// not the best way to do, but man i hate this shit, mongoose is trash lol
+	await Token.findOneAndRemove({_id : dbToken._id})
+}
+const reSendVerificationToken = async (email) => {
+
+	// find by email
+	const user = await User.findOne({email: email})
+
+	if (!user || user.isVerified){
+		//throw new error.ServerError(error.user.notFound, 404)
+		//throw new error.ServerError(error.user.verified, 405)
+		
+		// better not to expose anything to the end user
+		return
+	}
+
+	// send email to that user
+	const token = await generateVerificationToken(user)
+	const mailOpts = emailVerificationTemplate(user, token)
+
+	await sendEmail(mailOpts)
 }
 
 // return the login token if success
@@ -77,5 +153,9 @@ export default {
     getOthersProfile,
     editUserProfile,
     addProfilePicture,
-    logoutUser
+    logoutUser,
+	generateVerificationToken,
+	sendEmail,
+	verifyUser, 
+	reSendVerificationToken
 }
