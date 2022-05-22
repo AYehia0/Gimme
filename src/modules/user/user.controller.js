@@ -4,6 +4,7 @@ import resp from '../../helpers/responseTemplate'
 import success from '../../helpers/success'
 import error from '../../helpers/error'
 import uploader from '../../middlewares/uploader'
+import emailVerificationTemplate from '../../helpers/emailTemplate'
 import {ZodError} from 'zod'
 
 const registerUser = async (req, res) => {
@@ -29,6 +30,37 @@ const registerUser = async (req, res) => {
       return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
     
     return res.status(e.code || 400).send(resp(false, e.message, ""))
+  }
+}
+
+// registeration token verification
+// by userId and token
+const verifyUser = async (req, res) => {
+  try {
+	
+	await userServices.verifyUser(req.query)
+	res.send(resp(true, success.verified, ""))
+  } catch (e) {
+    if (e instanceof ZodError)
+      return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
+    res.status(e.code || 400).send(resp(false, e.message, ""))
+  }
+}
+
+// by email lol
+const resendVerification = async (req, res) => {
+  try {
+	
+	await userServices.reSendVerificationToken(req.body)
+	  
+	res.send(resp(true, success.verificationSent, ""))
+  } catch (e) {
+    if (e instanceof ZodError)
+      return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
+	// this shouldn't return info about the users
+    res.status(500).send(resp(false, e.message, ""))
   }
 }
 
@@ -132,17 +164,19 @@ const changeProfilePicture = async (req, res) => {
 
       res.send(resp(true, success.uploadImg, ""))
     }
-    catch(e) {
+	catch(e) {
       res.status(e.code || 400).send(resp(false, e.message, ""))
     }
   })
 }
 export default {
-  registerUser,
-  loginUser,
-  getMyProfile,
-  getUserProfile,
-  logoutUser,
-  editUser,
-  changeProfilePicture,
+	registerUser,
+	loginUser,
+	getMyProfile,
+	getUserProfile,
+	logoutUser,
+	editUser,
+	changeProfilePicture,
+	verifyUser, 
+	resendVerification
 }
