@@ -9,7 +9,13 @@ import {ZodError} from 'zod'
 const registerUser = async (req, res) => {
   try {
 
-    await userServices.createAccount(req.body)
+    const userAccount = await userServices.createAccount(req.body)
+	  
+	  const userAccountToken = await userServices.generateVerificationToken(userAccount)
+	
+	  const mailOpts = emailVerificationTemplate(userAccount, userAccountToken)
+	
+	  await userServices.sendEmail(mailOpts)
 
     res.send(resp(true, success.register, "")) 
 
