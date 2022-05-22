@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import validator from 'validator'
 import jwt from 'jsonwebtoken'
 import Room from '../models/Room'
 import bcrypt from 'bcryptjs'
@@ -48,6 +47,10 @@ const userSchema = new Schema({
     default : "nUser"
   },
   isTrusted : {
+    type : Boolean,
+    default : false
+  },
+  isVerified : {
     type : Boolean,
     default : false
   },
