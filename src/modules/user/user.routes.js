@@ -7,6 +7,12 @@ let router = Router()
 // register a user
 router.post('/register', userCont.registerUser)
 
+// confirm verification token sent in email
+router.get('/confirm', userCont.verifyUser)
+
+// resend verification code in case it expired
+router.post('/resend-verify', userCont.resendVerification)
+
 // login a user
 router.post('/login', userCont.loginUser)
 
