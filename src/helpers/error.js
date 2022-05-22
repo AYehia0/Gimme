@@ -15,7 +15,9 @@ export default {
         registered : "Account already exists",
         wrong : "Username or password is wrong",
         hasAccount : "This user already has a stripe account",
-        noAccount : "You're not allowed to perfrom this before you register your payment account, so that you can receive payments"
+        noAccount : "You're not allowed to perfrom this before you register your payment account, so that you can receive payments",
+		verified : "This account is already verified, please login",
+		notVerified : "This account isn't verified, check your email inbox for the verification code",
     },
     invalid : {
         required : function (propery) {
@@ -33,6 +35,7 @@ export default {
         invalidId: "This is not a valid ID",
         location : "Invalid geoJSON type :  { 'type' : 'Point' } is required or the coordinates are invalid",
         reviewAdded : "Can't add review to this request : already added or not authorized",
+		verificationToken : "Invalid verification code, please make sure you clicked the link in your email inbox"
     }, 
     request : {
         delete : "You aren't allowed to delete a request with a fulfilled state",
