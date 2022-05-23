@@ -1,6 +1,6 @@
 import User from '../models/User'
 import admin from 'firebase-admin'
-import serviceAccount from '../config/keys/fcm.json'
+import serviceAccount from '../config/keys/fcm.json' assert {type: "json"}
 import Notification from '../models/Notification'
 
 admin.initializeApp({

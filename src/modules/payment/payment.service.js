@@ -6,7 +6,7 @@ import User from "../../models/User"
 import notify from "../../utils/notification"
 import payment from "../../utils/stripe"
 
-import creds from "../../config/keys/stripe_key.json"
+import creds from "../../config/keys/stripe_key.json" assert {type: "json"}
 import error from "../../helpers/error"
 
 import crypto from "crypto"
