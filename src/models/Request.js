@@ -252,7 +252,7 @@ requestSchema.statics.deleteRequest = async function (request) {
         return comment.commentId
     })
 
-    await Comment.deleteMany({commentId : commentIDs})
+    await Comment.deleteMany({_id : commentIDs})
 
     await this.deleteOne(request._id)
 
