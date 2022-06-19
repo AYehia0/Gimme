@@ -147,6 +147,57 @@ const logoutUser = async (user) => {
     await user.save()
 }
 
+const changePasswordNoAuth = async (secretCode, newPassword) => {
+	// get the code
+	// FIX: What are the odds to find two equal tokens at the same time ?
+	const verifyToken = await Token.findOne({
+		token : secretCode,
+		tokenType: "password"
+	})
+	// verify the code
+	if (!verifyToken)
+		throw new error.ServerError(error.invalid.verificationToken, 403)
+
+	// TODO: add a function to validate the password in the user.validation.js, and make sure to use this function in the updateProfile validation
+	// change the password
+	await User.findByIdAndUpdate(verifyToken.userId, {
+		password : newPassword
+	})
+
+	// delete the token
+	// FIX: find a better way to delete token, maybe by setting the expire time to '0' idk
+	await Token.deleteOne({_id : verifyToken._id})
+
+}
+
+const forgotPassword = async (bodyData) => {
+	// send password reset code to that email
+	const email = userValidation.validateUserEmail(bodyData)
+
+	// TODO: check if there is a token exists for that email
+	let passwordResetToken 
+	passwordResetToken = await Token.findOne({
+
+	})
+	
+	// create a token for that id
+	const user = await User.findOne({
+		email: email
+	})
+
+	const genPasswordToken = crypto.randomBytes(16).toString('hex')
+	passwordResetToken = new Token({
+		userId : user._id,
+		// TODO : make a function in helper to generate random tokens
+		token : genPasswordToken,
+		type : "password"
+	})
+	// send email to the user
+	// TODO : add email template for the password rest 
+	await mailer.sendMail(passwordResetToken)
+
+}
+
 export default {
     createAccount,
     getLoginToken,
