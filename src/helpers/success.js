@@ -6,6 +6,8 @@ export default {
     logout : "Success : User has been logged out.",
     edit : "Success : User's profile has been edited.",
     uploadImg : "Success : Profile picture has been updated.",
+	resetPassword : "Reset Code has been send to the user, please check the email",
+	resetSuccess : "Password has been reset, please login again with the new password.",
     request : {
         added : "Success : request has been added.",
         edit : "Success : request has been edited.",
