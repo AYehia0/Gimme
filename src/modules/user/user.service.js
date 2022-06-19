@@ -6,6 +6,7 @@ import userValidation from './user.validation'
 import mailer from "../../utils/email"
 import crypto from "crypto"
 import globalValidation from "../../helpers/validation"
+import emailVerificationTemplate from "../../helpers/emailTemplate"
 
 
 const createAccount = async (data) => {
@@ -17,31 +18,31 @@ const createAccount = async (data) => {
     
     // saving
     await user.save()
-	// only for tesing
+
     return user
 }
 
-const generateVerificationToken = async (user) => {
+const generateVerificationToken = async (user, type) => {
 
 	// check if the token exists
-	let token = await Token.findOne({userId: user._id})
+	// FIX: it returns the token with the old expire time
+	let token = await Token.findOne({
+		userId: user._id,
+		tokenType : type
+	})
 
 	// token doesn't exist maybe expired
 	if (!token) {
 		const generated = crypto.randomBytes(16).toString('hex')
 		token = new Token({
 			userId : user._id,
-			token : generated
+			token : generated,
+			tokenType : type
 		})
 		await token.save()
 	}
 	
 	return token
-}
-
-const sendEmail = async (emailBody) => {
-
-	await mailer.sendMail(emailBody)
 }
 
 // verification by userId and token
@@ -73,24 +74,26 @@ const verifyUser = async (userData) => {
 	// not the best way to do, but man i hate this shit, mongoose is trash lol
 	await Token.findOneAndRemove({_id : dbToken._id})
 }
-const reSendVerificationToken = async (email) => {
+const sendVerificationToken = async (user, regNow=false) => {
 
 	// find by email
-	const user = await User.findOne({email: email})
+	if (!regNow) {
+		user = await User.findOne({email: user.email})
 
-	if (!user || user.isVerified){
-		//throw new error.ServerError(error.user.notFound, 404)
-		//throw new error.ServerError(error.user.verified, 405)
-		
-		// better not to expose anything to the end user
-		return
+		if (!user || user.isVerified){
+			//throw new error.ServerError(error.user.notFound, 404)
+			//throw new error.ServerError(error.user.verified, 405)
+			
+			// better not to expose anything to the end user
+			return
+		}
 	}
 
 	// send email to that user
-	const token = await generateVerificationToken(user)
+	const token = await generateVerificationToken(user, "verify")
 	const mailOpts = emailVerificationTemplate(user, token)
 
-	await sendEmail(mailOpts)
+	await mailer.sendMail(mailOpts)
 }
 
 // return the login token if success
@@ -109,6 +112,7 @@ const getLoginToken = async (data) => {
 const getOthersProfile = async (data) => {
 
     const userId = userValidation.validateUserId(data).userId
+	// TODO: update this, remove tokens and other shit
     const user = await User.findById(userId).select('name -_id isTrusted createTime age gender')
 
     if (!user)
@@ -205,8 +209,8 @@ export default {
     editUserProfile,
     addProfilePicture,
     logoutUser,
-	generateVerificationToken,
-	sendEmail,
-	verifyUser, 
-	reSendVerificationToken
+	forgotPassword,
+	changePasswordNoAuth,
+	sendVerificationToken,
+	verifyUser
 }
