@@ -11,12 +11,21 @@ const tokenSchema = new Schema({
 		type : String,
 		required : true
 	},
+	tokenType : {
+		type : String,
+		// type is used to identify which is which
+		// two types of tokens, 
+		//		password : for password reset verification code
+		//		verify : used for email verification
+		enum : ["verify", "password"],
+		required : true
+	},
 	expireAt : {
 		type : Date, 
+		// FIX: Drop the table to change expire time
+		expires: "1h",
 		default : Date.now,
-		index : {
-			expires : process.env.VERIFIY_TOKEN_EXPIRE
-		}
+		index : true,
 	}
 })
 
