@@ -4,20 +4,16 @@ import resp from '../../helpers/responseTemplate'
 import success from '../../helpers/success'
 import error from '../../helpers/error'
 import uploader from '../../middlewares/uploader'
-import emailVerificationTemplate from '../../helpers/emailTemplate'
 import {ZodError} from 'zod'
 
 const registerUser = async (req, res) => {
   try {
 
-    const userAccount = await userServices.createAccount(req.body)
-	  
-	  const userAccountToken = await userServices.generateVerificationToken(userAccount)
-	
-	  const mailOpts = emailVerificationTemplate(userAccount, userAccountToken)
-	
-	  await userServices.sendEmail(mailOpts)
+	const userAccount = await userServices.createAccount(req.body)
 
+	// TODO: it better to sep this from the register and set a hook from that
+	await userServices.sendVerificationToken(userAccount, true)
+	
     res.send(resp(true, success.register, "")) 
 
   } catch (e) {
@@ -52,7 +48,7 @@ const verifyUser = async (req, res) => {
 const resendVerification = async (req, res) => {
   try {
 	
-	await userServices.reSendVerificationToken(req.body)
+	await userServices.sendVerificationToken(req.body)
 	  
 	res.send(resp(true, success.verificationSent, ""))
   } catch (e) {
@@ -197,12 +193,14 @@ const resetPassword = async (req, res) => {
 
 export default {
 	registerUser,
-	loginUser,
-	getMyProfile,
-	getUserProfile,
-	logoutUser,
-	editUser,
-	changeProfilePicture,
-	verifyUser, 
+  	loginUser,
+  	getMyProfile,
+  	getUserProfile,
+  	logoutUser,
+  	editUser,
+  	changeProfilePicture,
+  	requestPasswordReset,
+  	resetPassword,
+  	verifyUser,
 	resendVerification
 }
