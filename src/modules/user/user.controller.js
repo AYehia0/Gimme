@@ -169,6 +169,32 @@ const changeProfilePicture = async (req, res) => {
     }
   })
 }
+
+// forgot your password
+const requestPasswordReset = async (req, res) => {
+	try {
+		// the user sends the email in the body
+		userServices.forgotPassword(req.body)
+
+		res.send(resp(true, success.resetPassword, ""))
+	} catch (e) {
+		if (e instanceof ZodError)
+			return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
+
+		res.status(e.code || 400).send(resp(false, e.message, ""))
+	}
+}
+
+const resetPassword = async (req, res) => {
+	try {
+		// the user sends the email in the body
+		await userServices.changePasswordNoAuth(req.body)
+		res.send(resp(true, success.resetPassword, ""))
+	} catch (e) {
+		res.status(e.code || 400).send(resp(false, e.message, ""))
+	}
+}
+
 export default {
 	registerUser,
 	loginUser,
