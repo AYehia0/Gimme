@@ -31,4 +31,10 @@ router.get('/logout', auth.userAuth, userCont.logoutUser)
 // edit profile
 router.put('/edit', auth.userAuth, userCont.editUser)
 
+// request password change
+router.post('/forget-password', userCont.requestPasswordReset)
+
+// password reset
+router.post('/reset-password', userCont.resetPassword)
+
 export default router
