@@ -77,10 +77,14 @@ const customWebhook = async (req, res) => {
             // ToDo : check externel_account.create
             case 'account.updated':
 
-                const accountId = event.data.object.id
-                const userId = event.data.object.metadata._id
-
-                await paymentService.updateStripeAccount(accountId, userId)
+				// check if all the requirements are met
+				// https://stripe.com/docs/api/accounts/object#account_object-requirements
+				const accountRequirements = event.data.object.requirements
+				if (accountRequirements.currently_due.length == 0 && accountRequirements.disabled_reason == null) {
+					const accountId = event.data.object.id
+					const userId = event.data.object.metadata._id
+					await paymentService.updateStripeAccount(accountId, userId)
+				}
 
             default:
                 console.log(`Unhandled event type : ${event.type}`)
