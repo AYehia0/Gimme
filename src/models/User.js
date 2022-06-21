@@ -109,7 +109,7 @@ userSchema.statics.login = async (email, password) => {
     throw new error.ServerError(error.user.wrong, 403)
 
   //check if the user is verified or not 
-  if (!user.isTrusted)
+  if (!user.isVerified)
     throw new error.ServerError(error.user.notVerified, 403)
 
   return user
