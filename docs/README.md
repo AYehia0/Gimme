@@ -139,7 +139,7 @@ Before using stripe, you have to obtain both **publishable** and **secret** keys
 ### Notes
 - Before calling any of the payment routes make sure stripe is configured properly, [Stripe CLI](#stripe-testing) is installed and stripe is listening as :
 
-        stripe listen --forward-to=localhost:8080/api/payment/webhook
+        stripe listen --format JSON --forward-to=localhost:8080/api/payment/webhook
     
 - All stripe testing docs can be found [here](https://stripe.com/docs/testing), and for connect : [here](https://stripe.com/docs/connect/testing)
 - Make sure to read [connect](https://stripe.com/docs/connect) docs, and enable it.
