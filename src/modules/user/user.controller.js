@@ -170,7 +170,7 @@ const changeProfilePicture = async (req, res) => {
 const requestPasswordReset = async (req, res) => {
 	try {
 		// the user sends the email in the body
-		userServices.forgotPassword(req.body)
+		await userServices.forgotPassword(req.body)
 
 		res.send(resp(true, success.resetPassword, ""))
 	} catch (e) {
@@ -187,6 +187,8 @@ const resetPassword = async (req, res) => {
 		await userServices.changePasswordNoAuth(req.body)
 		res.send(resp(true, success.resetPassword, ""))
 	} catch (e) {
+		if (e instanceof ZodError)
+			return res.status(e.code || 400).send(resp(false, e.flatten(), ""))
 		res.status(e.code || 400).send(resp(false, e.message, ""))
 	}
 }

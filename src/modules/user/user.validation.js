@@ -84,6 +84,21 @@ const validateUserEmail = (rawData) => {
     return VerificationEmail.parse(rawData)
 }
 
+const passwordReset = (rawData) => {
+
+	console.log(rawData)
+    const resetValidation = z.object({
+        secret: z.string(),
+        password: z.string(),
+        password_confirm: z.string(),
+    }).refine((data) => data.password === data.password_confirm, {
+		message: "Passwords don't match",
+		path: ["password"]
+	})
+
+    return resetValidation.parse(rawData)
+
+}
 
 
 export default {
@@ -91,5 +106,6 @@ export default {
     validateLogin, 
     validateUserId, 
     validateEditProfile,
-	validateUserEmail
+	validateUserEmail,
+	passwordReset
 }

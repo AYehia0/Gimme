@@ -6,7 +6,7 @@ import userValidation from './user.validation'
 import mailer from "../../utils/email"
 import crypto from "crypto"
 import globalValidation from "../../helpers/validation"
-import emailVerificationTemplate from "../../helpers/emailTemplate"
+import emailTemps from "../../helpers/emailTemplate"
 
 
 const createAccount = async (data) => {
@@ -91,7 +91,7 @@ const sendVerificationToken = async (user, regNow=false) => {
 
 	// send email to that user
 	const token = await generateVerificationToken(user, "verify")
-	const mailOpts = emailVerificationTemplate(user, token)
+	const mailOpts = emailTemps.verificationTemplate(user, token)
 
 	await mailer.sendMail(mailOpts)
 }
@@ -151,11 +151,16 @@ const logoutUser = async (user) => {
     await user.save()
 }
 
-const changePasswordNoAuth = async (secretCode, newPassword) => {
+// password reset
+const changePasswordNoAuth = async (dataRaw) => {
+
+	// validations 
+	const passwordData = userValidation.passwordReset(dataRaw)
+
 	// get the code
 	// FIX: What are the odds to find two equal tokens at the same time ?
 	const verifyToken = await Token.findOne({
-		token : secretCode,
+		token : passwordData.secret,
 		tokenType: "password"
 	})
 	// verify the code
@@ -165,7 +170,7 @@ const changePasswordNoAuth = async (secretCode, newPassword) => {
 	// TODO: add a function to validate the password in the user.validation.js, and make sure to use this function in the updateProfile validation
 	// change the password
 	await User.findByIdAndUpdate(verifyToken.userId, {
-		password : newPassword
+		password : passwordData.password
 	})
 
 	// delete the token
@@ -175,30 +180,43 @@ const changePasswordNoAuth = async (secretCode, newPassword) => {
 }
 
 const forgotPassword = async (bodyData) => {
+
 	// send password reset code to that email
 	const email = userValidation.validateUserEmail(bodyData)
+
+	// check if the user exists
+	const user = await User.findOne({
+		email: email.email
+	})
+
+	if (!user)
+		return
 
 	// TODO: check if there is a token exists for that email
 	let passwordResetToken 
 	passwordResetToken = await Token.findOne({
-
+		userId : user._id,
+		tokenType : "password"
 	})
 	
 	// create a token for that id
-	const user = await User.findOne({
-		email: email
-	})
+	if (!passwordResetToken) {
+		const genPasswordToken = crypto.randomBytes(16).toString('hex')
+		passwordResetToken = new Token({
+			userId : user._id,
+			// TODO : make a function in helper to generate random tokens
+			token : genPasswordToken,
+			tokenType : "password"
+		})
 
-	const genPasswordToken = crypto.randomBytes(16).toString('hex')
-	passwordResetToken = new Token({
-		userId : user._id,
-		// TODO : make a function in helper to generate random tokens
-		token : genPasswordToken,
-		type : "password"
-	})
+		// save the token
+		await passwordResetToken.save()
+	}
 	// send email to the user
-	// TODO : add email template for the password rest 
-	await mailer.sendMail(passwordResetToken)
+	// TODO: should I send the user again if sent already ?
+	const emailConf = emailTemps.passwordResetTemplate(user, passwordResetToken)
+	// TODO: again make a hook for this
+	await mailer.sendMail(emailConf)
 
 }
 
