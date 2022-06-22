@@ -11,6 +11,7 @@ const tokenSchema = new Schema({
 		type : String,
 		required : true
 	},
+	// TODO: add different expire time based on the tokenType
 	tokenType : {
 		type : String,
 		// type is used to identify which is which
@@ -22,10 +23,8 @@ const tokenSchema = new Schema({
 	},
 	expireAt : {
 		type : Date, 
-		// FIX: Drop the table to change expire time
-		expires: "1h",
+		expires : process.env.VERIFIY_TOKEN_EXPIRE,
 		default : Date.now,
-		index : true,
 	}
 })
 
