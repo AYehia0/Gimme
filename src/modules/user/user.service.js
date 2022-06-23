@@ -230,5 +230,6 @@ export default {
 	forgotPassword,
 	changePasswordNoAuth,
 	sendVerificationToken,
-	verifyUser
+	verifyUser,
+	generateVerificationToken
 }

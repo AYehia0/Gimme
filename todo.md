@@ -13,6 +13,9 @@ Pre-installation:
   - DEV : nodemon
 - [X] Init the server
 - [ ] Continue the unit tests for all the routes, oh boi :'(
+- [X] Password reset unit tests
+- [ ] Mock the email sending for unit testing 
+- [ ] Email Verification unit tests
 - [X] Add account verification via email
 - [X] Password reset : Forgot password 
 - [ ] Important : Introduce API key for certain routes, which the user can't call himself.

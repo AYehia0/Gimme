@@ -1,13 +1,13 @@
 import userServices from './user.service'
 import globalStub from '../../config/tests/test'
 import jsonwebtoken from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
 
 describe("User unit tests : ", () => {
 
     const userData = globalStub.API_DATA.REGISTER.USER_NORMAL
     const userEdit = globalStub.API_DATA.EDIT.USER_NORMAL
+	let verificationToken
     let user 
 
     it("should create an account", async () => {
@@ -16,6 +16,33 @@ describe("User unit tests : ", () => {
         expect(user.email).toBe(userData.email)
         expect(user.age).toBe(userData.age)
 
+    })
+
+    it("should request a new account verification token", async () => {
+
+		verificationToken = await userServices.generateVerificationToken(user, "verify")
+        expect(verificationToken).toBeTruthy()
+
+    })
+
+    it("should confirm/verify account using the verification token", async () => {
+
+		const userData =  {
+			userId : String(user._id),
+			token : verificationToken.token
+		}
+
+		await userServices.verifyUser(userData)
+        expect(true).toBeTruthy()
+
+    })
+
+    it("should get a password reset token if not exists", async () => {
+		// TODO: Split the email sending from userServices
+    })
+
+    it("should change user's password using only the reset token", async () => {
+		// TODO: Split the email sending from userServices
     })
 
     it("should log in a user by getting the login token", async () => {
