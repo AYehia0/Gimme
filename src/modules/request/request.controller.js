@@ -104,10 +104,11 @@ const getSubscibedRequests = async (req, res) => {
 }
 
 // get my commented requests
-const getMyCommentedRequests = async (req, res) => {
+const getMyWorkingRequests = async (req, res) => {
     try {
         const state = req.query.state
-        const requests = await requestServices.getMyOnRequests(req.user._id, state)
+		const owner = req.query.owner
+        const requests = await requestServices.getMyOnRequests(req.user._id, state, owner)
         res.send(resp(true, "", requests))
 
     } catch (e) {
@@ -125,5 +126,5 @@ export default {
     searchRequests,
     getRequests,
     getSubscibedRequests,
-    getMyCommentedRequests
+    getMyWorkingRequests
 }

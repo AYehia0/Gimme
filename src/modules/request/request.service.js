@@ -101,12 +101,15 @@ const getRequestsForMOD = async (userId) => {
 
 }
 
-// get on requests, i commented on
-const getMyOnRequests = async (userId, state) => {
+const getMyOnRequests = async (userId, state, owner=null) => {
 
     const rightState = requestValidation.validateRequestState(state)
-    return await Request.find({"participants.userId" : userId , state : rightState})
+	if (!owner)
+		return await Request.find({"participants.userId" : userId , state : rightState})
 
+	//TODO: lol, any thing is valid
+	// the customer wants to get their works too
+	return await Request.find({"userId" : userId, state: state})
 }
 
 

@@ -16,7 +16,7 @@ router.get('/requests', auth.userAuth, requestCont.getRequests)
 router.get('/subscribed', auth.userAuth, requestCont.getSubscibedRequests)
 
 // requests i commented on, and it has state of 'on'
-router.get('/on', auth.userAuth, requestCont.getMyCommentedRequests)
+router.get('/on', auth.userAuth, requestCont.getMyWorkingRequests)
 
 // open a request
 router.post('/open', auth.userAuth, requestCont.openRequest)
