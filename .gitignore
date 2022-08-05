@@ -1,0 +1,6 @@
+node_modules
+.env.prod
+uploads/
+dist/
+src/config/keys/fcm.json
+src/config/keys/stripe_key.json
